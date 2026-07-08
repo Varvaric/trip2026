@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Наше северное приключение</title>
+    <style>
+        /* ----- ОБЩИЕ СТИЛИ (морская гамма) ----- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: #0a1a2e;
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            color: #e8edf0;
+            display: flex;
+            align-items: stretch;
+        }
+
+        .app {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* ----- ЛЕВАЯ ПОЛОВИНА: ТЁПЛЫЙ ФОН С КОРАБЛЁМ ----- */
+        .hero-side {
+            flex: 1 1 45%;
+            background: #0f2640;
+            background-image: 
+                radial-gradient(circle at 30% 40%, rgba(255, 215, 180, 0.06) 0%, transparent 60%),
+                repeating-linear-gradient(45deg, rgba(200, 180, 140, 0.03) 0px, rgba(200, 180, 140, 0.03) 2px, transparent 2px, transparent 8px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 30px;
+            border-right: 2px solid #3a5f7a;
+            box-shadow: inset 0 0 120px rgba(0, 10, 20, 0.7);
+            min-height: 400px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-side::before {
+            content: "✦";
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            font-size: 24px;
+            color: rgba(200, 180, 140, 0.15);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 420px;
+        }
+
+        .hero-content .ship-icon {
+            font-size: 72px;
+            display: block;
+            margin-bottom: 16px;
+            opacity: 0.8;
+            filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5));
+        }
+
+        .hero-content h1 {
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #d6e3e8;
+            margin-bottom: 8px;
+        }
+
+        .hero-content .subtitle {
+            font-size: 16px;
+            font-weight: 200;
+            color: #7a9aa8;
+            letter-spacing: 2px;
+        }
+
+        .hero-content .divider {
+            width: 60px;
+            height: 1px;
+            background: #3a5f7a;
+            margin: 24px auto;
+        }
+
+        .hero-content p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #a0b8c9;
+            font-weight: 300;
+        }
+
+        .hero-content .route-mini {
+            margin-top: 24px;
+            font-size: 13px;
+            color: #4d7a8f;
+            letter-spacing: 1px;
+            border-top: 1px dashed rgba(200, 180, 140, 0.15);
+            padding-top: 20px;
+        }
+
+        /* ----- ПРАВАЯ ПОЛОВИНА: ТЕКСТ ИСТОРИИ ----- */
+        .story-side {
+            flex: 1 1 55%;
+            background: #0b1a2a;
+            padding: 44px 45px 40px 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Шапка с переключателем темы */
+        .story-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #1f3a4a;
+            padding-bottom: 18px;
+            margin-bottom: 28px;
+        }
+
+        .story-header .logo {
+            font-size: 22px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #d6e3e8;
+        }
+        .story-header .logo span {
+            font-weight: 200;
+            color: #4d7a8f;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid #1f3a4a;
+            border-radius: 30px;
+            padding: 6px 20px;
+            font-size: 14px;
+            color: #a0b8c9;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+        .theme-toggle:hover {
+            background: #1f3a4a;
+            color: #e8edf0;
+        }
+
+        /* ----- ТЕКСТ ИСТОРИИ (душевный, от первого лица) ----- */
+        .story-content {
+            flex: 1;
+        }
+
+        .story-content h2 {
+            font-size: 26px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: #d6e3e8;
+            margin-bottom: 12px;
+        }
+
+        .story-content h2 small {
+            display: block;
+            font-size: 16px;
+            font-weight: 200;
+            color: #4d7a8f;
+            margin-top: 4px;
+        }
+
+        .story-content p {
+            font-size: 16px;
+            line-height: 1.9;
+            color: #c9d6db;
+            font-weight: 300;
+            margin-bottom: 18px;
+        }
+
+        .story-content .highlight {
+            color: #b8c9b0;
+            font-weight: 400;
+        }
+
+        /* Навигационные карточки */
+        .nav-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px;
+            margin: 28px 0 18px;
+        }
+
+        .nav-card {
+            background: #0d1f30;
+            border: 1px solid #1a3142;
+            border-radius: 16px;
+            padding: 18px 14px;
+            text-align: center;
+            text-decoration: none;
+            color: #d6e3e8;
+            transition: 0.25s;
+            cursor: pointer;
+        }
+
+        .nav-card:hover {
+            background: #1a3142;
+            border-color: #3a5f7a;
+            transform: translateY(-2px);
+        }
+
+        .nav-card .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .nav-card .label {
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        .nav-card .desc {
+            font-size: 12px;
+            color: #4d7a8f;
+            margin-top: 4px;
+        }
+
+        /* Подвал */
+        .footer-note {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #2a4a5a;
+            text-align: center;
+            border-top: 1px solid #1a3142;
+            padding-top: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ----- СВЕТЛАЯ ТЕМА ----- */
+        body.light .app .hero-side {
+            background: #dce6ed;
+            background-image: radial-gradient(circle at 30% 40%, rgba(180, 140, 100, 0.05) 0%, transparent 60%);
+            border-right-color: #b0c4d0;
+        }
+        body.light .app .hero-side .hero-content h1,
+        body.light .app .hero-side .hero-content p {
+            color: #1f3a4a;
+        }
+        body.light .app .hero-side .hero-content .subtitle,
+        body.light .app .hero-side .hero-content .route-mini {
+            color: #4d6a7a;
+        }
+        body.light .story-side {
+            background: #eef3f7;
+        }
+        body.light .story-header {
+            border-bottom-color: #c0d0da;
+        }
+        body.light .story-header .logo {
+            color: #1f3a4a;
+        }
+        body.light .story-header .logo span {
+            color: #4d7a8f;
+        }
+        body.light .theme-toggle {
+            border-color: #b0c4d0;
+            color: #2a4a5a;
+        }
+        body.light .theme-toggle:hover {
+            background: #c0d0da;
+            color: #0b1a2a;
+        }
+        body.light .story-content h2 {
+            color: #1f3a4a;
+        }
+        body.light .story-content h2 small {
+            color: #4d7a8f;
+        }
+        body.light .story-content p {
+            color: #1a2e3a;
+        }
+        body.light .story-content .highlight {
+            color: #1f3a4a;
+            font-weight: 500;
+        }
+        body.light .nav-card {
+            background: #dce6ed;
+            border-color: #c0d0da;
+            color: #1f3a4a;
+        }
+        body.light .nav-card:hover {
+            background: #c0d0da;
+            border-color: #7a9aa8;
+        }
+        body.light .nav-card .desc {
+            color: #4d7a8f;
+        }
+        body.light .footer-note {
+            color: #7a9aa8;
+            border-top-color: #c0d0da;
+        }
+
+        /* ----- АДАПТИВНОСТЬ ----- */
+        @media (max-width: 780px) {
+            .app { flex-direction: column; }
+            .hero-side {
+                border-right: none;
+                border-bottom: 2px solid #1f3a4a;
+                min-height: 240px;
+                padding: 30px 20px;
+            }
+            .story-side {
+                padding: 30px 20px;
+            }
+            .nav-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .nav-cards { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- ЛЕВАЯ ПОЛОВИНА: КОРАБЛЬ И НАСТРОЕНИЕ -->
+        <div class="hero-side">
+            <div class="hero-content">
+                <span class="ship-icon">⛴️</span>
+                <h1>Наше северное приключение</h1>
+                <div class="subtitle">Мурманск · Соловки · Териберка</div>
+                <div class="divider"></div>
+                <p>
+                    Этот сайт — наша семейная память о путешествии,<br/>
+                    которое мы с мамой придумали и осуществили.
+                </p>
+                <div class="route-mini">
+                    🗺️ Санкт-Петербург → Кемь → Соловки → Мурманск → Териберка
+                </div>
+            </div>
+        </div>
+
+        <!-- ПРАВАЯ ПОЛОВИНА: ИСТОРИЯ -->
+        <div class="story-side">
+            <!-- Шапка -->
+            <div class="story-header">
+                <div class="logo">⛵ <span>семейный</span> дневник</div>
+                <button class="theme-toggle" id="themeToggle">☀️ Светлая карта</button>
+            </div>
+
+            <!-- Текст -->
+            <div class="story-content">
+                <h2>
+                    За полярным кругом
+                    <small>11–15 июля 2026 года</small>
+                </h2>
+
+                <p>
+                    Мы давно мечтали о поездке на Север — туда, где море встречается с небом, 
+                    где белые ночи не дают уснуть, а воздух пахнет свободой. И вот, наше желание 
+                    стало <span class="highlight">настоящим приключением</span>.
+                </p>
+
+                <p>
+                    Вместе мы выбирали маршруты, спорили о том, брать ли тёплые носки, 
+                    искали идеальный дождевик, который не подведёт в Териберке, и 
+                    пересматривали фотографии Соловецких островов. Каждая деталь этой поездки 
+                    — <span class="highlight">наша общая история</span>.
+                </p>
+
+                <p>
+                    Этот сайт мы создали, чтобы сохранить воспоминания: как собирались, 
+                    что видели и чувствовали. Здесь ты найдёшь наш <span class="highlight">чек-лист</span>, 
+                    <span class="highlight">дневник путешествия</span> и самые тёплые фотографии 
+                    с нашего маршрута.
+                </p>
+
+                <!-- КАРТОЧКИ-ССЫЛКИ НА ДРУГИЕ СТРАНИЦЫ -->
+                <div class="nav-cards">
+                    <a href="checklist.html" class="nav-card">
+                        <span class="icon">📋</span>
+                        <span class="label">Чек-лист</span>
+                        <span class="desc">что мы взяли</span>
+                    </a>
+                    <a href="diary.html" class="nav-card">
+                        <span class="icon">📖</span>
+                        <span class="label">Дневник</span>
+                        <span class="desc">день за днём</span>
+                    </a>
+                    <a href="gallery.html" class="nav-card">
+                        <span class="icon">📸</span>
+                        <span class="label">Фото</span>
+                        <span class="desc">как это было</span>
+                    </a>
+                    <a href="preparation.html" class="nav-card">
+                        <span class="icon">🧳</span>
+                        <span class="label">Подготовка</span>
+                        <span class="desc">как мы искали</span>
+                    </a>
+                </div>
+
+                <p style="font-size: 15px; color: #4d7a8f; margin-top: 10px;">
+                    🌊 Добро пожаловать на борт нашей маленькой семейной экспедиции.
+                </p>
+            </div>
+
+            <div class="footer-note">
+                ● сделано с любовью ● июль 2026
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // --- ТЕМА ---
+            const toggleBtn = document.getElementById('themeToggle');
+            const body = document.body;
+
+            function setTheme(theme) {
+                if (theme === 'light') {
+                    body.classList.add('light');
+                    toggleBtn.textContent = '🌙 Тёмная карта';
+                } else {
+                    body.classList.remove('light');
+                    toggleBtn.textContent = '☀️ Светлая карта';
+                }
+                localStorage.setItem('theme', theme);
+            }
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') setTheme('light');
+
+            toggleBtn.addEventListener('click', function() {
+                setTheme(body.classList.contains('light') ? 'dark' : 'light');
+            });
+        })();
+    </script>
+</body>
+</html>
