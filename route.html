@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+    <title>Маршрут • Наше северное приключение</title>
+
+    <!-- Подключаем Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        /* ----- БАЗА (морская гамма) ----- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: #eef3f7;
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', system-ui, sans-serif;
+            color: #1a2e3a;
+            font-size: 18px;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+            padding-top: 60px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== МЕНЮ (как на других страницах) ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 26, 46, 0.92);
+            backdrop-filter: blur(12px);
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: none;
+        }
+
+        .navbar .logo {
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            color: #d6e3e8;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .navbar .logo span {
+            color: #7a9aa8;
+            font-weight: 200;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #a0b8c9;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            padding: 6px 14px;
+            border-radius: 30px;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.04);
+            color: #e8edf0;
+        }
+
+        .nav-links a.active {
+            color: #e8edf0;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .burger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: #a0b8c9;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        /* ===== ШАПКА СТРАНИЦЫ ===== */
+        .page-header {
+            background: #0a1a2e;
+            padding: 40px 20px 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .page-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+
+        .page-header .sub {
+            font-size: clamp(1rem, 1.6vw, 1.2rem);
+            font-weight: 200;
+            color: #7a9aa8;
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+        }
+
+        /* ===== КАРТА ===== */
+        .map-section {
+            background: #ffffff;
+            padding: 30px 20px 40px;
+            border-radius: 0 0 24px 24px;
+            margin-bottom: 20px;
+        }
+
+        #map {
+            width: 100%;
+            height: 500px;
+            border-radius: 24px;
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            z-index: 1;
+        }
+
+        /* Список точек под картой */
+        .route-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 30px;
+        }
+
+        .route-point {
+            background: #f8fafb;
+            border-radius: 16px;
+            padding: 16px 18px;
+            border-left: 4px solid #3a5f7a;
+            transition: 0.2s;
+        }
+
+        .route-point:hover {
+            background: #eef3f7;
+        }
+
+        .route-point .point-name {
+            font-weight: 500;
+            font-size: 1rem;
+            color: #0a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .route-point .point-name .emoji {
+            font-size: 1.2rem;
+        }
+
+        .route-point .point-desc {
+            font-size: 0.85rem;
+            font-weight: 200;
+            color: #4d7a8f;
+            margin-top: 4px;
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        .footer {
+            background: #0a1a2e;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #4d7a8f;
+            letter-spacing: 0.05em;
+            border-top: 1px solid rgba(255,255,255,0.02);
+        }
+
+        /* ===== АДАПТАЦИЯ ===== */
+        @media (max-width: 768px) {
+            #map {
+                height: 350px;
+            }
+            .route-points {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #map {
+                height: 280px;
+            }
+            .route-points {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Бургер-меню */
+        @media (max-width: 680px) {
+            body { padding-top: 56px; }
+            .navbar { height: 56px; padding: 0 16px; }
+
+            .burger { display: flex; }
+
+            .nav-links {
+                position: absolute;
+                top: 56px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(10, 26, 46, 0.98);
+                backdrop-filter: blur(16px);
+                padding: 16px 20px 20px;
+                gap: 4px;
+                display: none;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 10px 16px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== МЕНЮ ===== -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">семейный <span>дневник</span></a>
+        <button class="burger" id="burgerBtn" aria-label="Меню">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="checklist.html">Чек-лист</a></li>
+            <li><a href="diary.html">Дневник</a></li>
+            <li><a href="gallery.html">Фото</a></li>
+            <li><a href="route.html" class="active">Маршрут</a></li>
+        </ul>
+    </nav>
+
+    <!-- ===== ШАПКА ===== -->
+    <header class="page-header">
+        <h1>Наш маршрут</h1>
+        <div class="sub">от Петербурга до Баренцева моря</div>
+    </header>
+
+    <!-- ===== КАРТА ===== -->
+    <section class="map-section">
+        <div class="container">
+            <div id="map"></div>
+
+            <!-- Список точек под картой -->
+            <div class="route-points" id="pointsList">
+                <!-- Точки будут вставлены через JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ПОДВАЛ ===== -->
+    <footer class="footer">
+        <div class="container">
+            ● сделано с любовью ● июль 2026
+        </div>
+    </footer>
+
+    <!-- Подключаем Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        (function() {
+            // --- ДАННЫЕ О ТОЧКАХ МАРШРУТА ---
+            const points = [
+                {
+                    lat: 59.9343,
+                    lng: 30.3351,
+                    name: 'Санкт-Петербург',
+                    emoji: '🚂',
+                    desc: 'Старт. Отправление с Ладожского вокзала.'
+                },
+                {
+                    lat: 64.9543,
+                    lng: 34.5948,
+                    name: 'Кемь',
+                    emoji: '⛵',
+                    desc: 'Переправа через Белое море на Соловки.'
+                },
+                {
+                    lat: 65.0245,
+                    lng: 35.7101,
+                    name: 'Соловецкий монастырь',
+                    emoji: '🏛️',
+                    desc: 'Главный монастырь, объект ЮНЕСКО.'
+                },
+                {
+                    lat: 65.0050,
+                    lng: 35.6810,
+                    name: 'Заяцкий остров',
+                    emoji: '🗿',
+                    desc: 'Древние каменные лабиринты и святилища.'
+                },
+                {
+                    lat: 65.0400,
+                    lng: 35.7400,
+                    name: 'Гора Секирная',
+                    emoji: '⛰️',
+                    desc: 'Скит, церковь-маяк и виды на море.'
+                },
+                {
+                    lat: 68.9707,
+                    lng: 33.0748,
+                    name: 'Мурманск',
+                    emoji: '🏙️',
+                    desc: 'Город-герой, столица Заполярья.'
+                },
+                {
+                    lat: 69.1585,
+                    lng: 35.1441,
+                    name: 'Териберка',
+                    emoji: '🌊',
+                    desc: 'Край земли. Баренцево море, киты и тюлени.'
+                },
+                {
+                    lat: 68.9714,
+                    lng: 33.0797,
+                    name: 'Ледокол Ленин',
+                    emoji: '🚢',
+                    desc: 'Музей-ледокол, символ Мурманска.'
+                }
+            ];
+
+            // --- СОЗДАНИЕ КАРТЫ ---
+            const map = L.map('map').setView([64.5, 35.0], 5);
+
+            // Стиль карты (светлый, морской)
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Кастомная иконка (морская)
+            const customIcon = L.divIcon({
+                html: '⛵',
+                className: 'custom-marker',
+                iconSize: [30, 30],
+                iconAnchor: [15, 30],
+                popupAnchor: [0, -30]
+            });
+
+            // Добавляем метки на карту
+            points.forEach(point => {
+                const marker = L.marker([point.lat, point.lng], { icon: customIcon })
+                    .addTo(map)
+                    .bindPopup(`
+                        <strong>${point.emoji} ${point.name}</strong><br/>
+                        <span style="font-weight:200; color:#3a5f7a;">${point.desc}</span>
+                    `);
+            });
+
+            // --- РИСУЕМ ЛИНИЮ МАРШРУТА (соединяем точки) ---
+            const latlngs = points.map(p => [p.lat, p.lng]);
+            const polyline = L.polyline(latlngs, {
+                color: '#3a5f7a',
+                weight: 3,
+                opacity: 0.5,
+                dashArray: '6, 8'
+            }).addTo(map);
+
+            // --- ВЫВОДИМ СПИСОК ТОЧЕК ПОД КАРТОЙ ---
+            const pointsList = document.getElementById('pointsList');
+            points.forEach(point => {
+                const div = document.createElement('div');
+                div.className = 'route-point';
+                div.innerHTML = `
+                    <div class="point-name">
+                        <span class="emoji">${point.emoji}</span>
+                        ${point.name}
+                    </div>
+                    <div class="point-desc">${point.desc}</div>
+                `;
+                pointsList.appendChild(div);
+            });
+
+            // --- БУРГЕР ---
+            const burgerBtn = document.getElementById('burgerBtn');
+            const navLinks = document.getElementById('navLinks');
+
+            burgerBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('open');
+            });
+
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    navLinks.classList.remove('open');
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>
