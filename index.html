@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Наше северное приключение</title>
     <style>
-        /* ----- ОБЩИЕ СТИЛИ (морская гамма) ----- */
+        /* ----- БАЗА: крупный, читаемый шрифт с адаптацией ----- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         html, body {
             width: 100%;
             min-height: 100vh;
             background: #0a1a2e;
-            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', system-ui, sans-serif;
             color: #e8edf0;
             display: flex;
             align-items: stretch;
+            font-size: 18px; /* базовый размер увеличен */
+            line-height: 1.7;
         }
 
         .app {
@@ -25,98 +27,91 @@
             min-height: 100vh;
         }
 
-        /* ----- ЛЕВАЯ ПОЛОВИНА: ТЁПЛЫЙ ФОН С КОРАБЛЁМ ----- */
+        /* ----- ЛЕВАЯ ПОЛОВИНА: ФОТО НА ФОНЕ ----- */
         .hero-side {
             flex: 1 1 45%;
             background: #0f2640;
             background-image: 
-                radial-gradient(circle at 30% 40%, rgba(255, 215, 180, 0.06) 0%, transparent 60%),
-                repeating-linear-gradient(45deg, rgba(200, 180, 140, 0.03) 0px, rgba(200, 180, 140, 0.03) 2px, transparent 2px, transparent 8px);
+                linear-gradient(rgba(10, 26, 46, 0.7), rgba(10, 26, 46, 0.7)),
+                url('images/главная страница.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            ...
+        }
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 30px;
+            padding: 50px 40px;
             border-right: 2px solid #3a5f7a;
-            box-shadow: inset 0 0 120px rgba(0, 10, 20, 0.7);
-            min-height: 400px;
+            min-height: 420px;
             text-align: center;
             position: relative;
         }
 
-        .hero-side::before {
-            content: "✦";
-            position: absolute;
-            top: 40px;
-            left: 40px;
-            font-size: 24px;
-            color: rgba(200, 180, 140, 0.15);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 420px;
-        }
-
-        .hero-content .ship-icon {
-            font-size: 72px;
-            display: block;
-            margin-bottom: 16px;
-            opacity: 0.8;
-            filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5));
-        }
-
-        .hero-content h1 {
-            font-size: 32px;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #d6e3e8;
-            margin-bottom: 8px;
-        }
-
-        .hero-content .subtitle {
-            font-size: 16px;
-            font-weight: 200;
-            color: #7a9aa8;
-            letter-spacing: 2px;
-        }
-
-        .hero-content .divider {
+        /* Декоративный акцент (вместо смайлика) */
+        .hero-side .accent-line {
             width: 60px;
-            height: 1px;
-            background: #3a5f7a;
-            margin: 24px auto;
+            height: 2px;
+            background: #b8c9b0;
+            margin-bottom: 24px;
         }
 
-        .hero-content p {
-            font-size: 15px;
-            line-height: 1.8;
-            color: #a0b8c9;
+        .hero-side .hero-title {
+            font-size: clamp(2rem, 5vw, 3.2rem);
             font-weight: 300;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #ffffff;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.6);
         }
 
-        .hero-content .route-mini {
-            margin-top: 24px;
-            font-size: 13px;
-            color: #4d7a8f;
-            letter-spacing: 1px;
-            border-top: 1px dashed rgba(200, 180, 140, 0.15);
-            padding-top: 20px;
+        .hero-side .hero-sub {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            font-weight: 200;
+            color: rgba(255,255,255,0.75);
+            letter-spacing: 0.15em;
+            margin-top: 6px;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+        }
+
+        .hero-side .hero-divider {
+            width: 80px;
+            height: 1px;
+            background: rgba(255,255,255,0.2);
+            margin: 26px auto;
+        }
+
+        .hero-side .hero-text {
+            font-size: clamp(1rem, 1.6vw, 1.25rem);
+            font-weight: 300;
+            color: rgba(255,255,255,0.8);
+            max-width: 420px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+        }
+
+        .hero-side .hero-route {
+            font-size: clamp(0.85rem, 1.2vw, 1rem);
+            font-weight: 200;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.1em;
+            margin-top: 28px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 22px;
+            width: 80%;
         }
 
         /* ----- ПРАВАЯ ПОЛОВИНА: ТЕКСТ ИСТОРИИ ----- */
         .story-side {
             flex: 1 1 55%;
             background: #0b1a2a;
-            padding: 44px 45px 40px 40px;
+            padding: 48px 50px 40px 45px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
         }
 
-        /* Шапка с переключателем темы */
         .story-header {
             display: flex;
             justify-content: space-between;
@@ -124,13 +119,13 @@
             flex-wrap: wrap;
             border-bottom: 1px solid #1f3a4a;
             padding-bottom: 18px;
-            margin-bottom: 28px;
+            margin-bottom: 32px;
         }
 
         .story-header .logo {
-            font-size: 22px;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
             font-weight: 300;
-            letter-spacing: 2px;
+            letter-spacing: 0.15em;
             color: #d6e3e8;
         }
         .story-header .logo span {
@@ -142,44 +137,46 @@
             background: none;
             border: 1px solid #1f3a4a;
             border-radius: 30px;
-            padding: 6px 20px;
-            font-size: 14px;
+            padding: 8px 24px;
+            font-size: 0.9rem;
             color: #a0b8c9;
             cursor: pointer;
             transition: 0.25s;
+            font-weight: 300;
+            letter-spacing: 0.05em;
         }
         .theme-toggle:hover {
             background: #1f3a4a;
             color: #e8edf0;
         }
 
-        /* ----- ТЕКСТ ИСТОРИИ (душевный, от первого лица) ----- */
         .story-content {
             flex: 1;
         }
 
         .story-content h2 {
-            font-size: 26px;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
             font-weight: 300;
-            letter-spacing: 1px;
+            letter-spacing: 0.03em;
             color: #d6e3e8;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
-        .story-content h2 small {
+        .story-content h2 .dates {
             display: block;
-            font-size: 16px;
+            font-size: clamp(0.9rem, 1.4vw, 1.1rem);
             font-weight: 200;
             color: #4d7a8f;
             margin-top: 4px;
+            letter-spacing: 0.1em;
         }
 
         .story-content p {
-            font-size: 16px;
+            font-size: clamp(1rem, 1.4vw, 1.15rem);
             line-height: 1.9;
             color: #c9d6db;
             font-weight: 300;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .story-content .highlight {
@@ -187,19 +184,30 @@
             font-weight: 400;
         }
 
-        /* Навигационные карточки */
+        .story-content .note-box {
+            background: rgba(26, 49, 66, 0.4);
+            border-left: 3px solid #3a5f7a;
+            padding: 16px 22px;
+            margin: 24px 0 20px;
+            border-radius: 0 12px 12px 0;
+            font-size: clamp(0.9rem, 1.2vw, 1rem);
+            color: #a0b8c9;
+            font-weight: 300;
+        }
+
+        /* Навигационные карточки (без смайликов) */
         .nav-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 14px;
-            margin: 28px 0 18px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin: 30px 0 18px;
         }
 
         .nav-card {
             background: #0d1f30;
             border: 1px solid #1a3142;
             border-radius: 16px;
-            padding: 18px 14px;
+            padding: 20px 14px 16px;
             text-align: center;
             text-decoration: none;
             color: #d6e3e8;
@@ -210,49 +218,62 @@
         .nav-card:hover {
             background: #1a3142;
             border-color: #3a5f7a;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
-        .nav-card .icon {
-            font-size: 28px;
-            display: block;
-            margin-bottom: 6px;
+        .nav-card .card-label {
+            font-size: 1.1rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
         }
-        .nav-card .label {
-            font-size: 14px;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-        }
-        .nav-card .desc {
-            font-size: 12px;
+        .nav-card .card-desc {
+            font-size: 0.85rem;
+            font-weight: 200;
             color: #4d7a8f;
             margin-top: 4px;
         }
+        .nav-card .card-icon {
+            font-size: 1.4rem;
+            font-weight: 200;
+            display: block;
+            margin-bottom: 6px;
+            color: #4d7a8f;
+        }
 
-        /* Подвал */
-        .footer-note {
+        .story-footer {
             margin-top: 30px;
-            font-size: 13px;
+            font-size: 0.85rem;
             color: #2a4a5a;
             text-align: center;
             border-top: 1px solid #1a3142;
             padding-top: 18px;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.05em;
         }
 
         /* ----- СВЕТЛАЯ ТЕМА ----- */
         body.light .app .hero-side {
-            background: #dce6ed;
-            background-image: radial-gradient(circle at 30% 40%, rgba(180, 140, 100, 0.05) 0%, transparent 60%);
+            background-image: 
+                linear-gradient(rgba(220, 230, 237, 0.75), rgba(220, 230, 237, 0.75)),
+                url('images/background.jpg');
+            background-size: cover;
+            background-position: center;
             border-right-color: #b0c4d0;
         }
-        body.light .app .hero-side .hero-content h1,
-        body.light .app .hero-side .hero-content p {
-            color: #1f3a4a;
+        body.light .app .hero-side .hero-title,
+        body.light .app .hero-side .hero-text,
+        body.light .app .hero-side .hero-sub {
+            color: #1a2e3a;
+            text-shadow: none;
         }
-        body.light .app .hero-side .hero-content .subtitle,
-        body.light .app .hero-side .hero-content .route-mini {
+        body.light .app .hero-side .hero-text {
+            color: #2a4a5a;
+        }
+        body.light .app .hero-side .hero-route {
             color: #4d6a7a;
+            border-top-color: rgba(0,0,0,0.08);
+        }
+        body.light .app .hero-side .accent-line {
+            background: #1f3a4a;
         }
         body.light .story-side {
             background: #eef3f7;
@@ -277,7 +298,7 @@
         body.light .story-content h2 {
             color: #1f3a4a;
         }
-        body.light .story-content h2 small {
+        body.light .story-content h2 .dates {
             color: #4d7a8f;
         }
         body.light .story-content p {
@@ -286,6 +307,11 @@
         body.light .story-content .highlight {
             color: #1f3a4a;
             font-weight: 500;
+        }
+        body.light .story-content .note-box {
+            background: #dce6ed;
+            border-left-color: #4d7a8f;
+            color: #1a2e3a;
         }
         body.light .nav-card {
             background: #dce6ed;
@@ -296,21 +322,24 @@
             background: #c0d0da;
             border-color: #7a9aa8;
         }
-        body.light .nav-card .desc {
+        body.light .nav-card .card-desc {
             color: #4d7a8f;
         }
-        body.light .footer-note {
+        body.light .nav-card .card-icon {
+            color: #4d7a8f;
+        }
+        body.light .story-footer {
             color: #7a9aa8;
             border-top-color: #c0d0da;
         }
 
-        /* ----- АДАПТИВНОСТЬ ----- */
+        /* ----- АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ ----- */
         @media (max-width: 780px) {
             .app { flex-direction: column; }
             .hero-side {
                 border-right: none;
                 border-bottom: 2px solid #1f3a4a;
-                min-height: 240px;
+                min-height: 300px;
                 padding: 30px 20px;
             }
             .story-side {
@@ -319,44 +348,47 @@
             .nav-cards {
                 grid-template-columns: 1fr 1fr;
             }
+            .story-content p {
+                font-size: 1rem;
+            }
         }
+
         @media (max-width: 480px) {
             .nav-cards { grid-template-columns: 1fr; }
+            .story-side { padding: 20px 16px; }
+            .hero-side { padding: 24px 16px; min-height: 240px; }
+            .hero-side .hero-text { font-size: 0.95rem; }
         }
     </style>
 </head>
 <body>
     <div class="app">
-        <!-- ЛЕВАЯ ПОЛОВИНА: КОРАБЛЬ И НАСТРОЕНИЕ -->
+        <!-- ЛЕВАЯ ПОЛОВИНА: ФОТО НА ФОНЕ -->
         <div class="hero-side">
-            <div class="hero-content">
-                <span class="ship-icon">⛴️</span>
-                <h1>Наше северное приключение</h1>
-                <div class="subtitle">Мурманск · Соловки · Териберка</div>
-                <div class="divider"></div>
-                <p>
-                    Этот сайт — наша семейная память о путешествии,<br/>
-                    которое мы с мамой придумали и осуществили.
-                </p>
-                <div class="route-mini">
-                    🗺️ Санкт-Петербург → Кемь → Соловки → Мурманск → Териберка
-                </div>
+            <div class="accent-line"></div>
+            <div class="hero-title">Наше северное приключение</div>
+            <div class="hero-sub">Мурманск · Соловки · Териберка</div>
+            <div class="hero-divider"></div>
+            <div class="hero-text">
+                Этот сайт — наша семейная память о путешествии,<br/>
+                которое мы с мамой придумали и прожили вместе.
+            </div>
+            <div class="hero-route">
+                Санкт-Петербург → Кемь → Соловки → Мурманск → Териберка
             </div>
         </div>
 
-        <!-- ПРАВАЯ ПОЛОВИНА: ИСТОРИЯ -->
+        <!-- ПРАВАЯ ПОЛОВИНА: ТЕКСТ -->
         <div class="story-side">
-            <!-- Шапка -->
             <div class="story-header">
-                <div class="logo">⛵ <span>семейный</span> дневник</div>
+                <div class="logo">семейный <span>дневник</span></div>
                 <button class="theme-toggle" id="themeToggle">☀️ Светлая карта</button>
             </div>
 
-            <!-- Текст -->
             <div class="story-content">
                 <h2>
                     За полярным кругом
-                    <small>11–15 июля 2026 года</small>
+                    <span class="dates">11–17 июля 2026 года</span>
                 </h2>
 
                 <p>
@@ -366,49 +398,63 @@
                 </p>
 
                 <p>
+                    Мы купили тур от профсоюза маминой работы — и это было самое необычное 
+                    решение в этом году. Мы не знаем, что нас ждёт: какие люди окажутся рядом, 
+                    какая погода встретит нас за полярным кругом, и сколько раз за день нам 
+                    придётся переодеваться с футболки на пуховик.
+                </p>
+
+                <p>
                     Вместе мы выбирали маршруты, спорили о том, брать ли тёплые носки, 
                     искали идеальный дождевик, который не подведёт в Териберке, и 
                     пересматривали фотографии Соловецких островов. Каждая деталь этой поездки 
                     — <span class="highlight">наша общая история</span>.
                 </p>
 
+                <div class="note-box">
+                    <strong>А ещё мы решили остаться на лишний день.</strong><br/>
+                    16 июля вся группа уезжает, а мы с мамой заселяемся в новую квартиру 
+                    и берём курс на <span class="highlight">свободное плавание</span> по Мурманску. 
+                    Без гидов, без расписания — просто мы и город.
+                </div>
+
                 <p>
-                    Этот сайт мы создали, чтобы сохранить воспоминания: как собирались, 
-                    что видели и чувствовали. Здесь ты найдёшь наш <span class="highlight">чек-лист</span>, 
-                    <span class="highlight">дневник путешествия</span> и самые тёплые фотографии 
+                    Этот сайт мы создали, чтобы сохранить каждое мгновение: как собирались, 
+                    что видели, что чувствовали. Здесь ты найдёшь наш <span class="highlight">чек-лист</span>, 
+                    <span class="highlight">дневник путешествия</span> и самые тёплые кадры 
                     с нашего маршрута.
                 </p>
 
-                <!-- КАРТОЧКИ-ССЫЛКИ НА ДРУГИЕ СТРАНИЦЫ -->
+                <!-- КАРТОЧКИ-ССЫЛКИ (без смайликов) -->
                 <div class="nav-cards">
                     <a href="checklist.html" class="nav-card">
-                        <span class="icon">📋</span>
-                        <span class="label">Чек-лист</span>
-                        <span class="desc">что мы взяли</span>
+                        <span class="card-icon">—</span>
+                        <span class="card-label">Чек-лист</span>
+                        <span class="card-desc">что мы взяли</span>
                     </a>
                     <a href="diary.html" class="nav-card">
-                        <span class="icon">📖</span>
-                        <span class="label">Дневник</span>
-                        <span class="desc">день за днём</span>
+                        <span class="card-icon">—</span>
+                        <span class="card-label">Дневник</span>
+                        <span class="card-desc">день за днём</span>
                     </a>
                     <a href="gallery.html" class="nav-card">
-                        <span class="icon">📸</span>
-                        <span class="label">Фото</span>
-                        <span class="desc">как это было</span>
+                        <span class="card-icon">—</span>
+                        <span class="card-label">Фото</span>
+                        <span class="card-desc">как это было</span>
                     </a>
                     <a href="preparation.html" class="nav-card">
-                        <span class="icon">🧳</span>
-                        <span class="label">Подготовка</span>
-                        <span class="desc">как мы искали</span>
+                        <span class="card-icon">—</span>
+                        <span class="card-label">Подготовка</span>
+                        <span class="card-desc">как мы искали</span>
                     </a>
                 </div>
 
-                <p style="font-size: 15px; color: #4d7a8f; margin-top: 10px;">
-                    🌊 Добро пожаловать на борт нашей маленькой семейной экспедиции.
+                <p style="font-size: clamp(0.95rem, 1.2vw, 1.05rem); color: #4d7a8f; margin-top: 8px;">
+                    Добро пожаловать на борт нашей маленькой семейной экспедиции.
                 </p>
             </div>
 
-            <div class="footer-note">
+            <div class="story-footer">
                 ● сделано с любовью ● июль 2026
             </div>
         </div>
@@ -416,7 +462,6 @@
 
     <script>
         (function() {
-            // --- ТЕМА ---
             const toggleBtn = document.getElementById('themeToggle');
             const body = document.body;
 
