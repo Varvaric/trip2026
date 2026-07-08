@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+    <title>Фотогалерея • Наше северное приключение</title>
+    <style>
+        /* ----- БАЗА (морская гамма) ----- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: #eef3f7;
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', system-ui, sans-serif;
+            color: #1a2e3a;
+            font-size: 18px;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+            padding-top: 60px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== МЕНЮ ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 26, 46, 0.92);
+            backdrop-filter: blur(12px);
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: none;
+        }
+
+        .navbar .logo {
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            color: #d6e3e8;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .navbar .logo span {
+            color: #7a9aa8;
+            font-weight: 200;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #a0b8c9;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            padding: 6px 14px;
+            border-radius: 30px;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.04);
+            color: #e8edf0;
+        }
+
+        .nav-links a.active {
+            color: #e8edf0;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .burger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: #a0b8c9;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        /* ===== ШАПКА СТРАНИЦЫ ===== */
+        .page-header {
+            background: #0a1a2e;
+            padding: 40px 20px 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .page-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+
+        .page-header .sub {
+            font-size: clamp(1rem, 1.6vw, 1.2rem);
+            font-weight: 200;
+            color: #7a9aa8;
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+        }
+
+        /* ===== ГАЛЕРЕЯ ===== */
+        .gallery-section {
+            background: #ffffff;
+            padding: 40px 20px 50px;
+            border-radius: 0 0 24px 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Каждый блок галереи */
+        .gallery-block {
+            margin-bottom: 50px;
+        }
+
+        .gallery-block .block-title {
+            font-size: 1.6rem;
+            font-weight: 300;
+            letter-spacing: 0.06em;
+            color: #0a1a2e;
+            border-bottom: 1px solid #dce6ed;
+            padding-bottom: 10px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .gallery-block .block-title .icon {
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+        .gallery-block .block-title .count {
+            font-size: 0.8rem;
+            font-weight: 200;
+            color: #7a9aa8;
+            margin-left: auto;
+        }
+
+        /* Сетка фото — много колонок */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+        }
+
+        .photo-item {
+            position: relative;
+            background: #eef3f7;
+            border-radius: 14px;
+            overflow: hidden;
+            aspect-ratio: 4 / 3; /* классическое соотношение */
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .photo-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            z-index: 2;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: filter 0.3s;
+        }
+
+        .photo-item .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #dce6ed;
+            color: #4d7a8f;
+            font-size: 0.8rem;
+            font-weight: 200;
+            letter-spacing: 0.05em;
+            text-align: center;
+            padding: 10px;
+            border: 2px dashed rgba(58, 95, 122, 0.15);
+            border-radius: 14px;
+        }
+        .photo-item .placeholder .plus {
+            font-size: 2.4rem;
+            font-weight: 100;
+            color: #7a9aa8;
+            margin-bottom: 4px;
+        }
+
+        /* ===== ЛАЙТБОКС (клик на фото) ===== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 26, 46, 0.92);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            cursor: pointer;
+        }
+        .lightbox.open {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+        .lightbox .close {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            font-size: 2.4rem;
+            color: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 200;
+            background: none;
+            border: none;
+        }
+        .lightbox .close:hover {
+            color: #ffffff;
+        }
+        .lightbox .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3rem;
+            color: rgba(255,255,255,0.15);
+            cursor: pointer;
+            transition: 0.2s;
+            background: none;
+            border: none;
+            padding: 20px;
+        }
+        .lightbox .nav-arrow:hover {
+            color: rgba(255,255,255,0.6);
+        }
+        .lightbox .nav-arrow.prev {
+            left: 16px;
+        }
+        .lightbox .nav-arrow.next {
+            right: 16px;
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        .footer {
+            background: #0a1a2e;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #4d7a8f;
+            letter-spacing: 0.05em;
+            border-top: 1px solid rgba(255,255,255,0.02);
+        }
+
+        /* ===== АДАПТАЦИЯ ===== */
+        @media (max-width: 1200px) {
+            .photo-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+        @media (max-width: 992px) {
+            .photo-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .photo-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            .gallery-block .block-title {
+                font-size: 1.3rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            .gallery-block .block-title {
+                font-size: 1.1rem;
+            }
+            .page-header h1 {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Меню-бургер (как на других страницах) */
+        @media (max-width: 680px) {
+            body { padding-top: 56px; }
+            .navbar { height: 56px; padding: 0 16px; }
+
+            .burger { display: flex; }
+
+            .nav-links {
+                position: absolute;
+                top: 56px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(10, 26, 46, 0.98);
+                backdrop-filter: blur(16px);
+                padding: 16px 20px 20px;
+                gap: 4px;
+                display: none;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 10px 16px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== МЕНЮ ===== -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">семейный <span>дневник</span></a>
+        <button class="burger" id="burgerBtn" aria-label="Меню">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="checklist.html">Чек-лист</a></li>
+            <li><a href="diary.html">Дневник</a></li>
+            <li><a href="gallery.html" class="active">Фото</a></li>
+            <li><a href="route.html">Маршрут</a></li>
+        </ul>
+    </nav>
+
+    <!-- ===== ШАПКА ===== -->
+    <header class="page-header">
+        <h1>Фотогалерея</h1>
+        <div class="sub">кадры, которые мы запомнили</div>
+    </header>
+
+    <!-- ===== ГАЛЕРЕЯ ===== -->
+    <section class="gallery-section">
+        <div class="container">
+
+            <!-- БЛОК 1: Соловки -->
+            <div class="gallery-block">
+                <div class="block-title">
+                    <span class="icon">🏛️</span>
+                    Соловецкий монастырь
+                    <span class="count">0 фото</span>
+                </div>
+                <div class="photo-grid" data-folder="solovki">
+                    <!-- Сюда потом добавятся фото из папки images/solovki/ -->
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                </div>
+            </div>
+
+            <!-- БЛОК 2: Заяцкий остров -->
+            <div class="gallery-block">
+                <div class="block-title">
+                    <span class="icon">⛵</span>
+                    Заяцкий остров и море
+                    <span class="count">0 фото</span>
+                </div>
+                <div class="photo-grid" data-folder="zayatskiy">
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                </div>
+            </div>
+
+            <!-- БЛОК 3: Териберка -->
+            <div class="gallery-block">
+                <div class="block-title">
+                    <span class="icon">🌊</span>
+                    Териберка и океан
+                    <span class="count">0 фото</span>
+                </div>
+                <div class="photo-grid" data-folder="teriberka">
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                </div>
+            </div>
+
+            <!-- БЛОК 4: Ледокол Ленин и Мурманск -->
+            <div class="gallery-block">
+                <div class="block-title">
+                    <span class="icon">🚢</span>
+                    Ледокол Ленин и Мурманск
+                    <span class="count">0 фото</span>
+                </div>
+                <div class="photo-grid" data-folder="murman">
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                </div>
+            </div>
+
+            <!-- БЛОК 5: Дорога и поезд -->
+            <div class="gallery-block">
+                <div class="block-title">
+                    <span class="icon">🚂</span>
+                    В поезде и в пути
+                    <span class="count">0 фото</span>
+                </div>
+                <div class="photo-grid" data-folder="road">
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                    <div class="photo-item"><div class="placeholder"><span class="plus">+</span>Ваше фото</div></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== ПОДВАЛ ===== -->
+    <footer class="footer">
+        <div class="container">
+            ● сделано с любовью ● июль 2026
+        </div>
+    </footer>
+
+    <!-- ===== ЛАЙТБОКС (для просмотра фото) ===== -->
+    <div class="lightbox" id="lightbox">
+        <button class="close" id="lightboxClose">✕</button>
+        <button class="nav-arrow prev" id="lightboxPrev">‹</button>
+        <img id="lightboxImg" src="" alt="Фото" />
+        <button class="nav-arrow next" id="lightboxNext">›</button>
+    </div>
+
+    <script>
+        (function() {
+            // --- БУРГЕР ---
+            const burgerBtn = document.getElementById('burgerBtn');
+            const navLinks = document.getElementById('navLinks');
+
+            burgerBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('open');
+            });
+
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    navLinks.classList.remove('open');
+                }
+            });
+
+            // --- ЛАЙТБОКС ---
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const closeBtn = document.getElementById('lightboxClose');
+            const prevBtn = document.getElementById('lightboxPrev');
+            const nextBtn = document.getElementById('lightboxNext');
+
+            let currentImages = [];
+            let currentIndex = 0;
+
+            // Открыть лайтбокс по клику на фото
+            document.querySelectorAll('.photo-item img').forEach((img, idx) => {
+                img.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // Собираем все img в текущей галерее (не только в одном блоке)
+                    const allImages = document.querySelectorAll('.photo-item img');
+                    currentImages = Array.from(allImages).map(i => i.src);
+                    currentIndex = currentImages.indexOf(this.src);
+                    openLightbox(currentIndex);
+                });
+            });
+
+            function openLightbox(index) {
+                if (index < 0) index = 0;
+                if (index >= currentImages.length) index = currentImages.length - 1;
+                currentIndex = index;
+                lightboxImg.src = currentImages[currentIndex];
+                lightbox.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            function prevImage() {
+                if (currentImages.length === 0) return;
+                const newIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+                openLightbox(newIndex);
+            }
+
+            function nextImage() {
+                if (currentImages.length === 0) return;
+                const newIndex = (currentIndex + 1) % currentImages.length;
+                openLightbox(newIndex);
+            }
+
+            closeBtn.addEventListener('click', closeLightbox);
+            prevBtn.addEventListener('click', prevImage);
+            nextBtn.addEventListener('click', nextImage);
+
+            // Закрытие по клику на фон
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            // Клавиши
+            document.addEventListener('keydown', function(e) {
+                if (!lightbox.classList.contains('open')) return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'ArrowRight') nextImage();
+            });
+
+            // --- ПОДСЧЁТ ФОТО В БЛОКАХ (просто для красоты) ---
+            document.querySelectorAll('.gallery-block').forEach(block => {
+                const grid = block.querySelector('.photo-grid');
+                const countSpan = block.querySelector('.count');
+                if (grid && countSpan) {
+                    const totalItems = grid.querySelectorAll('.photo-item').length;
+                    // Показываем, сколько фото есть (без учёта заглушек)
+                    const realImages = grid.querySelectorAll('.photo-item img:not([src=""])').length;
+                    countSpan.textContent = realImages + ' фото';
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>
