@@ -140,26 +140,25 @@
         }
 
         /* ===== ВЕРТИКАЛЬНАЯ ШКАЛА ПРОГРЕССА (правый нижний угол) ===== */
-        .progress-vertical-wrapper {
-            position: fixed;
-            bottom: 90px;  /* выше подвала */
-            right: 24px;
-            z-index: 500;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            width: 44px;
-            height: 220px;
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(8px);
-            border-radius: 30px;
-            padding: 12px 6px 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: opacity 0.3s;
-        }
-
+          .progress-vertical-wrapper {
+        position: fixed;
+        bottom: 100px;
+        right: 24px;
+        z-index: 500;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        width: 44px;
+        height: 320px;
+        background: rgba(255,255,255,0.7);
+        backdrop-filter: blur(8px);
+        border-radius: 30px;
+        padding: 16px 6px 14px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: opacity 0.3s;
+    }  
         .progress-vertical-label {
             font-size: 0.6rem;
             font-weight: 300;
