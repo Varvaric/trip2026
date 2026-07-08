@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+    <title>Наше северное приключение</title>
+    <style>
+        /* ----- БАЗА ----- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: #f5f0eb; /* светлый фон */
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', system-ui, sans-serif;
+            color: #1a2e3a;
+            font-size: 18px;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+            padding-top: 64px; /* место для фиксированного меню */
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== НАВИГАЦИОННОЕ МЕНЮ ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(240, 235, 230, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar .logo {
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            color: #1a2e3a;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .navbar .logo span {
+            color: #4d7a8f;
+            font-weight: 200;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #2a4a5a;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            padding: 6px 14px;
+            border-radius: 30px;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            background: rgba(0,0,0,0.03);
+            color: #0b1a2a;
+        }
+
+        .nav-links a.active {
+            color: #0b1a2a;
+            background: rgba(0,0,0,0.04);
+        }
+
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .burger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: #1a2e3a;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        /* ===== ШАПКА-ГЕРОЙ (на весь экран, без рамки) ===== */
+        .hero {
+            min-height: calc(100vh - 64px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 30px;
+            background-image: 
+                linear-gradient(rgba(240, 235, 230, 0.7), rgba(240, 235, 230, 0.8)),
+                url('images/memglav.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: scroll; /* исправлено для мобильных */
+            position: relative;
+            /* border-radius убран — никакой рамки */
+        }
+
+        .hero .accent-line {
+            width: 80px;
+            height: 2px;
+            background: #1f3a4a;
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 4.8rem);
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #1a2e3a;
+            text-shadow: 0 2px 12px rgba(255,255,255,0.3);
+            max-width: 90%;
+            word-break: break-word;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(0.9rem, 2.5vw, 1.6rem);
+            font-weight: 200;
+            color: #2a4a5a;
+            letter-spacing: 0.15em;
+            margin-top: 6px;
+        }
+
+        .hero .divider {
+            width: 120px;
+            height: 1px;
+            background: rgba(0,0,0,0.08);
+            margin: 24px auto;
+        }
+
+        .hero .hero-text {
+            font-size: clamp(0.95rem, 1.6vw, 1.3rem);
+            font-weight: 300;
+            color: #1a2e3a;
+            max-width: 620px;
+        }
+
+        .hero .route-line {
+            font-size: clamp(0.75rem, 1.2vw, 1rem);
+            font-weight: 200;
+            color: #4d6a7a;
+            letter-spacing: 0.1em;
+            margin-top: 28px;
+            border-top: 1px solid rgba(0,0,0,0.04);
+            padding-top: 22px;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(0,0,0,0.15);
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            animation: bob 2.4s infinite ease-in-out;
+            font-weight: 200;
+        }
+
+        @keyframes bob {
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.2; }
+            50% { transform: translateX(-50%) translateY(-8px); opacity: 0.7; }
+        }
+
+        /* ===== ОСТАЛЬНЫЕ БЛОКИ ===== */
+        .story-block {
+            background: #ffffff;
+            padding: 70px 20px 60px;
+            border-top: 1px solid rgba(0,0,0,0.02);
+        }
+        .story-block .container { max-width: 820px; }
+        .story-block h2 {
+            font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+            font-weight: 300;
+            letter-spacing: 0.03em;
+            color: #1a2e3a;
+            margin-bottom: 4px;
+        }
+        .story-block .dates {
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            font-weight: 200;
+            color: #4d7a8f;
+            letter-spacing: 0.12em;
+            display: block;
+            margin-bottom: 28px;
+        }
+        .story-block p {
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
+            line-height: 1.9;
+            color: #1a2e3a;
+            font-weight: 300;
+            margin-bottom: 22px;
+        }
+        .story-block .highlight {
+            color: #1f3a4a;
+            font-weight: 500;
+        }
+        .story-block .note-box {
+            background: #f0f3f5;
+            border-left: 4px solid #4d7a8f;
+            padding: 18px 26px;
+            margin: 30px 0 28px;
+            border-radius: 0 14px 14px 0;
+            font-size: clamp(0.9rem, 1.1vw, 1rem);
+            color: #1a2e3a;
+            font-weight: 300;
+        }
+
+        .cards-block {
+            background: #f5f0eb;
+            padding: 60px 20px 70px;
+        }
+        .cards-block .container { max-width: 960px; }
+        .cards-block .section-label {
+            text-align: center;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 200;
+            letter-spacing: 0.2em;
+            color: #4d7a8f;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.04);
+            border-radius: 18px;
+            padding: 28px 18px 22px;
+            text-align: center;
+            text-decoration: none;
+            color: #1a2e3a;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .card:hover {
+            background: #f0f3f5;
+            border-color: #b0c4d0;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.04);
+        }
+        .card .icon {
+            font-size: 2rem;
+            font-weight: 200;
+            display: block;
+            margin-bottom: 8px;
+            color: #4d7a8f;
+            letter-spacing: 0.05em;
+        }
+        .card .label {
+            font-size: 1.1rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+        .card .desc {
+            font-size: 0.85rem;
+            font-weight: 200;
+            color: #4d7a8f;
+            margin-top: 4px;
+        }
+
+        .footer {
+            background: #e8e2db;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #4d6a7a;
+            letter-spacing: 0.05em;
+            border-top: 1px solid rgba(0,0,0,0.02);
+        }
+
+        /* ===== АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ ===== */
+        @media (max-width: 680px) {
+            body { padding-top: 56px; }
+            .navbar { height: 56px; padding: 0 16px; }
+
+            .burger { display: flex; }
+
+            .nav-links {
+                position: absolute;
+                top: 56px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(240, 235, 230, 0.98);
+                backdrop-filter: blur(16px);
+                padding: 16px 20px 20px;
+                gap: 4px;
+                border-bottom: 1px solid rgba(0,0,0,0.02);
+                display: none;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 10px 16px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero {
+                min-height: 80vh;
+                padding: 40px 20px;
+                background-attachment: scroll; /* чтобы не ездила */
+            }
+            .hero h1 {
+                font-size: clamp(1.8rem, 10vw, 2.6rem);
+                letter-spacing: 0.02em;
+            }
+            .hero .hero-text {
+                font-size: 1rem;
+            }
+            .hero .route-line {
+                font-size: 0.8rem;
+                width: 90%;
+            }
+            .scroll-hint {
+                display: none; /* убираем на маленьких экранах */
+            }
+
+            .story-block {
+                padding: 40px 16px;
+            }
+            .cards-block {
+                padding: 40px 16px;
+            }
+            .cards-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+            }
+            .card {
+                padding: 18px 12px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== МЕНЮ ===== -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">семейный <span>дневник</span></a>
+        <button class="burger" id="burgerBtn" aria-label="Меню">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html" class="active">Главная</a></li>
+            <li><a href="checklist.html">Чек-лист</a></li>
+            <li><a href="diary.html">Дневник</a></li>
+            <li><a href="gallery.html">Фото</a></li>
+            <li><a href="preparation.html">Подготовка</a></li>
+        </ul>
+    </nav>
+
+    <!-- ===== ГЕРОЙ ===== -->
+    <section class="hero">
+        <div class="accent-line"></div>
+        <h1>Наше северное приключение</h1>
+        <div class="subtitle">Мурманск · Соловки · Териберка</div>
+        <div class="divider"></div>
+        <div class="hero-text">
+            Этот сайт — наша семейная память о путешествии,<br/>
+            которое мы с мамой придумали и прожили вместе.
+        </div>
+        <div class="route-line">
+            Санкт-Петербург → Кемь → Соловки → Мурманск → Териберка
+        </div>
+        <div class="scroll-hint">⌄ листайте вниз</div>
+    </section>
+
+    <!-- ===== ИСТОРИЯ ===== -->
+    <section class="story-block">
+        <div class="container">
+            <h2>За полярным кругом</h2>
+            <span class="dates">11–17 июля 2026 года</span>
+
+            <p>
+                Мы давно мечтали о поездке на Север — туда, где море встречается с небом, 
+                где белые ночи не дают уснуть, а воздух пахнет свободой. И вот, наше желание 
+                стало <span class="highlight">настоящим приключением</span>.
+            </p>
+
+            <p>
+                Мы купили тур от профсоюза маминой работы — и это было самое необычное 
+                решение в этом году. Мы не знаем, что нас ждёт: какие люди окажутся рядом, 
+                какая погода встретит нас за полярным кругом, и сколько раз за день нам 
+                придётся переодеваться с футболки на пуховик.
+            </p>
+
+            <p>
+                Вместе мы выбирали маршруты, спорили о том, брать ли тёплые носки, 
+                искали идеальный дождевик, который не подведёт в Териберке, и 
+                пересматривали фотографии Соловецких островов. Каждая деталь этой поездки 
+                — <span class="highlight">наша общая история</span>.
+            </p>
+
+            <div class="note-box">
+                <strong>А ещё мы решили остаться на лишний день.</strong><br/>
+                16 июля вся группа уезжает, а мы с мамой заселяемся в новую квартиру 
+                и берём курс на <span class="highlight">свободное плавание</span> по Мурманску. 
+                Без гидов, без расписания — просто мы и город.
+            </div>
+
+            <p>
+                Этот сайт мы создали, чтобы сохранить каждое мгновение: как собирались, 
+                что видели, что чувствовали. Здесь ты найдёшь наш <span class="highlight">чек-лист</span>, 
+                <span class="highlight">дневник путешествия</span> и самые тёплые кадры 
+                с нашего маршрута.
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== КАРТОЧКИ ===== -->
+    <section class="cards-block">
+        <div class="container">
+            <div class="section-label">— навигация по сайту —</div>
+            <div class="cards-grid">
+                <a href="checklist.html" class="card">
+                    <span class="icon">◈</span>
+                    <span class="label">Чек-лист</span>
+                    <span class="desc">что мы взяли</span>
+                </a>
+                <a href="diary.html" class="card">
+                    <span class="icon">◈</span>
+                    <span class="label">Дневник</span>
+                    <span class="desc">день за днём</span>
+                </a>
+                <a href="gallery.html" class="card">
+                    <span class="icon">◈</span>
+                    <span class="label">Фото</span>
+                    <span class="desc">как это было</span>
+                </a>
+                <a href="preparation.html" class="card">
+                    <span class="icon">◈</span>
+                    <span class="label">Подготовка</span>
+                    <span class="desc">как мы искали</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ПОДВАЛ ===== -->
+    <footer class="footer">
+        <div class="container">
+            ● сделано с любовью ● июль 2026
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // Бургер
+            const burgerBtn = document.getElementById('burgerBtn');
+            const navLinks = document.getElementById('navLinks');
+
+            burgerBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('open');
+            });
+
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    navLinks.classList.remove('open');
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
