@@ -17,6 +17,7 @@
             font-size: 18px;
             line-height: 1.7;
             scroll-behavior: smooth;
+            padding-top: 70px; /* чтобы контент не прятался за фиксированным меню */
         }
 
         .container {
@@ -25,9 +26,106 @@
             padding: 0 24px;
         }
 
-        /* ----- ШАПКА-ГЕРОЙ (на всю ширину экрана) ----- */
+        /* ===== НАВИГАЦИОННОЕ МЕНЮ (фиксированное) ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 26, 46, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.3s ease;
+        }
+
+        .navbar .logo {
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            color: #d6e3e8;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .navbar .logo span {
+            color: #4d7a8f;
+            font-weight: 200;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #a0b8c9;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            padding: 6px 14px;
+            border-radius: 30px;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.04);
+            color: #e8edf0;
+        }
+
+        .nav-links a.active {
+            color: #e8edf0;
+            background: rgba(255,255,255,0.06);
+        }
+
+        /* Кнопка переключения темы внутри меню */
+        .nav-theme-toggle {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 30px;
+            padding: 4px 16px;
+            font-size: 0.8rem;
+            color: #a0b8c9;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-left: 6px;
+            white-space: nowrap;
+        }
+        .nav-theme-toggle:hover {
+            background: rgba(255,255,255,0.04);
+            color: #e8edf0;
+        }
+
+        /* ===== ГАМБУРГЕР (для мобильных) ===== */
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .burger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: #a0b8c9;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        /* ===== ШАПКА-ГЕРОЙ ===== */
         .hero {
-            min-height: 100vh;
+            min-height: calc(100vh - 70px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -42,21 +140,20 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             position: relative;
+            border-radius: 0 0 40px 40px;
+            margin-bottom: 10px;
         }
 
-        /* Затемнение поверх фото для читаемости */
         .hero::after {
             content: "";
             position: absolute;
             inset: 0;
-            background: rgba(10, 26, 46, 0.15);
+            background: rgba(10, 26, 46, 0.12);
             z-index: 1;
+            border-radius: 0 0 40px 40px;
         }
 
-        .hero * {
-            position: relative;
-            z-index: 2;
-        }
+        .hero * { position: relative; z-index: 2; }
 
         .hero .accent-line {
             width: 80px;
@@ -66,7 +163,7 @@
         }
 
         .hero h1 {
-            font-size: clamp(2.6rem, 8vw, 4.8rem);
+            font-size: clamp(2.4rem, 8vw, 4.8rem);
             font-weight: 300;
             letter-spacing: 0.06em;
             text-transform: uppercase;
@@ -75,7 +172,7 @@
         }
 
         .hero .subtitle {
-            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            font-size: clamp(1rem, 2.5vw, 1.6rem);
             font-weight: 200;
             color: rgba(255,255,255,0.8);
             letter-spacing: 0.2em;
@@ -86,8 +183,8 @@
         .hero .divider {
             width: 120px;
             height: 1px;
-            background: rgba(255,255,255,0.15);
-            margin: 30px auto;
+            background: rgba(255,255,255,0.12);
+            margin: 28px auto;
         }
 
         .hero .hero-text {
@@ -99,54 +196,48 @@
         }
 
         .hero .route-line {
-            font-size: clamp(0.85rem, 1.2vw, 1rem);
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
             font-weight: 200;
-            color: rgba(255,255,255,0.4);
-            letter-spacing: 0.15em;
-            margin-top: 32px;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            padding-top: 28px;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.12em;
+            margin-top: 28px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 24px;
             width: 80%;
             max-width: 500px;
         }
 
-        /* Стрелка вниз (призыв к листанию) */
         .scroll-hint {
             position: absolute;
-            bottom: 30px;
+            bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 2;
-            color: rgba(255,255,255,0.25);
-            font-size: 0.85rem;
-            letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.2);
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
             animation: bob 2.4s infinite ease-in-out;
             font-weight: 200;
         }
 
         @keyframes bob {
-            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.25; }
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.2; }
             50% { transform: translateX(-50%) translateY(-8px); opacity: 0.7; }
         }
 
-        /* ----- БЛОК С ИСТОРИЕЙ ----- */
+        /* ===== ОСТАЛЬНЫЕ БЛОКИ (без изменений) ===== */
         .story-block {
             background: #0b1a2a;
             padding: 70px 20px 60px;
         }
-
-        .story-block .container {
-            max-width: 820px;
-        }
-
+        .story-block .container { max-width: 820px; }
         .story-block h2 {
             font-size: clamp(1.8rem, 3.5vw, 2.8rem);
             font-weight: 300;
             letter-spacing: 0.03em;
             color: #d6e3e8;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
-
         .story-block .dates {
             font-size: clamp(0.9rem, 1.2vw, 1.1rem);
             font-weight: 200;
@@ -155,7 +246,6 @@
             display: block;
             margin-bottom: 28px;
         }
-
         .story-block p {
             font-size: clamp(1rem, 1.3vw, 1.15rem);
             line-height: 1.9;
@@ -163,12 +253,10 @@
             font-weight: 300;
             margin-bottom: 22px;
         }
-
         .story-block .highlight {
             color: #b8c9b0;
             font-weight: 400;
         }
-
         .story-block .note-box {
             background: rgba(26, 49, 66, 0.4);
             border-left: 4px solid #3a5f7a;
@@ -180,32 +268,25 @@
             font-weight: 300;
         }
 
-        /* ----- БЛОК КАРТОЧЕК (без смайликов, но с иконками-символами) ----- */
         .cards-block {
             background: #0f1f32;
             padding: 60px 20px 70px;
         }
-
-        .cards-block .container {
-            max-width: 960px;
-        }
-
+        .cards-block .container { max-width: 960px; }
         .cards-block .section-label {
             text-align: center;
-            font-size: clamp(1.2rem, 2vw, 1.6rem);
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
             font-weight: 200;
             letter-spacing: 0.2em;
             color: #4d7a8f;
             margin-bottom: 40px;
             text-transform: uppercase;
         }
-
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
             gap: 20px;
         }
-
         .card {
             background: #0b1a2a;
             border: 1px solid #1a3142;
@@ -217,29 +298,25 @@
             transition: 0.3s;
             cursor: pointer;
         }
-
         .card:hover {
             background: #1a3142;
             border-color: #3a5f7a;
             transform: translateY(-4px);
             box-shadow: 0 12px 32px rgba(0,0,0,0.3);
         }
-
         .card .icon {
             font-size: 2rem;
             font-weight: 200;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #4d7a8f;
             letter-spacing: 0.05em;
         }
-
         .card .label {
             font-size: 1.1rem;
             font-weight: 400;
             letter-spacing: 0.05em;
         }
-
         .card .desc {
             font-size: 0.85rem;
             font-weight: 200;
@@ -247,7 +324,6 @@
             margin-top: 4px;
         }
 
-        /* ----- ПОДВАЛ ----- */
         .footer {
             background: #07121f;
             padding: 30px 20px;
@@ -258,14 +334,31 @@
             border-top: 1px solid #0f1f32;
         }
 
-        /* ----- СВЕТЛАЯ ТЕМА ----- */
+        /* ===== СВЕТЛАЯ ТЕМА ===== */
+        body.light .navbar {
+            background: rgba(220, 230, 237, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom-color: rgba(0,0,0,0.04);
+        }
+        body.light .navbar .logo { color: #1f3a4a; }
+        body.light .navbar .logo span { color: #4d7a8f; }
+        body.light .nav-links a { color: #2a4a5a; }
+        body.light .nav-links a:hover { background: rgba(0,0,0,0.03); color: #0b1a2a; }
+        body.light .nav-links a.active { color: #0b1a2a; background: rgba(0,0,0,0.04); }
+        body.light .nav-theme-toggle {
+            border-color: rgba(0,0,0,0.06);
+            color: #2a4a5a;
+        }
+        body.light .nav-theme-toggle:hover {
+            background: rgba(0,0,0,0.03);
+            color: #0b1a2a;
+        }
+        body.light .burger span { background: #2a4a5a; }
+
         body.light .hero {
             background-image: 
-                linear-gradient(rgba(220, 230, 237, 0.7), rgba(220, 230, 237, 0.8)),
+                linear-gradient(rgba(220, 230, 237, 0.65), rgba(220, 230, 237, 0.75)),
                 url('images/memglav.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
         }
         body.light .hero h1,
         body.light .hero .subtitle,
@@ -273,43 +366,27 @@
             color: #1a2e3a;
             text-shadow: none;
         }
-        body.light .hero .hero-text {
-            color: #2a4a5a;
-        }
-        body.light .hero .route-line {
-            color: #4d6a7a;
-            border-top-color: rgba(0,0,0,0.06);
-        }
-        body.light .hero .accent-line {
-            background: #1f3a4a;
-        }
+        body.light .hero .hero-text { color: #2a4a5a; }
+        body.light .hero .route-line { color: #4d6a7a; border-top-color: rgba(0,0,0,0.05); }
+        body.light .hero .accent-line { background: #1f3a4a; }
+
         body.light .story-block {
             background: #eef3f7;
         }
-        body.light .story-block h2 {
-            color: #1f3a4a;
-        }
-        body.light .story-block .dates {
-            color: #4d7a8f;
-        }
-        body.light .story-block p {
-            color: #1a2e3a;
-        }
-        body.light .story-block .highlight {
-            color: #1f3a4a;
-            font-weight: 500;
-        }
+        body.light .story-block h2 { color: #1f3a4a; }
+        body.light .story-block .dates { color: #4d7a8f; }
+        body.light .story-block p { color: #1a2e3a; }
+        body.light .story-block .highlight { color: #1f3a4a; font-weight: 500; }
         body.light .story-block .note-box {
             background: #dce6ed;
             border-left-color: #4d7a8f;
             color: #1a2e3a;
         }
+
         body.light .cards-block {
             background: #dce6ed;
         }
-        body.light .cards-block .section-label {
-            color: #4d7a8f;
-        }
+        body.light .cards-block .section-label { color: #4d7a8f; }
         body.light .card {
             background: #eef3f7;
             border-color: #c0d0da;
@@ -319,58 +396,61 @@
             background: #c0d0da;
             border-color: #7a9aa8;
         }
-        body.light .card .desc {
-            color: #4d7a8f;
-        }
-        body.light .card .icon {
-            color: #4d7a8f;
-        }
+        body.light .card .desc { color: #4d7a8f; }
+        body.light .card .icon { color: #4d7a8f; }
+
         body.light .footer {
             background: #dce6ed;
             color: #4d7a8f;
             border-top-color: #c0d0da;
         }
 
-        /* ----- КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ (плавает в углу) ----- */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 24px;
-            z-index: 100;
-            background: rgba(10, 26, 46, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 40px;
-            padding: 8px 22px;
-            font-size: 0.85rem;
-            color: #a0b8c9;
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: 300;
-            letter-spacing: 0.05em;
-        }
-        .theme-toggle:hover {
-            background: rgba(26, 49, 66, 0.8);
-            border-color: rgba(255,255,255,0.15);
-        }
-        body.light .theme-toggle {
-            background: rgba(220, 230, 237, 0.7);
-            backdrop-filter: blur(12px);
-            border-color: rgba(0,0,0,0.06);
-            color: #1a2e3a;
-        }
-        body.light .theme-toggle:hover {
-            background: rgba(200, 210, 220, 0.9);
-        }
+        /* ===== АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ ===== */
+        @media (max-width: 680px) {
+            body { padding-top: 60px; }
+            .navbar { height: 56px; padding: 0 16px; }
 
-        /* ----- АДАПТАЦИЯ ----- */
-        @media (max-width: 640px) {
-            .hero { padding: 40px 20px; min-height: 90vh; }
+            .burger { display: flex; }
+
+            .nav-links {
+                position: absolute;
+                top: 56px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(10, 26, 46, 0.98);
+                backdrop-filter: blur(16px);
+                padding: 16px 20px 20px;
+                gap: 4px;
+                border-bottom: 1px solid rgba(255,255,255,0.04);
+                display: none;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 10px 16px;
+                width: 100%;
+                text-align: center;
+            }
+            .nav-theme-toggle {
+                margin: 6px 0 0 0;
+                padding: 8px 20px;
+                width: 100%;
+                text-align: center;
+            }
+
+            body.light .nav-links {
+                background: rgba(220, 230, 237, 0.98);
+                border-bottom-color: rgba(0,0,0,0.04);
+            }
+
+            .hero { min-height: 80vh; padding: 40px 20px; border-radius: 0 0 24px 24px; }
             .story-block { padding: 40px 16px; }
             .cards-block { padding: 40px 16px; }
             .cards-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
-            .card { padding: 20px 12px; }
-            .theme-toggle { top: 16px; right: 16px; padding: 6px 16px; font-size: 0.75rem; }
+            .card { padding: 18px 12px; }
+            .scroll-hint { display: none; }
         }
 
         @media (max-width: 420px) {
@@ -380,8 +460,29 @@
 </head>
 <body>
 
-    <!-- КНОПКА СМЕНЫ ТЕМЫ (всегда на виду) -->
-    <button class="theme-toggle" id="themeToggle">☀️ Светлая</button>
+    <!-- ===== НАВИГАЦИОННОЕ МЕНЮ ===== -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">семейный <span>дневник</span></a>
+
+        <!-- Бургер (виден только на телефонах) -->
+        <button class="burger" id="burgerBtn" aria-label="Меню">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Ссылки -->
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html" class="active">Главная</a></li>
+            <li><a href="checklist.html">Чек-лист</a></li>
+            <li><a href="diary.html">Дневник</a></li>
+            <li><a href="gallery.html">Фото</a></li>
+            <li><a href="preparation.html">Подготовка</a></li>
+            <li>
+                <button class="nav-theme-toggle" id="themeToggle">☀️ Светлая</button>
+            </li>
+        </ul>
+    </nav>
 
     <!-- ===== ШАПКА-ГЕРОЙ ===== -->
     <section class="hero">
@@ -479,6 +580,7 @@
 
     <script>
         (function() {
+            // --- ТЕМА ---
             const toggleBtn = document.getElementById('themeToggle');
             const body = document.body;
 
@@ -498,6 +600,28 @@
 
             toggleBtn.addEventListener('click', function() {
                 setTheme(body.classList.contains('light') ? 'dark' : 'light');
+            });
+
+            // --- БУРГЕР (для мобильных) ---
+            const burgerBtn = document.getElementById('burgerBtn');
+            const navLinks = document.getElementById('navLinks');
+
+            burgerBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('open');
+            });
+
+            // Закрываем меню при клике на ссылку (на телефоне)
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('open');
+                });
+            });
+
+            // На случай, если кликнули за пределами меню — закрываем
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    navLinks.classList.remove('open');
+                }
             });
         })();
     </script>
