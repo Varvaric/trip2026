@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+    <title>Чек-лист сборов • Наше северное приключение</title>
+    <style>
+        /* ----- БАЗА (морская палитра) ----- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: #eef3f7;
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', system-ui, sans-serif;
+            color: #1a2e3a;
+            font-size: 18px;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+            padding-top: 60px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== МЕНЮ ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 26, 46, 0.92);
+            backdrop-filter: blur(12px);
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: none;
+        }
+
+        .navbar .logo {
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            color: #d6e3e8;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .navbar .logo span {
+            color: #7a9aa8;
+            font-weight: 200;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #a0b8c9;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            padding: 6px 14px;
+            border-radius: 30px;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.04);
+            color: #e8edf0;
+        }
+
+        .nav-links a.active {
+            color: #e8edf0;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .burger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: #a0b8c9;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        /* ===== ШАПКА СТРАНИЦЫ ===== */
+        .page-header {
+            background: #0a1a2e;
+            padding: 40px 20px 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .page-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+
+        .page-header .sub {
+            font-size: clamp(1rem, 1.6vw, 1.2rem);
+            font-weight: 200;
+            color: #7a9aa8;
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+        }
+
+        /* ===== ЧЕК-ЛИСТ ===== */
+        .checklist-section {
+            background: #ffffff;
+            padding: 40px 20px 50px;
+            border-radius: 0 0 24px 24px;
+            margin-bottom: 20px;
+        }
+
+        .checklist-section .container {
+            max-width: 820px;
+        }
+
+        /* --- ВЕРТИКАЛЬНАЯ ШКАЛА ПРОГРЕССА (правый нижний угол) --- */
+        .progress-vertical-wrapper {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            z-index: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 44px;
+            height: 320px;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            padding: 16px 6px 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: opacity 0.3s;
+        }
+
+        .progress-vertical-label {
+            font-size: 0.6rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: #3a5f7a;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.1;
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+
+        .progress-vertical-bg {
+            flex: 1;
+            width: 6px;
+            background: #dce6ed;
+            border-radius: 12px;
+            position: relative;
+            overflow: visible;
+            min-height: 40px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .progress-vertical-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: #3a5f7a;
+            border-radius: 12px;
+            transition: height 0.3s ease;
+        }
+
+        .progress-vertical-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0a1a2e;
+            text-align: center;
+            line-height: 1.2;
+            flex-shrink: 0;
+            min-width: 32px;
+        }
+
+        /* ===== КАТЕГОРИИ ===== */
+        .category {
+            margin-bottom: 34px;
+        }
+
+        .category-title {
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            color: #0a1a2e;
+            border-bottom: 1px solid #dce6ed;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .category-title .badge {
+            font-size: 0.8rem;
+            font-weight: 200;
+            background: #dce6ed;
+            padding: 0 14px;
+            border-radius: 30px;
+            color: #3a5f7a;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 8px 0 8px 6px;
+            border-bottom: 1px solid rgba(0,0,0,0.02);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .check-item:hover {
+            background: #f5f8fa;
+            margin: 0 -12px;
+            padding-left: 18px;
+            padding-right: 12px;
+            border-radius: 8px;
+        }
+
+        .check-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 4px;
+            accent-color: #3a5f7a;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .check-item .item-text {
+            font-size: 1rem;
+            font-weight: 300;
+            line-height: 1.4;
+            color: #1a2e3a;
+        }
+
+        .check-item .item-text .note {
+            display: inline;
+            font-size: 0.85rem;
+            color: #4d7a8f;
+            font-weight: 200;
+        }
+
+        .reset-btn {
+            background: transparent;
+            border: 1px solid #c8d8e0;
+            border-radius: 40px;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: #3a5f7a;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 16px;
+            width: 100%;
+        }
+
+        .reset-btn:hover {
+            background: #eef3f7;
+            border-color: #7a9aa8;
+            color: #0a1a2e;
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        .footer {
+            background: #0a1a2e;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #4d7a8f;
+            letter-spacing: 0.05em;
+            border-top: 1px solid rgba(255,255,255,0.02);
+        }
+
+        /* ===== АДАПТАЦИЯ ===== */
+        @media (max-width: 680px) {
+            body { padding-top: 56px; }
+            .navbar { height: 56px; padding: 0 16px; }
+
+            .burger { display: flex; }
+
+            .nav-links {
+                position: absolute;
+                top: 56px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(10, 26, 46, 0.98);
+                backdrop-filter: blur(16px);
+                padding: 16px 20px 20px;
+                gap: 4px;
+                display: none;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 10px 16px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .page-header {
+                padding: 30px 16px 24px;
+            }
+            .checklist-section {
+                padding: 30px 16px 40px;
+            }
+
+            /* Шкала на телефоне */
+            .progress-vertical-wrapper {
+                bottom: 80px;
+                right: 12px;
+                width: 36px;
+                height: 220px;
+                padding: 10px 4px 8px;
+                border-radius: 20px;
+            }
+            .progress-vertical-label {
+                font-size: 0.5rem;
+            }
+            .progress-vertical-bg {
+                width: 4px;
+            }
+            .progress-vertical-text {
+                font-size: 0.8rem;
+                min-width: 28px;
+            }
+            .category-title {
+                font-size: 1.05rem;
+            }
+            .check-item {
+                padding: 6px 0;
+            }
+            .check-item .item-text {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .progress-vertical-wrapper {
+                bottom: 60px;
+                right: 8px;
+                width: 30px;
+                height: 160px;
+                padding: 8px 3px 6px;
+                border-radius: 16px;
+            }
+            .progress-vertical-label {
+                display: none;
+            }
+            .progress-vertical-bg {
+                width: 3px;
+            }
+            .progress-vertical-text {
+                font-size: 0.7rem;
+                min-width: 24px;
+            }
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== МЕНЮ ===== -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">семейный <span>дневник</span></a>
+        <button class="burger" id="burgerBtn" aria-label="Меню">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="checklist.html" class="active">Чек-лист</a></li>
+            <li><a href="diary.html">Дневник</a></li>
+            <li><a href="gallery.html">Фото</a></li>
+            <li><a href="route.html">Маршрут</a></li>
+        </ul>
+    </nav>
+
+    <!-- ===== ШАПКА ===== -->
+    <header class="page-header">
+        <h1>Чек-лист сборов</h1>
+        <div class="sub">что мы взяли с собой за полярный круг</div>
+    </header>
+
+    <!-- ===== ЧЕК-ЛИСТ ===== -->
+    <section class="checklist-section">
+        <div class="container">
+
+            <!-- ВЕРТИКАЛЬНАЯ ШКАЛА ПРОГРЕССА -->
+            <div class="progress-vertical-wrapper" id="progressWrapper">
+                <span class="progress-vertical-label">готовность</span>
+                <div class="progress-vertical-bg">
+                    <div class="progress-vertical-fill" id="progressFillVertical"></div>
+                </div>
+                <span class="progress-vertical-text" id="progressTextVertical">0%</span>
+            </div>
+
+            <form id="checklistForm">
+
+                <!-- ===== 1. ДОКУМЕНТЫ ===== -->
+                <div class="category">
+                    <div class="category-title">📜 Документы <span class="badge">5</span></div>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Паспорта</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Медицинские полисы</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Билеты (скачанные и распечатанные)</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Наличные деньги</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Студенческий билет + справка об обучении</span></label>
+                </div>
+
+                <!-- ===== 2. ЕДА ===== -->
+                <div class="category">
+                    <div class="category-title">🍎 Еда <span class="badge">9</span></div>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Чай, кофе</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Печенье</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Конфеты</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Снеки</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Сладости</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Пюре, дошики, каши</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Овощи, фрукты</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Сыр, колбаса</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Бутерброды на завтрак</span></label>
+                </div>
+
+                <!-- ===== 3. АПТЕЧКА ===== -->
+                <div class="category">
+                    <div class="category-title">💊 Аптечка <span class="badge">19</span></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px;">
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Нурофен</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Цетиризин</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Смекта</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Флуифорт</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Йокс</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Немесил</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Офломелид</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Календула</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Пластыри</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Хирургические повязки</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Токсфайтер</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Перекись водорода</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Но-шпа</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Ренни</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Клей БФ</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Випросал</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Ибупрофен</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Йод</span></label>
+                    </div>
+                </div>
+
+                <!-- ===== 4. ПОСУДА ===== -->
+                <div class="category">
+                    <div class="category-title">🍽️ Посуда <span class="badge">9</span></div>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Гайвань</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Кофейная чашка полосатая</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Пиалы костяные <span class="note">х2</span></span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Стаканы <span class="note">х2</span></span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Миски <span class="note">х2</span></span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Вилки</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Ложки</span></label>
+                </div>
+
+                <!-- ===== 5. СНАРЯЖЕНИЕ ===== -->
+                <div class="category">
+                    <div class="category-title">🎒 Снаряжение <span class="badge">7</span></div>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Пауэрбанки <span class="note">х2</span></span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Репелент от комаров</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Фумигатор с жидкостью</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Термос <span class="note">х2</span></span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Зарядки для техники <span class="note">х3</span></span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Зонт</span></label>
+                </div>
+
+                <!-- ===== 6. ГИГИЕНА ===== -->
+                <div class="category">
+                    <div class="category-title">🧴 Гигиена <span class="badge">9</span></div>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Зубные щётки <span class="note">х2</span></span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Зубная паста</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Мочалка-варежка</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Прокладки</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Кремы</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Ватные диски и палочки</span></label>
+                    <label class="check-item"><input type="checkbox" /> <span class="item-text">Средства для умывания</span></label>
+                </div>
+
+                <!-- ===== 7. ОДЕЖДА И ОБУВЬ ===== -->
+                <div class="category">
+                    <div class="category-title">👕 Одежда и обувь <span class="badge">46</span></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px;">
+
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Куртки <span class="note">х2</span></span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Дождевики <span class="note">х2</span></span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Дождевики на обувь <span class="note">2 пары</span></span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Шапка</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Шарфы <span class="note">х3</span></span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Перчатки <span class="note">2 пары</span></span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Солнечные очки</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Тёплые кофты (зел. свитер, борд. кофта, полосатый свитер)</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Кофты (бел. толстовка, рубашка, беж. кофта, клет. рубашка, 2 без рукавов — черн, зел)</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Футболки (лето, герои, серая, белая, белая, белорус, церковная, черн. айкидо)</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Платья (горошек, цветочки)</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Юбки (черн и клет)</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Штаны (серые спортивки, трансформеры, черн брюки, джинсы голубые и синие, походные зел)</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Термобельё</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Рейтузы</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Носки (шерст. <span class="note">х2</span>, обычные <span class="note">х10</span>)</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Одежда на снах (пама, ёжики, апельсин, коврик)</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Трусы <span class="note">х14</span></span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Лифчики <span class="note">х4</span></span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Колготки <span class="note">х3</span></span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Купальник</span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Маски для сна <span class="note">х2</span></span></label>
+                        <label class="check-item"><input type="checkbox" /> <span class="item-text">Кроссовки (черн <span class="note">х2</span>, бел.)</span></label>
+
+                    </div>
+                </div>
+
+            </form>
+
+            <button class="reset-btn" id="resetBtn">⟳ Сбросить все метки</button>
+
+        </div>
+    </section>
+
+    <!-- ===== ПОДВАЛ ===== -->
+    <footer class="footer">
+        <div class="container">
+            ● сделано с любовью ● июль 2026
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // --- БУРГЕР ---
+            const burgerBtn = document.getElementById('burgerBtn');
+            const navLinks = document.getElementById('navLinks');
+
+            burgerBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('open');
+            });
+
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    navLinks.classList.remove('open');
+                }
+            });
+
+            // --- ПРОГРЕСС (вертикальная шкала) ---
+            const checkboxes = document.querySelectorAll('#checklistForm input[type="checkbox"]');
+            const progressFill = document.getElementById('progressFillVertical');
+            const progressText = document.getElementById('progressTextVertical');
+
+            function updateProgress() {
+                const total = checkboxes.length;
+                const checked = document.querySelectorAll('#checklistForm input[type="checkbox"]:checked').length;
+                const percent = total === 0 ? 0 : Math.round((checked / total) * 100);
+                progressFill.style.height = percent + '%';
+                progressText.textContent = percent + '%';
+            }
+
+            checkboxes.forEach(cb => cb.addEventListener('change', updateProgress));
+
+            // --- СБРОС ---
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                if (confirm('Точно сбросить все галочки?')) {
+                    checkboxes.forEach(cb => cb.checked = false);
+                    updateProgress();
+                }
+            });
+
+            updateProgress();
+        })();
+    </script>
+</body>
+</html>
