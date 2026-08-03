@@ -576,8 +576,8 @@ const textDiv = document.createElement('div');
 textDiv.className = 'day-text';
 textDiv.dataset.dayId = day.id;
 
-// Берём текст из объекта diaryTexts или заглушку
-const initialText = diaryTexts[day.id] || placeholderTexts[day.id] || '';
+// Берём текст из placeholderTexts (он у вас уже есть)
+const initialText = placeholderTexts[day.id] || '';
 textDiv.textContent = initialText;
 
 card.appendChild(textDiv);
