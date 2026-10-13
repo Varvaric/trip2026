@@ -4,15 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
     <title>Дневник • Наше северное приключение</title>
+    
+    <!-- Подключаем шрифты: Montserrat для интерфейса, Lora для текста (как в книге) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
-        /* ----- БАЗА (морская гамма) ----- */
+        /* ----- БАЗА (Светлый полярный день) ----- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         html, body {
             width: 100%;
             min-height: 100vh;
-            background: #eef3f7;
-            font-family: 'Segoe UI', 'Roboto', 'Georgia', system-ui, sans-serif;
+            /* Светлый, чистый фон полярного дня */
+            background: #f4f7f9; 
+            font-family: 'Lora', 'Georgia', serif;
             color: #1a2e3a;
             font-size: 18px;
             line-height: 1.7;
@@ -21,7 +28,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
         }
@@ -33,27 +40,27 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            background: rgba(10, 26, 46, 0.92);
+            background: rgba(10, 26, 46, 0.95);
             backdrop-filter: blur(12px);
             padding: 0 24px;
             height: 60px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: none;
         }
 
         .navbar .logo {
+            font-family: 'Montserrat', sans-serif;
             font-size: 1.1rem;
-            font-weight: 300;
+            font-weight: 400;
             letter-spacing: 0.12em;
-            color: #d6e3e8;
+            color: #ffffff;
             text-decoration: none;
-            white-space: nowrap;
+            text-transform: uppercase;
         }
         .navbar .logo span {
             color: #7a9aa8;
-            font-weight: 200;
+            font-weight: 300;
         }
 
         .nav-links {
@@ -64,25 +71,26 @@
         }
 
         .nav-links a {
+            font-family: 'Montserrat', sans-serif;
             color: #a0b8c9;
             text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 300;
+            font-size: 0.85rem;
+            font-weight: 400;
             letter-spacing: 0.05em;
             padding: 6px 14px;
             border-radius: 30px;
             transition: 0.2s;
-            white-space: nowrap;
+            text-transform: uppercase;
         }
 
         .nav-links a:hover {
-            background: rgba(255,255,255,0.04);
-            color: #e8edf0;
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
         }
 
         .nav-links a.active {
-            color: #e8edf0;
-            background: rgba(255,255,255,0.06);
+            color: #ffffff;
+            background: rgba(122, 154, 168, 0.2);
         }
 
         .burger {
@@ -103,40 +111,59 @@
             transition: 0.3s;
         }
 
-        /* ===== ШАПКА СТРАНИЦЫ ===== */
+        /* ===== ШАПКА СТРАНИЦЫ (Эффект билета/талона) ===== */
         .page-header {
             background: #0a1a2e;
-            padding: 40px 20px 30px;
+            padding: 50px 20px 60px;
             text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Перфорация снизу шапки */
+        .page-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: radial-gradient(circle, #f4f7f9 8px, transparent 9px);
+            background-size: 24px 20px;
+            background-position: bottom;
+            background-repeat: repeat-x;
         }
 
         .page-header h1 {
+            font-family: 'Montserrat', sans-serif;
             font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 300;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
             color: #ffffff;
+            margin-bottom: 12px;
         }
 
         .page-header .sub {
-            font-size: clamp(1rem, 1.6vw, 1.2rem);
-            font-weight: 200;
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+            font-weight: 300;
             color: #7a9aa8;
-            letter-spacing: 0.1em;
-            margin-top: 4px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
         }
 
         /* ===== НАВИГАЦИЯ ПО ДНЯМ ===== */
         .diary-nav {
             background: #ffffff;
             padding: 16px 24px;
-            border-bottom: 1px solid #dce6ed;
+            border-bottom: 1px solid #e2e8f0;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
 
         .diary-nav .nav-buttons {
@@ -146,217 +173,227 @@
         }
 
         .diary-nav .nav-buttons button {
-            background: #eef3f7;
-            border: 1px solid #dce6ed;
+            font-family: 'Montserrat', sans-serif;
+            background: #f4f7f9;
+            border: 1px solid #e2e8f0;
             border-radius: 30px;
-            padding: 6px 16px;
+            padding: 8px 18px;
             font-size: 0.85rem;
-            color: #1a2e3a;
+            color: #0a1a2e;
             cursor: pointer;
             transition: 0.2s;
-            font-weight: 300;
-            letter-spacing: 0.05em;
+            font-weight: 500;
         }
 
         .diary-nav .nav-buttons button:hover {
-            background: #dce6ed;
+            background: #e2e8f0;
             border-color: #7a9aa8;
         }
 
         .diary-nav .day-selector {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            font-family: 'Montserrat', sans-serif;
             font-size: 0.9rem;
-            font-weight: 300;
+            font-weight: 400;
             color: #3a5f7a;
         }
 
         .diary-nav .day-selector select {
+            font-family: 'Montserrat', sans-serif;
             background: #ffffff;
-            border: 1px solid #dce6ed;
+            border: 1px solid #e2e8f0;
             border-radius: 30px;
-            padding: 6px 16px;
+            padding: 8px 36px 8px 16px;
             font-size: 0.9rem;
-            color: #1a2e3a;
+            color: #0a1a2e;
             cursor: pointer;
-            font-family: inherit;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237a9aa8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 12px center;
             background-size: 16px;
-            padding-right: 40px;
+            transition: 0.2s;
         }
 
         .diary-nav .day-selector select:focus {
             outline: none;
-            border-color: #3a5f7a;
+            border-color: #7a9aa8;
         }
 
-        /* ===== ДНЕВНИКОВЫЕ ЗАПИСИ ===== */
+        /* ===== СЕТКА ДНЕВНИКА (Умная адаптивность) ===== */
         .diary-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 40px 0 50px;
+            /* Автоматически 2 колонки, если места хватает, иначе 1 */
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
+            gap: 32px;
+            padding: 50px 0 70px;
         }
 
         .day-card {
             background: #ffffff;
-            border-radius: 24px;
-            padding: 24px 24px 20px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.02);
-            border: 1px solid rgba(0,0,0,0.02);
-            transition: box-shadow 0.2s;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 24px rgba(10, 26, 46, 0.04);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 20px;
         }
 
         .day-card:hover {
-            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(10, 26, 46, 0.08);
         }
 
+        /* ===== ШАПКА КАРТОЧКИ ДНЯ ===== */
         .day-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 8px;
-            border-bottom: 1px solid #eef3f7;
-            padding-bottom: 10px;
+            gap: 12px;
+            border-bottom: 2px solid #f4f7f9;
+            padding-bottom: 16px;
         }
 
         .day-header .day-date {
-            font-size: 1.2rem;
-            font-weight: 400;
-            letter-spacing: 0.04em;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
             color: #0a1a2e;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
+        /* Бейдж "День 1" как штамп в журнале */
         .day-header .day-date .day-num {
-            font-weight: 200;
-            color: #7a9aa8;
-            font-size: 0.85rem;
-            margin-left: 6px;
+            font-weight: 600;
+            color: #ffffff;
+            background: #7a9aa8;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            box-shadow: 0 2px 6px rgba(122, 154, 168, 0.4);
         }
 
         .day-header .weather-icons {
             display: flex;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 6px;
         }
 
         .day-header .weather-icons .weather-btn {
-            background: none;
-            border: 1px solid #dce6ed;
-            border-radius: 30px;
-            padding: 2px 8px;
+            background: #f4f7f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 4px 8px;
             font-size: 1.1rem;
             cursor: pointer;
             transition: 0.2s;
-            line-height: 1.4;
+            opacity: 0.5;
+            line-height: 1;
         }
 
         .day-header .weather-icons .weather-btn:hover {
-            background: #eef3f7;
-            border-color: #7a9aa8;
+            opacity: 0.8;
+            background: #e2e8f0;
         }
 
         .day-header .weather-icons .weather-btn.active {
-            background: #dce6ed;
-            border-color: #3a5f7a;
-            box-shadow: 0 0 0 1px #3a5f7a;
+            opacity: 1;
+            background: #e2e8f0;
+            border-color: #7a9aa8;
+            transform: scale(1.1);
         }
 
+        /* ===== ФОТО-ЗАГЛУШКИ ===== */
         .day-photos {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 12px;
         }
 
         .day-photos .photo-placeholder {
-            background: #eef3f7;
-            border-radius: 14px;
-            aspect-ratio: 4 / 3;
+            background: linear-gradient(135deg, #f8fafb 0%, #eef3f7 100%);
+            border-radius: 12px;
+            aspect-ratio: 16 / 10;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            font-family: 'Montserrat', sans-serif;
             font-size: 0.75rem;
             color: #7a9aa8;
-            font-weight: 200;
-            border: 2px dashed rgba(58, 95, 122, 0.1);
-            transition: 0.2s;
-            cursor: pointer;
+            font-weight: 400;
+            border: 2px dashed #dce6ed;
+            transition: 0.3s;
+            cursor: default;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .day-photos .photo-placeholder:hover {
-            border-color: #7a9aa8;
-            background: #dce6ed;
+        .day-photos .photo-placeholder::before {
+            content: '📷';
+            font-size: 1.8rem;
+            opacity: 0.4;
+            margin-bottom: 6px;
         }
 
-        .day-photos .photo-placeholder .plus {
-            font-size: 1.6rem;
-            font-weight: 100;
-            display: block;
-        }
-
+        /* ===== ТЕКСТ ДНЕВНИКА (Книжный стиль) ===== */
         .day-text {
             width: 100%;
-            min-height: 300px;
-            padding: 12px 14px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: #1a2e3a;
-            background: #f8fafb;
-            border: 1px solid #dce6ed;
-            border-radius: 14px;
-            transition: border 0.2s;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            font-family: 'Lora', 'Georgia', serif;
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: #2c3e50;
+            background: transparent;
+            border: none;
+            padding: 0;
+            text-align: left;
         }
 
-        .diary-divider {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 10px 0 4px;
-            color: #c8d8e0;
-            font-size: 1.2rem;
-            letter-spacing: 0.4em;
-            border-top: 1px solid #dce6ed;
-            margin-top: 8px;
+        .day-text p {
+            margin-bottom: 1.2em;
+        }
+        
+        .day-text p:last-child {
+            margin-bottom: 0;
         }
 
+        /* ===== ПОДВАЛ ===== */
         .footer {
             background: #0a1a2e;
             padding: 30px 20px;
             text-align: center;
-            font-size: 0.85rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
             color: #4d7a8f;
-            letter-spacing: 0.05em;
-            border-top: 1px solid rgba(255,255,255,0.02);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
 
-        /* ===== АДАПТАЦИЯ ===== */
-        @media (max-width: 992px) {
-            .diary-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 24px;
-            }
-        }
-
+        /* ===== АДАПТАЦИЯ ПОД МОБИЛЬНЫЕ УСТРОЙСТВА ===== */
         @media (max-width: 768px) {
             .diary-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
+                grid-template-columns: 1fr; /* Одна колонка на планшетах и телефонах */
+                gap: 24px;
+                padding: 30px 0 50px;
+            }
+            .day-card {
+                padding: 24px;
             }
             .diary-nav {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 10px;
+                gap: 12px;
             }
             .diary-nav .nav-buttons {
                 justify-content: center;
@@ -364,28 +401,11 @@
             .diary-nav .day-selector {
                 justify-content: center;
             }
-            .day-photos {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .day-photos {
-                grid-template-columns: 1fr;
-            }
-            .day-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .day-header .weather-icons {
-                margin-top: 4px;
-            }
         }
 
         @media (max-width: 680px) {
             body { padding-top: 56px; }
             .navbar { height: 56px; padding: 0 16px; }
-
             .burger { display: flex; }
 
             .nav-links {
@@ -396,18 +416,20 @@
                 flex-direction: column;
                 background: rgba(10, 26, 46, 0.98);
                 backdrop-filter: blur(16px);
-                padding: 16px 20px 20px;
+                padding: 16px 20px 24px;
                 gap: 4px;
                 display: none;
+                border-top: 1px solid rgba(255,255,255,0.05);
             }
-            .nav-links.open {
-                display: flex;
-            }
+            .nav-links.open { display: flex; }
             .nav-links a {
-                padding: 10px 16px;
+                padding: 12px 16px;
                 width: 100%;
                 text-align: center;
+                border-radius: 8px;
             }
+            .page-header { padding: 40px 16px 50px; }
+            .day-photos { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -417,9 +439,7 @@
     <nav class="navbar">
         <a href="index.html" class="logo">семейный <span>дневник</span></a>
         <button class="burger" id="burgerBtn" aria-label="Меню">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </button>
         <ul class="nav-links" id="navLinks">
             <li><a href="index.html">Главная</a></li>
@@ -451,7 +471,7 @@
     <!-- ===== ДНЕВНИК ===== -->
     <section class="container">
         <div class="diary-grid" id="diaryGrid">
-            <!-- Дни будут вставлены через JavaScript -->
+            <!-- Дни генерируются через JavaScript -->
         </div>
     </section>
 
@@ -476,23 +496,27 @@
             { id: 'day7', date: '17 июля', dayNum: 'День 7' }
         ];
 
-        // === ТЕКСТЫ ДНЕЙ (здесь хранятся все записи) ===
+        // === ТЕКСТЫ ДНЕЙ (Разбиты на абзацы через \n\n) ===
         const placeholderTexts = {
             'day0': `Вечером мы сели в поезд на Ладожском вокзале. Мы филигранно рассчитали время, чтобы успеть пройти все досмотры на вокзале, отстоять очередь в вагон и спокойно разместиться в купе. У нас был фирменный двухэтажный поезд, но мы ехали в купе на первом этаже: с чемоданами лезть наверх не прикольно. Увы, в попутчицы нам досталась храпящая дама. Поспать не получилось. Только под утро едва задремали... но тут дама проснулась и стала завтракать. Короче, решили - поспим потом))) Впереди — целая неделя приключений...
 
-        Ах да, из поезда забрали сувенир - фирменные пакетики с тапками, зубной щёткой и пастой.`,
+Ах да, из поезда забрали сувенир - фирменные пакетики с тапками, зубной щёткой и пастой.`,
 
             'day1': `Прибыли в Кемь, встретили гида. Оказалось, добрались не все. :( Одна участница вокзал перепутала.
 
-        Нас разделили, погрузили на два автобуса и привезли на пристань в Рабочеостровске. Переправа на Соловки. Море прекрасно!!! И даже на корме нашего теплохода "Василий Косяков" было не так холодно, как нас пугали!!! Над нами постоянно кружили огромные чайки. Некоторые пассажиры с радостью бросились их кормить подручными печеньками, и тут же поплатились за это. Чайки "отблагодарили" весьма неприятно. В начале мы курсировали между палубой и салоном, потихонечку утепляясь, но в какой-то момент устали… задремали в салоне. Оказалось, что именно в это время с палубы видели белуху! Она, по рассказам, не просто показалась, а прямо демонстрировала себя со всех сторон! А мы – сони(( Но морем и солнцем вдосталь налюбовались!
+Нас разделили, погрузили на два автобуса и привезли на пристань в Рабочеостровске. Переправа на Соловки. Море прекрасно!!! И даже на корме нашего теплохода "Василий Косяков" было не так холодно, как нас пугали!!! Над нами постоянно кружили огромные чайки. Некоторые пассажиры с радостью бросились их кормить подручными печеньками, и тут же поплатились за это. Чайки "отблагодарили" весьма неприятно. В начале мы курсировали между палубой и салоном, потихонечку утепляясь, но в какой-то момент устали… задремали в салоне. Оказалось, что именно в это время с палубы видели белуху! Она, по рассказам, не просто показалась, а прямо демонстрировала себя со всех сторон! А мы – сони(( Но морем и солнцем вдосталь налюбовались!
 
-        Прибыли на Соловецкий остров и опешили от погоды!!! +23, безветренно. Очень длинным круговым маршрутом нас повезли в гостиницу (пешком – 7-10мин., на автобусе – 25 мин 😉, но пешком с чемоданами по сельской дороге «никакой идиот не пойдёт», так Варя сказала). Первое в номере – ДУШ (!), и в летние платьица! Номер – минималистичный, стильный, самое главное – хорошие матрасы на кроватях! А еще прилагались масочки для сна и беруши! Пообедали, на мой вкус было всё замечательно, только Варян – традиционно со своими вкусовыми подвывертами поела мало. Далее мы отправились на экскурсию по Соловецкому монастырю! Опять разделили нас на две группы, нашего экскурсовода звали Роман, и он ну ооочень быстро говорил! Вот вроде много он всего рассказывал, но какой-то целой последовательной картины не сложилось. В общем посетили всё, что можно было: куда-то нельзя, потому что там строгая монашеская жизнь, а что-то (как например, колокольня) закрыто на реставрацию/подновление в связи с подготовкой к празднованию 600-летия монастыря!!! Очень понравились Святые врата! В них сделан «витраж» для защиты надвратной иконы. Благодаря ясной погоде и солнышку мы насладились игрой цветных бликов на белоснежной стене, эффектное зрелище. Это сейчас врата белые, а когда-то они были расписные, небольшие фрагменты местами оставлены, можно пофантазировать, как оно раньше было. Посетили несколько церквей (их на территории монастыря очень много) - Успенский собор с огромной трапезной (483 м²) и келарской палатами, двухстолпный Преображенский собор, со старинными кирпичами, на которых остались отпечатки ладоней монахов, изготовивших их (передали «рукопожатие» в прошлое). Прогулялись по галереям-переходам, побывали в монашеской келье, даже в большой печке (почувствуй себя Иванушкой у Бабы Яги из русской сказки). В музее узнали, чем жил монастырь – трудолюбивы были монахи – солеварением занимались, разведением и ловлей рыбы, добывали зверя и овощи выращивали; были иконописная и гончарная мастерские, кузница. Как писал в начале ХХв. художник Нестеров о монахах этой обители: «Это был народ крепкий, умный, деловой. Они молились Богу в труде, в работе».
+Прибыли на Соловецкий остров и опешили от погоды!!! +23, безветренно. Очень длинным круговым маршрутом нас повезли в гостиницу (пешком – 7-10мин., на автобусе – 25 мин 😉, но пешком с чемоданами по сельской дороге «никакой идиот не пойдёт», так Варя сказала). Первое в номере – ДУШ (!), и в летние платьица! Номер – минималистичный, стильный, самое главное – хорошие матрасы на кроватях! А еще прилагались масочки для сна и беруши! Пообедали, на мой вкус было всё замечательно, только Варян – традиционно со своими вкусовыми подвывертами поела мало.
 
-        Однако Соловецкий монастырь — это еще и крепость с достойной и героической историей!  Осады выдерживал великолепно! Мы воочию убедились в мощи монастырских стен, полазали по переходам и башням, даже в тюрьму заглянули. А напоследок застали кусочек съёмок документального фильма «Соловецкое чудо» о героической обороне монастыря в 1854г.
+Далее мы отправились на экскурсию по Соловецкому монастырю! Опять разделили нас на две группы, нашего экскурсовода звали Роман, и он ну ооочень быстро говорил! Вот вроде много он всего рассказывал, но какой-то целой последовательной картины не сложилось. В общем посетили всё, что можно было: куда-то нельзя, потому что там строгая монашеская жизнь, а что-то (как например, колокольня) закрыто на реставрацию/подновление в связи с подготовкой к празднованию 600-летия монастыря!!! Очень понравились Святые врата! В них сделан «витраж» для защиты надвратной иконы. Благодаря ясной погоде и солнышку мы насладились игрой цветных бликов на белоснежной стене, эффектное зрелище. Это сейчас врата белые, а когда-то они были расписные, небольшие фрагменты местами оставлены, можно пофантазировать, как оно раньше было.
 
-        Я была на Соловках в далеком 1992 году, с тех пор изменения грандиозные и в лучшую сторону.
+Посетили несколько церквей (их на территории монастыря очень много) - Успенский собор с огромной трапезной (483 м²) и келарской палатами, двухстолпный Преображенский собор, со старинными кирпичами, на которых остались отпечатки ладоней монахов, изготовивших их (передали «рукопожатие» в прошлое). Прогулялись по галереям-переходам, побывали в монашеской келье, даже в большой печке (почувствуй себя Иванушкой у Бабы Яги из русской сказки). В музее узнали, чем жил монастырь – трудолюбивы были монахи – солеварением занимались, разведением и ловлей рыбы, добывали зверя и овощи выращивали; были иконописная и гончарная мастерские, кузница. Как писал в начале ХХв. художник Нестеров о монахах этой обители: «Это был народ крепкий, умный, деловой. Они молились Богу в труде, в работе».
 
-        После экскурсии хотели заскочить в морской музей. Путь туда оказался весьма зловонным, тина имеет жуть какие многогранные ароматы……. Но не срослось, музей оказался закрыт поэтому пошли обходить территорию. Осмотрели экспонаты вокруг и попытались повязать морские узлы (мама очень успешна в этом, я – очень неособо). Осмотрев близлежащую территорию, погнали в гостиницу. По пути до нашей «Соловецкой слободы» - куча сувенирных ларёчков симпатичных 😉, горячо любимые Варей детские площадки… Поздний ужин – в полдевятого, а дальше свободное время. Ну а нам на месте не сидится, всё равно полярный день, раз светло, значит можно гулять))) Мы отправились на мыс Лабиринтов. На удивление комаров было не очень много, по пути любовались извилистой северной природой! Здесь всё что у нас – прямое большое дерево, превращается в изогнутый кустик… И море цветов!!! Всяких разных! Я больше всего млела от колокольчиков!!! Никогда не видела их в таком количестве! Лабиринт мы нашли, полюбовались… Почти полночь, а у нас светло, красиво… плеск волн, низкое солнце, розово-голубое небо и чувство удовлетворения от новых впечатлений!`,
+Однако Соловецкий монастырь — это еще и крепость с достойной и героической историей! Осады выдерживал великолепно! Мы воочию убедились в мощи монастырских стен, полазали по переходам и башням, даже в тюрьму заглянули. А напоследок застали кусочек съёмок документального фильма «Соловецкое чудо» о героической обороне монастыря в 1854г. Я была на Соловках в далеком 1992 году, с тех пор изменения грандиозные и в лучшую сторону.
+
+После экскурсии хотели заскочить в морской музей. Путь туда оказался весьма зловонным, тина имеет жуть какие многогранные ароматы……. Но не срослось, музей оказался закрыт поэтому пошли обходить территорию. Осмотрели экспонаты вокруг и попытались повязать морские узлы (мама очень успешна в этом, я – очень неособо). Осмотрев близлежащую территорию, погнали в гостиницу. По пути до нашей «Соловецкой слободы» - куча сувенирных ларёчков симпатичных 😉, горячо любимые Варей детские площадки… Поздний ужин – в полдевятого, а дальше свободное время.
+
+Ну а нам на месте не сидится, всё равно полярный день, раз светло, значит можно гулять))) Мы отправились на мыс Лабиринтов. На удивление комаров было не очень много, по пути любовались извилистой северной природой! Здесь всё что у нас – прямое большое дерево, превращается в изогнутый кустик… И море цветов!!! Всяких разных! Я больше всего млела от колокольчиков!!! Никогда не видела их в таком количестве! Лабиринт мы нашли, полюбовались… Почти полночь, а у нас светло, красиво… плеск волн, низкое солнце, розово-голубое небо и чувство удовлетворения от новых впечатлений!`,
 
             'day2': 'Заяцкий остров — каменные лабиринты и древние святилища. Гора Секирная — дух захватывает от вида...',
             'day3': 'Экскурсия по Соловецкому лагерю. Обед. Отъезд в Мурманск. Ночь в поезде...',
@@ -506,7 +530,8 @@
         const grid = document.getElementById('diaryGrid');
         const daySelect = document.getElementById('daySelect');
 
-        const weatherSymbols = ['☀️', '⛅', '🌧️', '🌨️', '🌊', '🌤️', '💨', '❄️', '🌫️'];
+        // Только "северные" иконки погоды
+        const weatherSymbols = ['☀️', '', '🌧️', '🌨️', '💨', '🌫️'];
 
         daysData.forEach((day, index) => {
             const card = document.createElement('div');
@@ -514,7 +539,7 @@
             card.id = day.id;
             card.dataset.index = index;
 
-            // --- ШАПКА ---
+            // --- ШАПКА КАРТОЧКИ ---
             const header = document.createElement('div');
             header.className = 'day-header';
 
@@ -545,40 +570,44 @@
             header.appendChild(weatherDiv);
             card.appendChild(header);
 
-            // --- ФОТО ---
+            // --- ФОТО-ЗАГЛУШКИ ---
             const photosDiv = document.createElement('div');
             photosDiv.className = 'day-photos';
             for (let i = 0; i < 2; i++) {
                 const placeholder = document.createElement('div');
                 placeholder.className = 'photo-placeholder';
-                placeholder.innerHTML = `<span class="plus">+</span> фото`;
-                placeholder.addEventListener('click', function() {
-                    alert('Сюда можно будет загрузить фото. Пока просто напоминание.');
-                });
+                placeholder.textContent = 'фото скоро';
                 photosDiv.appendChild(placeholder);
             }
             card.appendChild(photosDiv);
 
-            // --- ТЕКСТ (статичный, нередактируемый) ---
+            // --- ТЕКСТ (Разбиваем на абзацы <p> для красивого чтения) ---
             const textDiv = document.createElement('div');
             textDiv.className = 'day-text';
             textDiv.dataset.dayId = day.id;
 
-            // Берём текст из placeholderTexts
             const initialText = placeholderTexts[day.id] || '';
-            textDiv.textContent = initialText;
-
+            if (initialText) {
+                const paragraphs = initialText.split('\n\n').filter(p => p.trim() !== '');
+                paragraphs.forEach(paraText => {
+                    const p = document.createElement('p');
+                    p.textContent = paraText.trim();
+                    textDiv.appendChild(p);
+                });
+            } else {
+                textDiv.innerHTML = '<p>Запись за этот день пока пуста...</p>';
+            }
             card.appendChild(textDiv);
             grid.appendChild(card);
 
-            // --- SELECT ---
+            // --- ЗАПОЛНЕНИЕ ВЫПАДАЮЩЕГО СПИСКА ---
             const option = document.createElement('option');
             option.value = day.id;
             option.textContent = `${day.date} (${day.dayNum})`;
             daySelect.appendChild(option);
         });
 
-        // --- ФУНКЦИЯ СОХРАНЕНИЯ ПОГОДЫ ---
+        // --- ФУНКЦИЯ СОХРАНЕНИЯ ПОГОДЫ (в браузере пользователя) ---
         function saveWeather(dayId) {
             const card = document.getElementById(dayId);
             if (!card) return;
@@ -614,43 +643,33 @@
             const card = dayCards[currentIndex];
             if (card) {
                 card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                card.style.transition = 'background 0.2s';
-                card.style.background = '#dce6ed';
+                // Легкая подсветка при переходе
+                card.style.transition = 'background 0.3s';
+                card.style.background = '#f4f7f9';
                 setTimeout(() => {
-                    card.style.background = '';
-                }, 600);
+                    card.style.background = '#ffffff';
+                }, 800);
             }
             daySelect.value = card.id;
         }
 
-        document.getElementById('prevDayBtn').addEventListener('click', function() {
-            scrollToDay(currentIndex - 1);
-        });
-
-        document.getElementById('nextDayBtn').addEventListener('click', function() {
-            scrollToDay(currentIndex + 1);
-        });
+        document.getElementById('prevDayBtn').addEventListener('click', () => scrollToDay(currentIndex - 1));
+        document.getElementById('nextDayBtn').addEventListener('click', () => scrollToDay(currentIndex + 1));
 
         daySelect.addEventListener('change', function() {
             const selectedId = this.value;
             const index = Array.from(dayCards).findIndex(card => card.id === selectedId);
-            if (index !== -1) {
-                scrollToDay(index);
-            }
+            if (index !== -1) scrollToDay(index);
         });
 
-        // --- БУРГЕР ---
+        // --- БУРГЕР-МЕНЮ ---
         const burgerBtn = document.getElementById('burgerBtn');
         const navLinks = document.getElementById('navLinks');
 
-        burgerBtn.addEventListener('click', function() {
-            navLinks.classList.toggle('open');
-        });
+        burgerBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
 
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', function() {
-                navLinks.classList.remove('open');
-            });
+            link.addEventListener('click', () => navLinks.classList.remove('open'));
         });
 
         document.addEventListener('click', function(e) {
