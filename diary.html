@@ -2,25 +2,27 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Дневник • Наше северное приключение</title>
     
-    <!-- Подключаем шрифты: Montserrat для интерфейса, Lora для текста (как в книге) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,600;1,400&family=Montserrat:wght@300;400;500;600&family=Caveat:wght@500&display=swap" rel="stylesheet">
 
     <style>
-        /* ----- БАЗА (Светлый полярный день) ----- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         html, body {
             width: 100%;
             min-height: 100vh;
-            /* Светлый, чистый фон полярного дня */
-            background: #f4f7f9; 
+            /* Тёплый кремовый фон + лёгкая текстура бумаги */
+            background-color: #f5efe6;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(139, 115, 85, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 115, 85, 0.04) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             font-family: 'Lora', 'Georgia', serif;
-            color: #1a2e3a;
+            color: #2b2418;
             font-size: 18px;
             line-height: 1.7;
             scroll-behavior: smooth;
@@ -28,9 +30,9 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 820px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 20px;
         }
 
         /* ===== МЕНЮ ===== */
@@ -40,13 +42,14 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            background: rgba(10, 26, 46, 0.95);
+            background: rgba(10, 26, 46, 0.97);
             backdrop-filter: blur(12px);
             padding: 0 24px;
             height: 60px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 2px solid #7a9aa8;
         }
 
         .navbar .logo {
@@ -90,7 +93,7 @@
 
         .nav-links a.active {
             color: #ffffff;
-            background: rgba(122, 154, 168, 0.2);
+            background: rgba(122, 154, 168, 0.25);
         }
 
         .burger {
@@ -111,7 +114,7 @@
             transition: 0.3s;
         }
 
-        /* ===== ШАПКА СТРАНИЦЫ (Эффект билета/талона) ===== */
+        /* ===== ШАПКА ===== */
         .page-header {
             background: #0a1a2e;
             padding: 50px 20px 60px;
@@ -120,7 +123,6 @@
             overflow: hidden;
         }
 
-        /* Перфорация снизу шапки */
         .page-header::after {
             content: '';
             position: absolute;
@@ -128,7 +130,7 @@
             left: 0;
             width: 100%;
             height: 20px;
-            background: radial-gradient(circle, #f4f7f9 8px, transparent 9px);
+            background: radial-gradient(circle, #f5efe6 8px, transparent 9px);
             background-size: 24px 20px;
             background-position: bottom;
             background-repeat: repeat-x;
@@ -136,7 +138,7 @@
 
         .page-header h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
             font-weight: 300;
             letter-spacing: 0.08em;
             text-transform: uppercase;
@@ -145,49 +147,58 @@
         }
 
         .page-header .sub {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.9rem, 1.6vw, 1.1rem);
-            font-weight: 300;
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.2rem, 2vw, 1.6rem);
             color: #7a9aa8;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        /* ===== НАВИГАЦИЯ ПО ДНЯМ ===== */
+        /* ===== ПЛАВАЮЩАЯ НАВИГАЦИЯ ПО ДНЯМ ===== */
         .diary-nav {
-            background: #ffffff;
-            padding: 16px 24px;
-            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 60px;
+            z-index: 100;
+            background: rgba(245, 239, 230, 0.97);
+            backdrop-filter: blur(8px);
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(139, 115, 85, 0.2);
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         .diary-nav .nav-buttons {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
         }
 
         .diary-nav .nav-buttons button {
             font-family: 'Montserrat', sans-serif;
-            background: #f4f7f9;
-            border: 1px solid #e2e8f0;
+            background: #0a1a2e;
+            border: 1px solid #0a1a2e;
             border-radius: 30px;
             padding: 8px 18px;
-            font-size: 0.85rem;
-            color: #0a1a2e;
+            font-size: 0.8rem;
+            color: #ffffff;
             cursor: pointer;
             transition: 0.2s;
             font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
 
         .diary-nav .nav-buttons button:hover {
-            background: #e2e8f0;
+            background: #7a9aa8;
             border-color: #7a9aa8;
+        }
+
+        .diary-nav .nav-buttons button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
         }
 
         .diary-nav .day-selector {
@@ -195,19 +206,19 @@
             align-items: center;
             gap: 10px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 400;
-            color: #3a5f7a;
+            color: #3a2e1f;
         }
 
         .diary-nav .day-selector select {
             font-family: 'Montserrat', sans-serif;
             background: #ffffff;
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(139, 115, 85, 0.3);
             border-radius: 30px;
             padding: 8px 36px 8px 16px;
-            font-size: 0.9rem;
-            color: #0a1a2e;
+            font-size: 0.85rem;
+            color: #2b2418;
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
@@ -215,7 +226,6 @@
             background-repeat: no-repeat;
             background-position: right 12px center;
             background-size: 16px;
-            transition: 0.2s;
         }
 
         .diary-nav .day-selector select:focus {
@@ -223,55 +233,56 @@
             border-color: #7a9aa8;
         }
 
-        /* ===== СЕТКА ДНЕВНИКА (Умная адаптивность) ===== */
-        .diary-grid {
-            display: grid;
-            /* Автоматически 2 колонки, если места хватает, иначе 1 */
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
-            gap: 32px;
-            padding: 50px 0 70px;
-        }
-
-        .day-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 4px 24px rgba(10, 26, 46, 0.04);
-            border: 1px solid rgba(226, 232, 240, 0.6);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        /* ===== АККОРДЕОН ДНЕЙ ===== */
+        .diary-accordion {
+            padding: 40px 0 60px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 12px;
         }
 
-        .day-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(10, 26, 46, 0.08);
+        .day-item {
+            background: #fffdf7;
+            border-radius: 12px;
+            border: 1px solid rgba(139, 115, 85, 0.15);
+            box-shadow: 0 2px 8px rgba(43, 36, 24, 0.04);
+            overflow: hidden;
+            transition: box-shadow 0.3s;
         }
 
-        /* ===== ШАПКА КАРТОЧКИ ДНЯ ===== */
+        .day-item.active {
+            box-shadow: 0 8px 24px rgba(43, 36, 24, 0.1);
+            border-color: rgba(122, 154, 168, 0.4);
+        }
+
+        /* Заголовок дня — всегда виден */
         .day-header {
+            padding: 18px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
-            border-bottom: 2px solid #f4f7f9;
-            padding-bottom: 16px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .day-header:hover {
+            background: rgba(122, 154, 168, 0.05);
         }
 
         .day-header .day-date {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 500;
             color: #0a1a2e;
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
 
-        /* Бейдж "День 1" как штамп в журнале */
         .day-header .day-date .day-num {
             font-weight: 600;
             color: #ffffff;
@@ -284,88 +295,119 @@
             box-shadow: 0 2px 6px rgba(122, 154, 168, 0.4);
         }
 
+        .day-header .day-toggle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            color: #7a9aa8;
+            transition: transform 0.3s;
+            font-weight: 300;
+        }
+
+        .day-item.active .day-toggle {
+            transform: rotate(45deg);
+        }
+
         .day-header .weather-icons {
             display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
+            gap: 4px;
         }
 
         .day-header .weather-icons .weather-btn {
-            background: #f4f7f9;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 4px 8px;
-            font-size: 1.1rem;
+            background: transparent;
+            border: 1px solid rgba(139, 115, 85, 0.2);
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 1rem;
             cursor: pointer;
             transition: 0.2s;
-            opacity: 0.5;
-            line-height: 1;
+            opacity: 0.4;
         }
 
         .day-header .weather-icons .weather-btn:hover {
             opacity: 0.8;
-            background: #e2e8f0;
         }
 
         .day-header .weather-icons .weather-btn.active {
             opacity: 1;
-            background: #e2e8f0;
+            background: rgba(122, 154, 168, 0.15);
             border-color: #7a9aa8;
-            transform: scale(1.1);
         }
 
-        /* ===== ФОТО-ЗАГЛУШКИ ===== */
+        /* Содержимое дня — скрыто по умолчанию */
+        .day-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .day-item.active .day-content {
+            max-height: 5000px; /* Достаточно для длинных текстов */
+        }
+
+        .day-content-inner {
+            padding: 0 24px 28px;
+            border-top: 1px dashed rgba(139, 115, 85, 0.2);
+        }
+
+        /* ===== ФОТО ===== */
         .day-photos {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
+            margin: 20px 0;
         }
 
         .day-photos .photo-placeholder {
-            background: linear-gradient(135deg, #f8fafb 0%, #eef3f7 100%);
-            border-radius: 12px;
+            background: linear-gradient(135deg, #f5efe6 0%, #ebe3d4 100%);
+            border-radius: 10px;
             aspect-ratio: 16 / 10;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
-            color: #7a9aa8;
+            font-size: 0.7rem;
+            color: #8b7355;
             font-weight: 400;
-            border: 2px dashed #dce6ed;
-            transition: 0.3s;
-            cursor: default;
+            border: 2px dashed rgba(139, 115, 85, 0.25);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
         }
 
         .day-photos .photo-placeholder::before {
             content: '📷';
-            font-size: 1.8rem;
-            opacity: 0.4;
+            font-size: 1.6rem;
+            opacity: 0.5;
             margin-bottom: 6px;
         }
 
-        /* ===== ТЕКСТ ДНЕВНИКА (Книжный стиль) ===== */
+        /* ===== ТЕКСТ ===== */
         .day-text {
-            width: 100%;
             font-family: 'Lora', 'Georgia', serif;
             font-size: 1.05rem;
             line-height: 1.85;
-            color: #2c3e50;
-            background: transparent;
-            border: none;
-            padding: 0;
-            text-align: left;
+            color: #2b2418;
         }
 
         .day-text p {
-            margin-bottom: 1.2em;
+            margin-bottom: 1.1em;
+            text-align: justify;
+            hyphens: auto;
         }
-        
+
         .day-text p:last-child {
             margin-bottom: 0;
+        }
+
+        /* Буквица у первого абзаца — как в старой книге */
+        .day-text p:first-of-type::first-letter {
+            font-family: 'Caveat', cursive;
+            font-size: 3.2rem;
+            float: left;
+            line-height: 0.9;
+            padding: 4px 8px 0 0;
+            color: #7a9aa8;
+            font-weight: 500;
         }
 
         /* ===== ПОДВАЛ ===== */
@@ -374,35 +416,14 @@
             padding: 30px 20px;
             text-align: center;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
-            color: #4d7a8f;
-            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+            color: #7a9aa8;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
+            border-top: 3px solid #7a9aa8;
         }
 
-        /* ===== АДАПТАЦИЯ ПОД МОБИЛЬНЫЕ УСТРОЙСТВА ===== */
-        @media (max-width: 768px) {
-            .diary-grid {
-                grid-template-columns: 1fr; /* Одна колонка на планшетах и телефонах */
-                gap: 24px;
-                padding: 30px 0 50px;
-            }
-            .day-card {
-                padding: 24px;
-            }
-            .diary-nav {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-            }
-            .diary-nav .nav-buttons {
-                justify-content: center;
-            }
-            .diary-nav .day-selector {
-                justify-content: center;
-            }
-        }
-
+        /* ===== АДАПТАЦИЯ ===== */
         @media (max-width: 680px) {
             body { padding-top: 56px; }
             .navbar { height: 56px; padding: 0 16px; }
@@ -428,8 +449,35 @@
                 text-align: center;
                 border-radius: 8px;
             }
-            .page-header { padding: 40px 16px 50px; }
-            .day-photos { grid-template-columns: 1fr; }
+
+            .diary-nav {
+                top: 56px;
+                flex-direction: column;
+                align-items: stretch;
+                padding: 12px 16px;
+            }
+            .diary-nav .nav-buttons {
+                justify-content: center;
+            }
+            .diary-nav .day-selector {
+                justify-content: center;
+            }
+
+            .day-header {
+                padding: 14px 16px;
+            }
+            .day-content-inner {
+                padding: 0 16px 20px;
+            }
+            .day-header .day-date {
+                font-size: 1rem;
+            }
+            .day-photos {
+                grid-template-columns: 1fr;
+            }
+            .day-text p:first-of-type::first-letter {
+                font-size: 2.6rem;
+            }
         }
     </style>
 </head>
@@ -456,10 +504,10 @@
         <div class="sub">каждый день — новая страница</div>
     </header>
 
-    <!-- ===== НАВИГАЦИЯ ПО ДНЯМ ===== -->
+    <!-- ===== ПЛАВАЮЩАЯ НАВИГАЦИЯ ===== -->
     <div class="diary-nav" id="diaryNav">
         <div class="nav-buttons">
-            <button id="prevDayBtn">← Пред. день</button>
+            <button id="prevDayBtn" disabled>← Пред. день</button>
             <button id="nextDayBtn">След. день →</button>
         </div>
         <div class="day-selector">
@@ -468,9 +516,9 @@
         </div>
     </div>
 
-    <!-- ===== ДНЕВНИК ===== -->
+    <!-- ===== АККОРДЕОН ДНЕЙ ===== -->
     <section class="container">
-        <div class="diary-grid" id="diaryGrid">
+        <div class="diary-accordion" id="diaryAccordion">
             <!-- Дни генерируются через JavaScript -->
         </div>
     </section>
@@ -496,7 +544,6 @@
             { id: 'day7', date: '17 июля', dayNum: 'День 7' }
         ];
 
-        // === ТЕКСТЫ ДНЕЙ (Разбиты на абзацы через \n\n) ===
         const placeholderTexts = {
             'day0': `Вечером мы сели в поезд на Ладожском вокзале. Мы филигранно рассчитали время, чтобы успеть пройти все досмотры на вокзале, отстоять очередь в вагон и спокойно разместиться в купе. У нас был фирменный двухэтажный поезд, но мы ехали в купе на первом этаже: с чемоданами лезть наверх не прикольно. Увы, в попутчицы нам досталась храпящая дама. Поспать не получилось. Только под утро едва задремали... но тут дама проснулась и стала завтракать. Короче, решили - поспим потом))) Впереди — целая неделя приключений...
 
@@ -526,20 +573,20 @@
             'day7': 'Последний день. Свободное плавание. Вечером — отъезд в Петербург...'
         };
 
-        // --- ГЕНЕРАЦИЯ КАРТОЧЕК ---
-        const grid = document.getElementById('diaryGrid');
+        const weatherSymbols = ['☀️', '⛅', '🌧️', '🌨️', '💨', '🌫️'];
+
+        const accordion = document.getElementById('diaryAccordion');
         const daySelect = document.getElementById('daySelect');
+        let activeIndex = 0;
 
-        // Только "северные" иконки погоды
-        const weatherSymbols = ['☀️', '', '🌧️', '🌨️', '💨', '🌫️'];
-
+        // --- ГЕНЕРАЦИЯ АККОРДЕОНА ---
         daysData.forEach((day, index) => {
-            const card = document.createElement('div');
-            card.className = 'day-card';
-            card.id = day.id;
-            card.dataset.index = index;
+            const item = document.createElement('div');
+            item.className = 'day-item';
+            item.id = day.id;
+            item.dataset.index = index;
 
-            // --- ШАПКА КАРТОЧКИ ---
+            // --- ЗАГОЛОВОК (всегда виден) ---
             const header = document.createElement('div');
             header.className = 'day-header';
 
@@ -556,36 +603,50 @@
                 btn.textContent = sym;
                 btn.type = 'button';
                 btn.dataset.dayId = day.id;
-
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     this.classList.toggle('active');
                     saveWeather(day.id);
                 });
-
                 weatherDiv.appendChild(btn);
             });
 
+            const toggle = document.createElement('span');
+            toggle.className = 'day-toggle';
+            toggle.textContent = '+';
+
             header.appendChild(dateSpan);
             header.appendChild(weatherDiv);
-            card.appendChild(header);
+            header.appendChild(toggle);
 
-            // --- ФОТО-ЗАГЛУШКИ ---
+            // Клик по заголовку — раскрыть/свернуть
+            header.addEventListener('click', function() {
+                openDay(index);
+            });
+
+            item.appendChild(header);
+
+            // --- СОДЕРЖИМОЕ (скрыто по умолчанию) ---
+            const content = document.createElement('div');
+            content.className = 'day-content';
+
+            const contentInner = document.createElement('div');
+            contentInner.className = 'day-content-inner';
+
+            // Фото-заглушки
             const photosDiv = document.createElement('div');
             photosDiv.className = 'day-photos';
             for (let i = 0; i < 2; i++) {
-                const placeholder = document.createElement('div');
-                placeholder.className = 'photo-placeholder';
-                placeholder.textContent = 'фото скоро';
-                photosDiv.appendChild(placeholder);
+                const ph = document.createElement('div');
+                ph.className = 'photo-placeholder';
+                ph.textContent = 'фото скоро';
+                photosDiv.appendChild(ph);
             }
-            card.appendChild(photosDiv);
+            contentInner.appendChild(photosDiv);
 
-            // --- ТЕКСТ (Разбиваем на абзацы <p> для красивого чтения) ---
+            // Текст
             const textDiv = document.createElement('div');
             textDiv.className = 'day-text';
-            textDiv.dataset.dayId = day.id;
-
             const initialText = placeholderTexts[day.id] || '';
             if (initialText) {
                 const paragraphs = initialText.split('\n\n').filter(p => p.trim() !== '');
@@ -597,17 +658,59 @@
             } else {
                 textDiv.innerHTML = '<p>Запись за этот день пока пуста...</p>';
             }
-            card.appendChild(textDiv);
-            grid.appendChild(card);
+            contentInner.appendChild(textDiv);
 
-            // --- ЗАПОЛНЕНИЕ ВЫПАДАЮЩЕГО СПИСКА ---
+            content.appendChild(contentInner);
+            item.appendChild(content);
+            accordion.appendChild(item);
+
+            // --- СЕЛЕКТ ---
             const option = document.createElement('option');
             option.value = day.id;
             option.textContent = `${day.date} (${day.dayNum})`;
             daySelect.appendChild(option);
         });
 
-        // --- ФУНКЦИЯ СОХРАНЕНИЯ ПОГОДЫ (в браузере пользователя) ---
+        // --- ЛОГИКА АККОРДЕОНА ---
+        function openDay(index) {
+            if (index < 0) index = 0;
+            if (index >= daysData.length) index = daysData.length - 1;
+
+            const items = document.querySelectorAll('.day-item');
+            items.forEach((item, i) => {
+                if (i === index) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            activeIndex = index;
+            daySelect.value = daysData[index].id;
+            updateNavButtons();
+
+            // Плавный скролл к открытому дню
+            const target = items[index];
+            const navHeight = document.getElementById('diaryNav').offsetHeight + 60;
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 10;
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        }
+
+        function updateNavButtons() {
+            document.getElementById('prevDayBtn').disabled = activeIndex === 0;
+            document.getElementById('nextDayBtn').disabled = activeIndex === daysData.length - 1;
+        }
+
+        // --- НАВИГАЦИЯ ---
+        document.getElementById('prevDayBtn').addEventListener('click', () => openDay(activeIndex - 1));
+        document.getElementById('nextDayBtn').addEventListener('click', () => openDay(activeIndex + 1));
+
+        daySelect.addEventListener('change', function() {
+            const index = daysData.findIndex(d => d.id === this.value);
+            if (index !== -1) openDay(index);
+        });
+
+        // --- ПОГОДА ---
         function saveWeather(dayId) {
             const card = document.getElementById(dayId);
             if (!card) return;
@@ -618,65 +721,31 @@
             localStorage.setItem('diary_weather', JSON.stringify(saved));
         }
 
-        // --- ВОССТАНОВЛЕНИЕ ПОГОДЫ ---
         const savedWeather = JSON.parse(localStorage.getItem('diary_weather') || '{}');
-        document.querySelectorAll('.day-card').forEach(card => {
-            const dayId = card.id;
+        document.querySelectorAll('.day-item').forEach(item => {
+            const dayId = item.id;
             const weatherArr = savedWeather[dayId] || [];
-            const btns = card.querySelectorAll('.weather-btn');
+            const btns = item.querySelectorAll('.weather-btn');
             btns.forEach(btn => {
-                btn.classList.remove('active');
                 if (weatherArr.includes(btn.textContent)) {
                     btn.classList.add('active');
                 }
             });
         });
 
-        // --- НАВИГАЦИЯ ПО ДНЯМ ---
-        const dayCards = document.querySelectorAll('.day-card');
-        let currentIndex = 0;
-
-        function scrollToDay(index) {
-            if (index < 0) index = 0;
-            if (index >= dayCards.length) index = dayCards.length - 1;
-            currentIndex = index;
-            const card = dayCards[currentIndex];
-            if (card) {
-                card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                // Легкая подсветка при переходе
-                card.style.transition = 'background 0.3s';
-                card.style.background = '#f4f7f9';
-                setTimeout(() => {
-                    card.style.background = '#ffffff';
-                }, 800);
-            }
-            daySelect.value = card.id;
-        }
-
-        document.getElementById('prevDayBtn').addEventListener('click', () => scrollToDay(currentIndex - 1));
-        document.getElementById('nextDayBtn').addEventListener('click', () => scrollToDay(currentIndex + 1));
-
-        daySelect.addEventListener('change', function() {
-            const selectedId = this.value;
-            const index = Array.from(dayCards).findIndex(card => card.id === selectedId);
-            if (index !== -1) scrollToDay(index);
-        });
-
-        // --- БУРГЕР-МЕНЮ ---
+        // --- БУРГЕР ---
         const burgerBtn = document.getElementById('burgerBtn');
         const navLinks = document.getElementById('navLinks');
-
         burgerBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
-
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => navLinks.classList.remove('open'));
         });
-
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.navbar')) {
-                navLinks.classList.remove('open');
-            }
+            if (!e.target.closest('.navbar')) navLinks.classList.remove('open');
         });
+
+        // --- ОТКРЫТЬ ПЕРВЫЙ ДЕНЬ ПО УМОЛЧАНИЮ ---
+        openDay(0);
 
     })();
     </script>
