@@ -28,7 +28,6 @@
             padding-top: 60px;
         }
 
-        /* ===== МЕНЮ ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -54,17 +53,9 @@
             text-decoration: none;
             text-transform: uppercase;
         }
-        .navbar .logo span {
-            color: #7a9aa8;
-            font-weight: 300;
-        }
+        .navbar .logo span { color: #7a9aa8; font-weight: 300; }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            list-style: none;
-        }
+        .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
 
         .nav-links a {
             font-family: 'Montserrat', sans-serif;
@@ -78,16 +69,8 @@
             transition: 0.2s;
             text-transform: uppercase;
         }
-
-        .nav-links a:hover {
-            background: rgba(255,255,255,0.05);
-            color: #ffffff;
-        }
-
-        .nav-links a.active {
-            color: #ffffff;
-            background: rgba(122, 154, 168, 0.25);
-        }
+        .nav-links a:hover { background: rgba(255,255,255,0.05); color: #ffffff; }
+        .nav-links a.active { color: #ffffff; background: rgba(122, 154, 168, 0.25); }
 
         .burger {
             display: none;
@@ -107,7 +90,6 @@
             transition: 0.3s;
         }
 
-        /* ===== ШАПКА (КОМПАКТНАЯ) ===== */
         .page-header {
             background: #0a1a2e;
             padding: 16px 20px 22px;
@@ -115,7 +97,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .page-header::after {
             content: '';
             position: absolute;
@@ -128,7 +109,6 @@
             background-position: bottom;
             background-repeat: repeat-x;
         }
-
         .page-header h1 {
             font-family: 'Montserrat', sans-serif;
             font-size: clamp(1.2rem, 2.5vw, 1.8rem);
@@ -138,7 +118,6 @@
             color: #ffffff;
             margin-bottom: 4px;
         }
-
         .page-header .sub {
             font-family: 'Caveat', cursive;
             font-size: clamp(0.9rem, 1.4vw, 1.1rem);
@@ -146,7 +125,6 @@
             letter-spacing: 0.05em;
         }
 
-        /* ===== СЕЛЕКТОР ДНЯ (КОМПАКТНЫЙ) ===== */
         .day-selector-top {
             background: rgba(245, 239, 230, 0.97);
             backdrop-filter: blur(8px);
@@ -160,7 +138,6 @@
             font-size: 0.8rem;
             color: #3a2e1f;
         }
-
         .day-selector-top select {
             font-family: 'Montserrat', sans-serif;
             background: #ffffff;
@@ -177,20 +154,14 @@
             background-position: right 8px center;
             background-size: 12px;
         }
+        .day-selector-top select:focus { outline: none; border-color: #7a9aa8; }
 
-        .day-selector-top select:focus {
-            outline: none;
-            border-color: #7a9aa8;
-        }
-
-        /* ===== КОНТЕЙНЕР (МАКСИМАЛЬНО ШИРОКИЙ) ===== */
         .container {
             max-width: 1600px;
             margin: 0 auto;
             padding: 20px 20px;
         }
 
-        /* ===== КНИГА (БОЛЬШАЯ) ===== */
         .book-scene {
             perspective: 2500px;
             margin-bottom: 20px;
@@ -214,7 +185,6 @@
         .book.flip-in-right { transform: rotateY(-25deg) translateX(-40px); opacity: 0; }
         .book.visible { transform: rotateY(0) translateX(0); opacity: 1; }
 
-        /* ===== СТРАНИЦЫ (БОЛЬШИЕ ОТСТУПЫ ДЛЯ ТЕКСТА) ===== */
         .page {
             flex: 1;
             padding: 40px 50px;
@@ -222,18 +192,15 @@
             display: flex;
             flex-direction: column;
         }
-
         .page-left {
             border-radius: 8px 0 0 8px;
             border-right: 1px solid rgba(139, 115, 85, 0.1);
         }
-
         .page-right {
             border-radius: 0 8px 8px 0;
             border-left: 1px solid rgba(139, 115, 85, 0.1);
         }
 
-        /* Корешок */
         .book::before {
             content: '';
             position: absolute;
@@ -242,17 +209,11 @@
             bottom: 0;
             width: 40px;
             transform: translateX(-50%);
-            background: linear-gradient(to right, 
-                transparent 0%, 
-                rgba(0,0,0,0.04) 40%, 
-                rgba(0,0,0,0.08) 50%, 
-                rgba(0,0,0,0.04) 60%, 
-                transparent 100%);
+            background: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 60%, transparent 100%);
             pointer-events: none;
             z-index: 10;
         }
 
-        /* ===== ШАПКА СТРАНИЦЫ ===== */
         .page-header-inner {
             display: flex;
             align-items: center;
@@ -263,7 +224,6 @@
             border-bottom: 2px solid rgba(139, 115, 85, 0.15);
             margin-bottom: 24px;
         }
-
         .page-header-inner .day-date {
             font-family: 'Montserrat', sans-serif;
             font-size: 1.3rem;
@@ -273,7 +233,6 @@
             align-items: center;
             gap: 10px;
         }
-
         .page-header-inner .day-date .day-num {
             font-weight: 600;
             color: #ffffff;
@@ -285,12 +244,7 @@
             text-transform: uppercase;
             box-shadow: 0 2px 6px rgba(122, 154, 168, 0.4);
         }
-
-        .page-header-inner .weather-icons {
-            display: flex;
-            gap: 4px;
-        }
-
+        .page-header-inner .weather-icons { display: flex; gap: 4px; }
         .page-header-inner .weather-icons .weather-btn {
             background: transparent;
             border: 1px solid rgba(139, 115, 85, 0.2);
@@ -301,7 +255,6 @@
             transition: 0.2s;
             opacity: 0.4;
         }
-
         .page-header-inner .weather-icons .weather-btn:hover { opacity: 0.8; }
         .page-header-inner .weather-icons .weather-btn.active {
             opacity: 1;
@@ -309,7 +262,6 @@
             border-color: #7a9aa8;
         }
 
-        /* ===== ТЕКСТ ===== */
         .day-text {
             font-family: 'Lora', 'Georgia', serif;
             font-size: 1.05rem;
@@ -317,17 +269,14 @@
             color: #2b2418;
             flex: 1;
         }
-
         .day-text p {
             margin-bottom: 1.1em;
             text-align: justify;
             hyphens: auto;
             -webkit-hyphens: auto;
         }
-
         .day-text p:last-child { margin-bottom: 0; }
 
-        /* Буквица */
         .page-left .day-text p:first-of-type::first-letter {
             font-family: 'Caveat', cursive;
             font-size: 3.2rem;
@@ -338,7 +287,6 @@
             font-weight: 500;
         }
 
-        /* ===== ФОТО ===== */
         .day-photos {
             display: flex;
             align-items: center;
@@ -346,7 +294,6 @@
             flex: 1;
             padding: 20px 0;
         }
-
         .day-photos .photo-placeholder {
             background: linear-gradient(135deg, #f5efe6 0%, #ebe3d4 100%);
             border-radius: 8px;
@@ -365,7 +312,6 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
         }
-
         .day-photos .photo-placeholder::before {
             content: '';
             font-size: 1.6rem;
@@ -373,7 +319,18 @@
             margin-bottom: 6px;
         }
 
-        /* ===== НАВИГАЦИЯ ===== */
+        /* Индикатор частей длинного дня */
+        .part-indicator {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            color: #8b7355;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 8px 0 0;
+            flex-shrink: 0;
+        }
+
         .book-nav {
             display: flex;
             justify-content: center;
@@ -381,7 +338,6 @@
             gap: 20px;
             padding: 20px 0 30px;
         }
-
         .book-nav button {
             font-family: 'Montserrat', sans-serif;
             background: #0a1a2e;
@@ -397,17 +353,11 @@
             text-transform: uppercase;
             box-shadow: 0 4px 12px rgba(10, 26, 46, 0.2);
         }
-
         .book-nav button:hover:not(:disabled) {
             background: #7a9aa8;
             transform: translateY(-2px);
         }
-
-        .book-nav button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
+        .book-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
         .book-nav .page-indicator {
             font-family: 'Montserrat', sans-serif;
             font-size: 0.85rem;
@@ -415,7 +365,6 @@
             font-weight: 400;
         }
 
-        /* ===== ПОДВАЛ ===== */
         .footer {
             background: #0a1a2e;
             padding: 20px 20px;
@@ -428,7 +377,6 @@
             border-top: 3px solid #7a9aa8;
         }
 
-        /* ===== АДАПТАЦИЯ ===== */
         @media (max-width: 900px) {
             .book { flex-direction: column; min-height: auto; }
             .page-left, .page-right {
@@ -664,16 +612,18 @@
 Напоследок – еще одно моё «впервые»! Первый раз в жизни сходили поужинать в поезде в вагон-ресторан, только почему-то назывался вагон-бистро))) Не всё из меню в наличии, но выбранное нами было вкусно)`
         };
 
-        const weatherSymbols = ['☀️', '⛅', '🌧️', '🌨️', '💨', '🌫️'];
+        const weatherSymbols = ['️', '⛅', '🌧️', '🌨️', '💨', '🌫️'];
 
         const book = document.getElementById('book');
         const pageLeft = document.getElementById('pageLeft');
         const pageRight = document.getElementById('pageRight');
         const daySelect = document.getElementById('daySelect');
         const pageIndicator = document.getElementById('pageIndicator');
-        let currentIndex = 0;
+        let currentDayIndex = 0;
+        let currentPartIndex = 0;
         let isAnimating = false;
 
+        // --- ЗАПОЛНЕНИЕ СЕЛЕКТОРА ---
         daysData.forEach((day, index) => {
             const option = document.createElement('option');
             option.value = index;
@@ -681,43 +631,64 @@
             daySelect.appendChild(option);
         });
 
-        function splitTextSmart(text) {
-            if (!text) return { left: '', right: '', isShort: true };
-            
+        // --- УМНОЕ РАЗБИЕНИЕ ТЕКСТА ---
+        // Возвращает массив частей (каждая часть = [левая_страница, правая_страница])
+        function getDayParts(text) {
+            if (!text) return [{ left: '', right: '', isShort: true }];
+
             const paragraphs = text.split('\n\n').filter(p => p.trim() !== '');
             const total = paragraphs.length;
-            
+
+            // Короткий день (≤3 абзацев) — весь текст слева, фото справа
             if (total <= 3) {
-                return { left: text, right: '', isShort: true };
+                return [{ left: text, right: '', isShort: true }];
             }
-            
-            const mid = Math.ceil(total / 2);
-            return {
-                left: paragraphs.slice(0, mid).join('\n\n'),
-                right: paragraphs.slice(mid).join('\n\n'),
-                isShort: false
-            };
+
+            // Средний день (4-10 абзацев) — 1 разворот, текст пополам
+            if (total <= 10) {
+                const mid = Math.ceil(total / 2);
+                return [{
+                    left: paragraphs.slice(0, mid).join('\n\n'),
+                    right: paragraphs.slice(mid).join('\n\n'),
+                    isShort: false
+                }];
+            }
+
+            // Длинный день (>10 абзацев) — 2 разворота (4 страницы)
+            const quarter = Math.ceil(total / 4);
+            return [
+                {
+                    left: paragraphs.slice(0, quarter).join('\n\n'),
+                    right: paragraphs.slice(quarter, quarter * 2).join('\n\n'),
+                    isShort: false
+                },
+                {
+                    left: paragraphs.slice(quarter * 2, quarter * 3).join('\n\n'),
+                    right: paragraphs.slice(quarter * 3).join('\n\n'),
+                    isShort: false
+                }
+            ];
         }
 
-        function renderPageContent(container, text, isLeft, day, isShortDay) {
+        function renderPageContent(container, text, isLeft, day, isShortDay, showPartIndicator, partInfo) {
             let html = '';
-            
+
             if (isLeft) {
                 html += `<div class="page-header-inner">
                     <div class="day-date">${day.date} <span class="day-num">${day.dayNum}</span></div>
                     <div class="weather-icons">`;
-                
+
                 const saved = JSON.parse(localStorage.getItem('diary_weather') || '{}');
                 const dayWeather = saved[day.id] || [];
-                
+
                 weatherSymbols.forEach(sym => {
                     const isActive = dayWeather.includes(sym) ? 'active' : '';
                     html += `<button class="weather-btn ${isActive}" data-day="${day.id}" data-weather="${sym}">${sym}</button>`;
                 });
-                
+
                 html += `</div></div>`;
             }
-            
+
             if (text) {
                 html += `<div class="day-text">`;
                 const paragraphs = text.split('\n\n').filter(p => p.trim() !== '');
@@ -726,15 +697,19 @@
                 });
                 html += `</div>`;
             }
-            
+
             if (!isLeft) {
                 if (isShortDay) {
                     html += `<div class="day-photos"><div class="photo-placeholder">фото скоро</div></div>`;
                 }
+                // Индикатор частей для длинных дней
+                if (showPartIndicator && partInfo) {
+                    html += `<div class="part-indicator">${partInfo}</div>`;
+                }
             }
-            
+
             container.innerHTML = html;
-            
+
             if (isLeft) {
                 container.querySelectorAll('.weather-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
@@ -754,31 +729,82 @@
             }
         }
 
-        function renderSpread(index) {
-            const day = daysData[index];
+        function renderSpread() {
+            const day = daysData[currentDayIndex];
             const text = placeholderTexts[day.id] || '';
-            const pages = splitTextSmart(text);
-            
-            renderPageContent(pageLeft, pages.left, true, day, pages.isShort);
-            renderPageContent(pageRight, pages.right, false, day, pages.isShort);
-            
-            pageIndicator.textContent = `${day.dayNum} из ${daysData.length - 1}`;
+            const parts = getDayParts(text);
+
+            const currentPart = parts[currentPartIndex];
+            const totalParts = parts.length;
+
+            // Формируем текст индикатора частей
+            let partInfo = null;
+            if (totalParts > 1) {
+                partInfo = `часть ${currentPartIndex + 1} из ${totalParts}`;
+            }
+
+            renderPageContent(pageLeft, currentPart.left, true, day, currentPart.isShort, false, null);
+            renderPageContent(pageRight, currentPart.right, false, day, currentPart.isShort, true, partInfo);
+
+            // Обновляем индикатор навигации
+            if (totalParts > 1) {
+                pageIndicator.textContent = `${day.dayNum} (${currentPartIndex + 1}/${totalParts}) из ${daysData.length - 1}`;
+            } else {
+                pageIndicator.textContent = `${day.dayNum} из ${daysData.length - 1}`;
+            }
         }
 
-        function flipToPage(newIndex) {
-            if (isAnimating || newIndex === currentIndex) return;
-            if (newIndex < 0 || newIndex >= daysData.length) return;
+        function flipToNext() {
+            if (isAnimating) return;
 
+            const day = daysData[currentDayIndex];
+            const text = placeholderTexts[day.id] || '';
+            const parts = getDayParts(text);
+            const totalParts = parts.length;
+
+            // Если есть следующая часть этого дня — показываем её
+            if (currentPartIndex < totalParts - 1) {
+                currentPartIndex++;
+            } else if (currentDayIndex < daysData.length - 1) {
+                // Иначе переходим к следующему дню
+                currentDayIndex++;
+                currentPartIndex = 0;
+            } else {
+                return; // Конец дневника
+            }
+
+            performFlip(true);
+        }
+
+        function flipToPrev() {
+            if (isAnimating) return;
+
+            // Если есть предыдущая часть этого дня — показываем её
+            if (currentPartIndex > 0) {
+                currentPartIndex--;
+            } else if (currentDayIndex > 0) {
+                // Иначе переходим к предыдущему дню (на его последнюю часть)
+                currentDayIndex--;
+                const prevDay = daysData[currentDayIndex];
+                const prevText = placeholderTexts[prevDay.id] || '';
+                const prevParts = getDayParts(prevText);
+                currentPartIndex = prevParts.length - 1;
+            } else {
+                return; // Начало дневника
+            }
+
+            performFlip(false);
+        }
+
+        function performFlip(isForward) {
             isAnimating = true;
-            const isForward = newIndex > currentIndex;
 
             book.classList.remove('visible');
             book.classList.add(isForward ? 'flip-out-left' : 'flip-out-right');
 
             setTimeout(() => {
-                currentIndex = newIndex;
-                renderSpread(currentIndex);
-                daySelect.value = currentIndex;
+                renderSpread();
+                daySelect.value = currentDayIndex;
                 updateNavButtons();
 
                 book.classList.remove('flip-out-left', 'flip-out-right');
@@ -792,15 +818,25 @@
         }
 
         function updateNavButtons() {
-            document.getElementById('prevDayBtn').disabled = currentIndex === 0;
-            document.getElementById('nextDayBtn').disabled = currentIndex === daysData.length - 1;
+            const isFirstDay = currentDayIndex === 0 && currentPartIndex === 0;
+            const lastDay = daysData[daysData.length - 1];
+            const lastText = placeholderTexts[lastDay.id] || '';
+            const lastParts = getDayParts(lastText);
+            const isLastDay = currentDayIndex === daysData.length - 1 && currentPartIndex === lastParts.length - 1;
+
+            document.getElementById('prevDayBtn').disabled = isFirstDay;
+            document.getElementById('nextDayBtn').disabled = isLastDay;
         }
 
-        document.getElementById('prevDayBtn').addEventListener('click', () => flipToPage(currentIndex - 1));
-        document.getElementById('nextDayBtn').addEventListener('click', () => flipToPage(currentIndex + 1));
+        document.getElementById('prevDayBtn').addEventListener('click', flipToPrev);
+        document.getElementById('nextDayBtn').addEventListener('click', flipToNext);
 
         daySelect.addEventListener('change', function() {
-            flipToPage(parseInt(this.value));
+            if (isAnimating) return;
+            currentDayIndex = parseInt(this.value);
+            currentPartIndex = 0;
+            renderSpread();
+            updateNavButtons();
         });
 
         const burgerBtn = document.getElementById('burgerBtn');
@@ -813,7 +849,7 @@
             if (!e.target.closest('.navbar')) navLinks.classList.remove('open');
         });
 
-        renderSpread(0);
+        renderSpread();
         updateNavButtons();
     })();
     </script>
