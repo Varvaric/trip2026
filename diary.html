@@ -15,7 +15,6 @@
         html, body {
             width: 100%;
             min-height: 100vh;
-            /* Тёплый кремовый фон + лёгкая текстура бумаги */
             background-color: #f5efe6;
             background-image: 
                 radial-gradient(circle at 20% 50%, rgba(139, 115, 85, 0.03) 0%, transparent 50%),
@@ -30,7 +29,7 @@
         }
 
         .container {
-            max-width: 820px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -153,70 +152,27 @@
             letter-spacing: 0.05em;
         }
 
-        /* ===== ПЛАВАЮЩАЯ НАВИГАЦИЯ ПО ДНЯМ ===== */
-        .diary-nav {
-            position: sticky;
-            top: 60px;
-            z-index: 100;
+        /* ===== СЕЛЕКТОР ДНЯ (вверху, компактный) ===== */
+        .day-selector-top {
             background: rgba(245, 239, 230, 0.97);
             backdrop-filter: blur(8px);
-            padding: 14px 20px;
+            padding: 12px 20px;
             border-bottom: 1px solid rgba(139, 115, 85, 0.2);
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-
-        .diary-nav .nav-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .diary-nav .nav-buttons button {
-            font-family: 'Montserrat', sans-serif;
-            background: #0a1a2e;
-            border: 1px solid #0a1a2e;
-            border-radius: 30px;
-            padding: 8px 18px;
-            font-size: 0.8rem;
-            color: #ffffff;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-
-        .diary-nav .nav-buttons button:hover {
-            background: #7a9aa8;
-            border-color: #7a9aa8;
-        }
-
-        .diary-nav .nav-buttons button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .diary-nav .day-selector {
-            display: flex;
+            justify-content: center;
             align-items: center;
             gap: 10px;
             font-family: 'Montserrat', sans-serif;
             font-size: 0.85rem;
-            font-weight: 400;
             color: #3a2e1f;
         }
 
-        .diary-nav .day-selector select {
+        .day-selector-top select {
             font-family: 'Montserrat', sans-serif;
             background: #ffffff;
             border: 1px solid rgba(139, 115, 85, 0.3);
             border-radius: 30px;
-            padding: 8px 36px 8px 16px;
+            padding: 6px 32px 6px 14px;
             font-size: 0.85rem;
             color: #2b2418;
             cursor: pointer;
@@ -224,66 +180,91 @@
             -webkit-appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237a9aa8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 16px;
+            background-position: right 10px center;
+            background-size: 14px;
         }
 
-        .diary-nav .day-selector select:focus {
+        .day-selector-top select:focus {
             outline: none;
             border-color: #7a9aa8;
         }
 
-        /* ===== АККОРДЕОН ДНЕЙ ===== */
-        .diary-accordion {
-            padding: 40px 0 60px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        /* ===== КНИГА (3D-сцена) ===== */
+        .book-scene {
+            perspective: 2000px;
+            padding: 40px 0 20px;
+            min-height: 600px;
         }
 
-        .day-item {
+        .book-page {
             background: #fffdf7;
-            border-radius: 12px;
-            border: 1px solid rgba(139, 115, 85, 0.15);
-            box-shadow: 0 2px 8px rgba(43, 36, 24, 0.04);
+            border-radius: 8px;
+            border: 1px solid rgba(139, 115, 85, 0.2);
+            box-shadow: 
+                0 4px 20px rgba(43, 36, 24, 0.08),
+                0 1px 3px rgba(43, 36, 24, 0.04);
             overflow: hidden;
-            transition: box-shadow 0.3s;
+            transform-origin: left center;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.6s;
+            position: relative;
         }
 
-        .day-item.active {
-            box-shadow: 0 8px 24px rgba(43, 36, 24, 0.1);
-            border-color: rgba(122, 154, 168, 0.4);
+        /* Эффект тени от страницы */
+        .book-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40px;
+            height: 100%;
+            background: linear-gradient(to left, rgba(0,0,0,0.03), transparent);
+            pointer-events: none;
         }
 
-        /* Заголовок дня — всегда виден */
-        .day-header {
-            padding: 18px 24px;
+        /* Анимация перелистывания */
+        .book-page.flip-out {
+            transform: rotateY(-180deg);
+            opacity: 0;
+        }
+
+        .book-page.flip-in {
+            transform: rotateY(180deg);
+            opacity: 0;
+        }
+
+        .book-page.visible {
+            transform: rotateY(0);
+            opacity: 1;
+        }
+
+        /* ===== СОДЕРЖИМОЕ СТРАНИЦЫ ===== */
+        .page-content {
+            padding: 32px 40px 40px;
+        }
+
+        /* Шапка страницы */
+        .page-header-inner {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
-            cursor: pointer;
-            user-select: none;
-            transition: background 0.2s;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(139, 115, 85, 0.15);
+            margin-bottom: 24px;
         }
 
-        .day-header:hover {
-            background: rgba(122, 154, 168, 0.05);
-        }
-
-        .day-header .day-date {
+        .page-header-inner .day-date {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             font-weight: 500;
             color: #0a1a2e;
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
             gap: 12px;
         }
 
-        .day-header .day-date .day-num {
+        .page-header-inner .day-date .day-num {
             font-weight: 600;
             color: #ffffff;
             background: #7a9aa8;
@@ -295,66 +276,38 @@
             box-shadow: 0 2px 6px rgba(122, 154, 168, 0.4);
         }
 
-        .day-header .day-toggle {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.2rem;
-            color: #7a9aa8;
-            transition: transform 0.3s;
-            font-weight: 300;
-        }
-
-        .day-item.active .day-toggle {
-            transform: rotate(45deg);
-        }
-
-        .day-header .weather-icons {
+        .page-header-inner .weather-icons {
             display: flex;
-            gap: 4px;
+            gap: 6px;
         }
 
-        .day-header .weather-icons .weather-btn {
+        .page-header-inner .weather-icons .weather-btn {
             background: transparent;
             border: 1px solid rgba(139, 115, 85, 0.2);
             border-radius: 6px;
-            padding: 2px 6px;
-            font-size: 1rem;
+            padding: 4px 8px;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: 0.2s;
             opacity: 0.4;
         }
 
-        .day-header .weather-icons .weather-btn:hover {
+        .page-header-inner .weather-icons .weather-btn:hover {
             opacity: 0.8;
         }
 
-        .day-header .weather-icons .weather-btn.active {
+        .page-header-inner .weather-icons .weather-btn.active {
             opacity: 1;
             background: rgba(122, 154, 168, 0.15);
             border-color: #7a9aa8;
-        }
-
-        /* Содержимое дня — скрыто по умолчанию */
-        .day-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease;
-        }
-
-        .day-item.active .day-content {
-            max-height: 5000px; /* Достаточно для длинных текстов */
-        }
-
-        .day-content-inner {
-            padding: 0 24px 28px;
-            border-top: 1px dashed rgba(139, 115, 85, 0.2);
         }
 
         /* ===== ФОТО ===== */
         .day-photos {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 20px 0;
+            gap: 16px;
+            margin-bottom: 28px;
         }
 
         .day-photos .photo-placeholder {
@@ -366,7 +319,7 @@
             align-items: center;
             justify-content: center;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #8b7355;
             font-weight: 400;
             border: 2px dashed rgba(139, 115, 85, 0.25);
@@ -376,21 +329,21 @@
 
         .day-photos .photo-placeholder::before {
             content: '📷';
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             opacity: 0.5;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         /* ===== ТЕКСТ ===== */
         .day-text {
             font-family: 'Lora', 'Georgia', serif;
-            font-size: 1.05rem;
-            line-height: 1.85;
+            font-size: 1.1rem;
+            line-height: 1.9;
             color: #2b2418;
         }
 
         .day-text p {
-            margin-bottom: 1.1em;
+            margin-bottom: 1.2em;
             text-align: justify;
             hyphens: auto;
         }
@@ -399,15 +352,59 @@
             margin-bottom: 0;
         }
 
-        /* Буквица у первого абзаца — как в старой книге */
+        /* Буквица */
         .day-text p:first-of-type::first-letter {
             font-family: 'Caveat', cursive;
-            font-size: 3.2rem;
+            font-size: 3.5rem;
             float: left;
-            line-height: 0.9;
-            padding: 4px 8px 0 0;
+            line-height: 0.85;
+            padding: 6px 10px 0 0;
             color: #7a9aa8;
             font-weight: 500;
+        }
+
+        /* ===== НАВИГАЦИЯ ВНИЗУ (кнопки листания) ===== */
+        .book-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 30px 20px 50px;
+        }
+
+        .book-nav button {
+            font-family: 'Montserrat', sans-serif;
+            background: #0a1a2e;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 28px;
+            font-size: 0.85rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(10, 26, 46, 0.2);
+        }
+
+        .book-nav button:hover:not(:disabled) {
+            background: #7a9aa8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(122, 154, 168, 0.3);
+        }
+
+        .book-nav button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .book-nav .page-indicator {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #8b7355;
+            font-weight: 400;
+            letter-spacing: 0.05em;
         }
 
         /* ===== ПОДВАЛ ===== */
@@ -450,33 +447,35 @@
                 border-radius: 8px;
             }
 
-            .diary-nav {
-                top: 56px;
-                flex-direction: column;
-                align-items: stretch;
-                padding: 12px 16px;
-            }
-            .diary-nav .nav-buttons {
-                justify-content: center;
-            }
-            .diary-nav .day-selector {
-                justify-content: center;
+            .page-content {
+                padding: 24px 20px 30px;
             }
 
-            .day-header {
-                padding: 14px 16px;
+            .page-header-inner .day-date {
+                font-size: 1.1rem;
             }
-            .day-content-inner {
-                padding: 0 16px 20px;
-            }
-            .day-header .day-date {
-                font-size: 1rem;
-            }
+
             .day-photos {
                 grid-template-columns: 1fr;
             }
+
+            .day-text {
+                font-size: 1rem;
+            }
+
             .day-text p:first-of-type::first-letter {
-                font-size: 2.6rem;
+                font-size: 2.8rem;
+            }
+
+            .book-nav {
+                flex-direction: column;
+                gap: 12px;
+                padding: 20px 20px 40px;
+            }
+
+            .book-nav button {
+                width: 100%;
+                max-width: 280px;
             }
         }
     </style>
@@ -504,22 +503,27 @@
         <div class="sub">каждый день — новая страница</div>
     </header>
 
-    <!-- ===== ПЛАВАЮЩАЯ НАВИГАЦИЯ ===== -->
-    <div class="diary-nav" id="diaryNav">
-        <div class="nav-buttons">
-            <button id="prevDayBtn" disabled>← Пред. день</button>
-            <button id="nextDayBtn">След. день →</button>
-        </div>
-        <div class="day-selector">
-            <span>Перейти к дню:</span>
-            <select id="daySelect"></select>
-        </div>
+    <!-- ===== СЕЛЕКТОР ДНЯ ===== -->
+    <div class="day-selector-top">
+        <span>Перейти к дню:</span>
+        <select id="daySelect"></select>
     </div>
 
-    <!-- ===== АККОРДЕОН ДНЕЙ ===== -->
+    <!-- ===== КНИГА ===== -->
     <section class="container">
-        <div class="diary-accordion" id="diaryAccordion">
-            <!-- Дни генерируются через JavaScript -->
+        <div class="book-scene">
+            <div class="book-page visible" id="bookPage">
+                <div class="page-content" id="pageContent">
+                    <!-- Содержимое страницы генерируется через JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== НАВИГАЦИЯ ВНИЗУ ===== -->
+        <div class="book-nav">
+            <button id="prevDayBtn" disabled>← Пред. день</button>
+            <span class="page-indicator" id="pageIndicator">День 0 из 7</span>
+            <button id="nextDayBtn">След. день →</button>
         </div>
     </section>
 
@@ -532,7 +536,6 @@
 
     <script>
     (function() {
-        // --- ДАННЫЕ ДНЕЙ ---
         const daysData = [
             { id: 'day0', date: '10 июля', dayNum: 'День 0' },
             { id: 'day1', date: '11 июля', dayNum: 'День 1' },
@@ -573,164 +576,140 @@
             'day7': 'Последний день. Свободное плавание. Вечером — отъезд в Петербург...'
         };
 
-        const weatherSymbols = ['☀️', '⛅', '🌧️', '🌨️', '💨', '🌫️'];
+        const weatherSymbols = ['️', '⛅', '🌧️', '🌨️', '💨', '🌫️'];
 
-        const accordion = document.getElementById('diaryAccordion');
+        const bookPage = document.getElementById('bookPage');
+        const pageContent = document.getElementById('pageContent');
         const daySelect = document.getElementById('daySelect');
-        let activeIndex = 0;
+        const pageIndicator = document.getElementById('pageIndicator');
+        let currentIndex = 0;
+        let isAnimating = false;
 
-        // --- ГЕНЕРАЦИЯ АККОРДЕОНА ---
+        // --- ЗАПОЛНЕНИЕ СЕЛЕКТОРА ---
         daysData.forEach((day, index) => {
-            const item = document.createElement('div');
-            item.className = 'day-item';
-            item.id = day.id;
-            item.dataset.index = index;
-
-            // --- ЗАГОЛОВОК (всегда виден) ---
-            const header = document.createElement('div');
-            header.className = 'day-header';
-
-            const dateSpan = document.createElement('span');
-            dateSpan.className = 'day-date';
-            dateSpan.innerHTML = `${day.date} <span class="day-num">${day.dayNum}</span>`;
-
-            const weatherDiv = document.createElement('div');
-            weatherDiv.className = 'weather-icons';
-
-            weatherSymbols.forEach(sym => {
-                const btn = document.createElement('button');
-                btn.className = 'weather-btn';
-                btn.textContent = sym;
-                btn.type = 'button';
-                btn.dataset.dayId = day.id;
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    this.classList.toggle('active');
-                    saveWeather(day.id);
-                });
-                weatherDiv.appendChild(btn);
-            });
-
-            const toggle = document.createElement('span');
-            toggle.className = 'day-toggle';
-            toggle.textContent = '+';
-
-            header.appendChild(dateSpan);
-            header.appendChild(weatherDiv);
-            header.appendChild(toggle);
-
-            // Клик по заголовку — раскрыть/свернуть
-            header.addEventListener('click', function() {
-                openDay(index);
-            });
-
-            item.appendChild(header);
-
-            // --- СОДЕРЖИМОЕ (скрыто по умолчанию) ---
-            const content = document.createElement('div');
-            content.className = 'day-content';
-
-            const contentInner = document.createElement('div');
-            contentInner.className = 'day-content-inner';
-
-            // Фото-заглушки
-            const photosDiv = document.createElement('div');
-            photosDiv.className = 'day-photos';
-            for (let i = 0; i < 2; i++) {
-                const ph = document.createElement('div');
-                ph.className = 'photo-placeholder';
-                ph.textContent = 'фото скоро';
-                photosDiv.appendChild(ph);
-            }
-            contentInner.appendChild(photosDiv);
-
-            // Текст
-            const textDiv = document.createElement('div');
-            textDiv.className = 'day-text';
-            const initialText = placeholderTexts[day.id] || '';
-            if (initialText) {
-                const paragraphs = initialText.split('\n\n').filter(p => p.trim() !== '');
-                paragraphs.forEach(paraText => {
-                    const p = document.createElement('p');
-                    p.textContent = paraText.trim();
-                    textDiv.appendChild(p);
-                });
-            } else {
-                textDiv.innerHTML = '<p>Запись за этот день пока пуста...</p>';
-            }
-            contentInner.appendChild(textDiv);
-
-            content.appendChild(contentInner);
-            item.appendChild(content);
-            accordion.appendChild(item);
-
-            // --- СЕЛЕКТ ---
             const option = document.createElement('option');
-            option.value = day.id;
+            option.value = index;
             option.textContent = `${day.date} (${day.dayNum})`;
             daySelect.appendChild(option);
         });
 
-        // --- ЛОГИКА АККОРДЕОНА ---
-        function openDay(index) {
-            if (index < 0) index = 0;
-            if (index >= daysData.length) index = daysData.length - 1;
+        // --- ГЕНЕРАЦИЯ СОДЕРЖИМОГО СТРАНИЦЫ ---
+        function renderPage(index) {
+            const day = daysData[index];
+            const text = placeholderTexts[day.id] || '';
 
-            const items = document.querySelectorAll('.day-item');
-            items.forEach((item, i) => {
-                if (i === index) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
+            let html = `
+                <div class="page-header-inner">
+                    <div class="day-date">
+                        ${day.date} <span class="day-num">${day.dayNum}</span>
+                    </div>
+                    <div class="weather-icons">
+            `;
+
+            weatherSymbols.forEach(sym => {
+                const saved = JSON.parse(localStorage.getItem('diary_weather') || '{}');
+                const dayWeather = saved[day.id] || [];
+                const isActive = dayWeather.includes(sym) ? 'active' : '';
+                html += `<button class="weather-btn ${isActive}" data-day="${day.id}" data-weather="${sym}">${sym}</button>`;
             });
 
-            activeIndex = index;
-            daySelect.value = daysData[index].id;
-            updateNavButtons();
+            html += `</div></div>`;
 
-            // Плавный скролл к открытому дню
-            const target = items[index];
-            const navHeight = document.getElementById('diaryNav').offsetHeight + 60;
-            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 10;
-            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+            // Фото
+            html += `<div class="day-photos">`;
+            for (let i = 0; i < 2; i++) {
+                html += `<div class="photo-placeholder">фото скоро</div>`;
+            }
+            html += `</div>`;
+
+            // Текст
+            html += `<div class="day-text">`;
+            if (text) {
+                const paragraphs = text.split('\n\n').filter(p => p.trim() !== '');
+                paragraphs.forEach(para => {
+                    html += `<p>${para.trim()}</p>`;
+                });
+            } else {
+                html += `<p>Запись за этот день пока пуста...</p>`;
+            }
+            html += `</div>`;
+
+            pageContent.innerHTML = html;
+
+            // Обработчики погоды
+            pageContent.querySelectorAll('.weather-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const dayId = this.dataset.day;
+                    const weather = this.dataset.weather;
+                    const saved = JSON.parse(localStorage.getItem('diary_weather') || '{}');
+                    if (!saved[dayId]) saved[dayId] = [];
+                    if (this.classList.contains('active')) {
+                        if (!saved[dayId].includes(weather)) saved[dayId].push(weather);
+                    } else {
+                        saved[dayId] = saved[dayId].filter(w => w !== weather);
+                    }
+                    localStorage.setItem('diary_weather', JSON.stringify(saved));
+                });
+            });
+
+            pageIndicator.textContent = `${day.dayNum} из ${daysData.length - 1}`;
+        }
+
+        // --- ПЕРЕЛИСТЫВАНИЕ ---
+        function flipToPage(newIndex, direction) {
+            if (isAnimating || newIndex === currentIndex) return;
+            if (newIndex < 0 || newIndex >= daysData.length) return;
+
+            isAnimating = true;
+
+            // Определяем направление анимации
+            const isForward = newIndex > currentIndex;
+
+            // Анимация ухода текущей страницы
+            bookPage.classList.remove('visible');
+            bookPage.classList.add(isForward ? 'flip-out' : 'flip-in');
+
+            setTimeout(() => {
+                // Меняем содержимое
+                currentIndex = newIndex;
+                renderPage(currentIndex);
+                daySelect.value = currentIndex;
+                updateNavButtons();
+
+                // Анимация появления новой страницы
+                bookPage.classList.remove('flip-out', 'flip-in');
+                bookPage.classList.add(isForward ? 'flip-in' : 'flip-out');
+
+                // Форсируем reflow
+                void bookPage.offsetWidth;
+
+                bookPage.classList.remove('flip-in', 'flip-out');
+                bookPage.classList.add('visible');
+
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 800);
+            }, 400);
         }
 
         function updateNavButtons() {
-            document.getElementById('prevDayBtn').disabled = activeIndex === 0;
-            document.getElementById('nextDayBtn').disabled = activeIndex === daysData.length - 1;
+            document.getElementById('prevDayBtn').disabled = currentIndex === 0;
+            document.getElementById('nextDayBtn').disabled = currentIndex === daysData.length - 1;
         }
 
         // --- НАВИГАЦИЯ ---
-        document.getElementById('prevDayBtn').addEventListener('click', () => openDay(activeIndex - 1));
-        document.getElementById('nextDayBtn').addEventListener('click', () => openDay(activeIndex + 1));
-
-        daySelect.addEventListener('change', function() {
-            const index = daysData.findIndex(d => d.id === this.value);
-            if (index !== -1) openDay(index);
+        document.getElementById('prevDayBtn').addEventListener('click', () => {
+            flipToPage(currentIndex - 1, -1);
         });
 
-        // --- ПОГОДА ---
-        function saveWeather(dayId) {
-            const card = document.getElementById(dayId);
-            if (!card) return;
-            const activeBtns = card.querySelectorAll('.weather-btn.active');
-            const selected = Array.from(activeBtns).map(btn => btn.textContent);
-            const saved = JSON.parse(localStorage.getItem('diary_weather') || '{}');
-            saved[dayId] = selected;
-            localStorage.setItem('diary_weather', JSON.stringify(saved));
-        }
+        document.getElementById('nextDayBtn').addEventListener('click', () => {
+            flipToPage(currentIndex + 1, 1);
+        });
 
-        const savedWeather = JSON.parse(localStorage.getItem('diary_weather') || '{}');
-        document.querySelectorAll('.day-item').forEach(item => {
-            const dayId = item.id;
-            const weatherArr = savedWeather[dayId] || [];
-            const btns = item.querySelectorAll('.weather-btn');
-            btns.forEach(btn => {
-                if (weatherArr.includes(btn.textContent)) {
-                    btn.classList.add('active');
-                }
-            });
+        daySelect.addEventListener('change', function() {
+            const newIndex = parseInt(this.value);
+            flipToPage(newIndex, newIndex > currentIndex ? 1 : -1);
         });
 
         // --- БУРГЕР ---
@@ -744,8 +723,9 @@
             if (!e.target.closest('.navbar')) navLinks.classList.remove('open');
         });
 
-        // --- ОТКРЫТЬ ПЕРВЫЙ ДЕНЬ ПО УМОЛЧАНИЮ ---
-        openDay(0);
+        // --- ИНИЦИАЛИЗАЦИЯ ---
+        renderPage(0);
+        updateNavButtons();
 
     })();
     </script>
