@@ -655,19 +655,34 @@
             }
 
             // Длинный день (>10 абзацев) — 2 разворота (4 страницы)
-            const quarter = Math.ceil(total / 4);
-            return [
-                {
-                    left: paragraphs.slice(0, quarter).join('\n\n'),
-                    right: paragraphs.slice(quarter, quarter * 2).join('\n\n'),
-                    isShort: false
-                },
-                {
-                    left: paragraphs.slice(quarter * 2, quarter * 3).join('\n\n'),
-                    right: paragraphs.slice(quarter * 3).join('\n\n'),
-                    isShort: false
-                }
-            ];
+// Делим по объёму текста, чтобы страницы были сбалансированы
+const totalChars = text.length;
+const targetPerPage = totalChars / 4;
+
+let charCount = 0;
+let splitPoints = [0];
+
+for (let i = 0; i < paragraphs.length; i++) {
+    charCount += paragraphs[i].length + 2;
+    if (charCount >= targetPerPage && splitPoints.length < 4 && i < paragraphs.length - 1) {
+        splitPoints.push(i + 1);
+        charCount = 0;
+    }
+}
+splitPoints.push(paragraphs.length);
+
+return [
+    {
+        left: paragraphs.slice(splitPoints[0], splitPoints[1]).join('\n\n'),
+        right: paragraphs.slice(splitPoints[1], splitPoints[2]).join('\n\n'),
+        isShort: false
+    },
+    {
+        left: paragraphs.slice(splitPoints[2], splitPoints[3]).join('\n\n'),
+        right: paragraphs.slice(splitPoints[3], splitPoints[4]).join('\n\n'),
+        isShort: false
+    }
+];
         }
 
         function renderPageContent(container, text, isLeft, day, isShortDay, showPartIndicator, partInfo) {
