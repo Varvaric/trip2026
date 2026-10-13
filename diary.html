@@ -22,11 +22,10 @@
                 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             font-family: 'Lora', 'Georgia', serif;
             color: #2b2418;
-            font-size: 17px;
-            line-height: 1.7;
+            line-height: 1.6;
             scroll-behavior: smooth;
             padding-top: 60px;
-            overflow-x: hidden;
+            overflow: hidden; /* Запрещаем скролл всей страницы */
         }
 
         /* ===== МЕНЮ ===== */
@@ -108,10 +107,10 @@
             transition: 0.3s;
         }
 
-        /* ===== ШАПКА (компактная) ===== */
+        /* ===== ШАПКА ===== */
         .page-header {
             background: #0a1a2e;
-            padding: 24px 20px 32px;
+            padding: 18px 20px 26px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -132,26 +131,26 @@
 
         .page-header h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
             font-weight: 300;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: #ffffff;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .page-header .sub {
             font-family: 'Caveat', cursive;
-            font-size: clamp(1rem, 1.6vw, 1.3rem);
+            font-size: clamp(0.95rem, 1.4vw, 1.15rem);
             color: #7a9aa8;
             letter-spacing: 0.05em;
         }
 
-        /* ===== СЕЛЕКТОР ДНЯ (компактный) ===== */
+        /* ===== СЕЛЕКТОР ДНЯ ===== */
         .day-selector-top {
             background: rgba(245, 239, 230, 0.97);
             backdrop-filter: blur(8px);
-            padding: 8px 16px;
+            padding: 6px 16px;
             border-bottom: 1px solid rgba(139, 115, 85, 0.2);
             display: flex;
             justify-content: center;
@@ -167,7 +166,7 @@
             background: #ffffff;
             border: 1px solid rgba(139, 115, 85, 0.3);
             border-radius: 30px;
-            padding: 5px 28px 5px 12px;
+            padding: 4px 28px 4px 12px;
             font-size: 0.8rem;
             color: #2b2418;
             cursor: pointer;
@@ -184,22 +183,22 @@
             border-color: #7a9aa8;
         }
 
-        /* ===== ОСНОВНАЯ ОБЛАСТЬ (книга + навигация) ===== */
+        /* ===== ОСНОВНАЯ ОБЛАСТЬ ===== */
         .main-area {
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 60px - 100px); /* вычитаем меню + шапку+селектор */
-            min-height: 500px;
+            height: calc(100vh - 60px - 90px - 40px); /* меню + шапка+селектор + подвал+навигация */
+            min-height: 400px;
         }
 
-        /* ===== КНИГА (3D-сцена) ===== */
+        /* ===== КНИГА ===== */
         .book-scene {
             perspective: 2500px;
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: stretch;
-            padding: 12px 16px 0;
+            padding: 8px 12px 0;
             min-height: 0;
         }
 
@@ -213,39 +212,19 @@
             position: relative;
         }
 
-        /* Анимации перелистывания */
-        .book.flip-out-left {
-            transform: rotateY(-25deg) translateX(-40px);
-            opacity: 0;
-        }
+        .book.flip-out-left { transform: rotateY(-25deg) translateX(-40px); opacity: 0; }
+        .book.flip-out-right { transform: rotateY(25deg) translateX(40px); opacity: 0; }
+        .book.flip-in-left { transform: rotateY(25deg) translateX(40px); opacity: 0; }
+        .book.flip-in-right { transform: rotateY(-25deg) translateX(-40px); opacity: 0; }
+        .book.visible { transform: rotateY(0) translateX(0); opacity: 1; }
 
-        .book.flip-out-right {
-            transform: rotateY(25deg) translateX(40px);
-            opacity: 0;
-        }
-
-        .book.flip-in-left {
-            transform: rotateY(25deg) translateX(40px);
-            opacity: 0;
-        }
-
-        .book.flip-in-right {
-            transform: rotateY(-25deg) translateX(-40px);
-            opacity: 0;
-        }
-
-        .book.visible {
-            transform: rotateY(0) translateX(0);
-            opacity: 1;
-        }
-
-        /* ===== СТРАНИЦЫ РАЗВОРОТА ===== */
+        /* ===== СТРАНИЦЫ ===== */
         .page {
             flex: 1;
             background: #fffdf7;
-            padding: 20px 24px;
+            padding: 14px 20px;
             position: relative;
-            overflow-y: auto;
+            overflow: hidden; /* ЗАПРЕЩАЕМ СКРОЛЛ ВНУТРИ СТРАНИЦЫ */
             display: flex;
             flex-direction: column;
         }
@@ -254,21 +233,16 @@
             border-radius: 6px 0 0 6px;
             border: 1px solid rgba(139, 115, 85, 0.2);
             border-right: none;
-            box-shadow: 
-                inset -15px 0 25px -10px rgba(0,0,0,0.08),
-                0 4px 20px rgba(43, 36, 24, 0.08);
+            box-shadow: inset -15px 0 25px -10px rgba(0,0,0,0.08), 0 4px 20px rgba(43, 36, 24, 0.08);
         }
 
         .page-right {
             border-radius: 0 6px 6px 0;
             border: 1px solid rgba(139, 115, 85, 0.2);
             border-left: none;
-            box-shadow: 
-                inset 15px 0 25px -10px rgba(0,0,0,0.08),
-                0 4px 20px rgba(43, 36, 24, 0.08);
+            box-shadow: inset 15px 0 25px -10px rgba(0,0,0,0.08), 0 4px 20px rgba(43, 36, 24, 0.08);
         }
 
-        /* Эффект корешка посередине */
         .book::before {
             content: '';
             position: absolute;
@@ -277,46 +251,41 @@
             bottom: 0;
             width: 30px;
             transform: translateX(-50%);
-            background: linear-gradient(to right, 
-                transparent 0%, 
-                rgba(0,0,0,0.05) 40%, 
-                rgba(0,0,0,0.12) 50%, 
-                rgba(0,0,0,0.05) 60%, 
-                transparent 100%);
+            background: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.12) 50%, rgba(0,0,0,0.05) 60%, transparent 100%);
             pointer-events: none;
             z-index: 10;
         }
 
-        /* ===== СОДЕРЖИМОЕ СТРАНИЦЫ ===== */
+        /* ===== ШАПКА СТРАНИЦЫ ===== */
         .page-header-inner {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 10px;
-            padding-bottom: 12px;
+            gap: 8px;
+            padding-bottom: 8px;
             border-bottom: 2px solid rgba(139, 115, 85, 0.15);
-            margin-bottom: 14px;
+            margin-bottom: 10px;
             flex-shrink: 0;
         }
 
         .page-header-inner .day-date {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
             font-weight: 500;
             color: #0a1a2e;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .page-header-inner .day-date .day-num {
             font-weight: 600;
             color: #ffffff;
             background: #7a9aa8;
-            font-size: 0.65rem;
-            padding: 3px 8px;
-            border-radius: 5px;
+            font-size: 0.6rem;
+            padding: 2px 7px;
+            border-radius: 4px;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             box-shadow: 0 2px 6px rgba(122, 154, 168, 0.4);
@@ -324,24 +293,22 @@
 
         .page-header-inner .weather-icons {
             display: flex;
-            gap: 4px;
+            gap: 3px;
         }
 
         .page-header-inner .weather-icons .weather-btn {
             background: transparent;
             border: 1px solid rgba(139, 115, 85, 0.2);
-            border-radius: 5px;
-            padding: 2px 6px;
-            font-size: 0.95rem;
+            border-radius: 4px;
+            padding: 1px 5px;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: 0.2s;
             opacity: 0.4;
+            line-height: 1;
         }
 
-        .page-header-inner .weather-icons .weather-btn:hover {
-            opacity: 0.8;
-        }
-
+        .page-header-inner .weather-icons .weather-btn:hover { opacity: 0.8; }
         .page-header-inner .weather-icons .weather-btn.active {
             opacity: 1;
             background: rgba(122, 154, 168, 0.15);
@@ -351,50 +318,68 @@
         /* ===== ТЕКСТ ===== */
         .day-text {
             font-family: 'Lora', 'Georgia', serif;
-            font-size: clamp(0.85rem, 1.2vw, 1rem);
-            line-height: 1.65;
             color: #2b2418;
             flex: 1;
+            overflow: hidden;
         }
+
+        /* Базовые размеры (для коротких дней) */
+        .day-text.size-normal {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .day-text.size-normal p { margin-bottom: 0.7em; }
+
+        /* Для средних дней */
+        .day-text.size-medium {
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        .day-text.size-medium p { margin-bottom: 0.55em; }
+
+        /* Для длинных дней */
+        .day-text.size-small {
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+        .day-text.size-small p { margin-bottom: 0.45em; }
 
         .day-text p {
-            margin-bottom: 0.8em;
             text-align: justify;
             hyphens: auto;
+            -webkit-hyphens: auto;
         }
 
-        .day-text p:last-child {
-            margin-bottom: 0;
-        }
+        .day-text p:last-child { margin-bottom: 0; }
 
         /* Буквица только на левой странице */
         .page-left .day-text p:first-of-type::first-letter {
             font-family: 'Caveat', cursive;
-            font-size: clamp(2.2rem, 3.5vw, 3rem);
+            font-size: 2.4rem;
             float: left;
             line-height: 0.85;
-            padding: 2px 6px 0 0;
+            padding: 2px 5px 0 0;
             color: #7a9aa8;
             font-weight: 500;
         }
 
-        /* ===== ФОТО (в конце страницы) ===== */
+        /* ===== ФОТО (в конце правой страницы) ===== */
         .day-photos {
             margin-top: auto;
-            padding-top: 14px;
+            padding-top: 10px;
             flex-shrink: 0;
         }
 
         .day-photos .photo-placeholder {
             background: linear-gradient(135deg, #f5efe6 0%, #ebe3d4 100%);
-            border-radius: 8px;
-            aspect-ratio: 21 / 9;
+            border-radius: 6px;
+            aspect-ratio: 21 / 8;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #8b7355;
             font-weight: 400;
             border: 2px dashed rgba(139, 115, 85, 0.25);
@@ -404,18 +389,18 @@
 
         .day-photos .photo-placeholder::before {
             content: '📷';
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             opacity: 0.5;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
-        /* ===== НАВИГАЦИЯ ВНИЗУ ===== */
+        /* ===== НАВИГАЦИЯ ===== */
         .book-nav {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 16px;
-            padding: 10px 20px 16px;
+            gap: 14px;
+            padding: 8px 20px 12px;
             flex-shrink: 0;
         }
 
@@ -424,8 +409,8 @@
             background: #0a1a2e;
             border: none;
             border-radius: 30px;
-            padding: 8px 22px;
-            font-size: 0.8rem;
+            padding: 7px 20px;
+            font-size: 0.75rem;
             color: #ffffff;
             cursor: pointer;
             transition: 0.3s;
@@ -438,7 +423,6 @@
         .book-nav button:hover:not(:disabled) {
             background: #7a9aa8;
             transform: translateY(-2px);
-            box-shadow: 0 5px 14px rgba(122, 154, 168, 0.3);
         }
 
         .book-nav button:disabled {
@@ -448,19 +432,18 @@
 
         .book-nav .page-indicator {
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #8b7355;
             font-weight: 400;
-            letter-spacing: 0.05em;
         }
 
         /* ===== ПОДВАЛ ===== */
         .footer {
             background: #0a1a2e;
-            padding: 16px 20px;
+            padding: 10px 20px;
             text-align: center;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #7a9aa8;
             letter-spacing: 0.15em;
             text-transform: uppercase;
@@ -469,41 +452,23 @@
 
         /* ===== АДАПТАЦИЯ ===== */
         @media (max-width: 900px) {
-            .main-area {
-                height: auto;
-            }
-            
-            .book-scene {
-                padding: 12px 12px 0;
-            }
-
-            .book {
-                flex-direction: column;
-                height: auto;
-                min-height: 500px;
-            }
-
+            .main-area { height: auto; }
+            .book-scene { padding: 8px 8px 0; }
+            .book { flex-direction: column; height: auto; min-height: 500px; }
             .page-left, .page-right {
                 border-radius: 6px;
                 border: 1px solid rgba(139, 115, 85, 0.2);
                 box-shadow: 0 4px 20px rgba(43, 36, 24, 0.08);
                 min-height: 300px;
             }
-
-            .book::before {
-                display: none;
-            }
-
-            .page-left {
-                margin-bottom: 12px;
-            }
+            .book::before { display: none; }
+            .page-left { margin-bottom: 8px; }
         }
 
         @media (max-width: 680px) {
-            body { padding-top: 56px; }
+            body { padding-top: 56px; overflow: auto; }
             .navbar { height: 56px; padding: 0 16px; }
             .burger { display: flex; }
-
             .nav-links {
                 position: absolute;
                 top: 56px;
@@ -518,36 +483,16 @@
                 border-top: 1px solid rgba(255,255,255,0.05);
             }
             .nav-links.open { display: flex; }
-            .nav-links a {
-                padding: 12px 16px;
-                width: 100%;
-                text-align: center;
-                border-radius: 8px;
-            }
-
-            .page {
-                padding: 16px;
-            }
-
-            .page-header {
-                padding: 16px 16px 24px;
-            }
-
-            .book-nav {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .book-nav button {
-                padding: 8px 16px;
-                font-size: 0.75rem;
-            }
+            .nav-links a { padding: 12px 16px; width: 100%; text-align: center; border-radius: 8px; }
+            .page { padding: 12px; }
+            .page-header { padding: 14px 16px 22px; }
+            .book-nav { flex-wrap: wrap; gap: 6px; }
+            .book-nav button { padding: 6px 14px; font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== МЕНЮ ===== -->
     <nav class="navbar">
         <a href="index.html" class="logo">семейный <span>дневник</span></a>
         <button class="burger" id="burgerBtn" aria-label="Меню">
@@ -562,21 +507,17 @@
         </ul>
     </nav>
 
-    <!-- ===== ШАПКА ===== -->
     <header class="page-header">
         <h1>Дневник путешествия</h1>
         <div class="sub">каждый день — новая страница</div>
     </header>
 
-    <!-- ===== СЕЛЕКТОР ДНЯ ===== -->
     <div class="day-selector-top">
         <span>Перейти к дню:</span>
         <select id="daySelect"></select>
     </div>
 
-    <!-- ===== ОСНОВНАЯ ОБЛАСТЬ ===== -->
     <div class="main-area">
-        <!-- КНИГА -->
         <div class="book-scene">
             <div class="book visible" id="book">
                 <div class="page page-left" id="pageLeft"></div>
@@ -584,7 +525,6 @@
             </div>
         </div>
 
-        <!-- НАВИГАЦИЯ -->
         <div class="book-nav">
             <button id="prevDayBtn" disabled>← Пред. день</button>
             <span class="page-indicator" id="pageIndicator">День 0 из 7</span>
@@ -592,10 +532,7 @@
         </div>
     </div>
 
-    <!-- ===== ПОДВАЛ ===== -->
-    <footer class="footer">
-        ● сделано с любовью ● июль 2026
-    </footer>
+    <footer class="footer">● сделано с любовью ● июль 2026</footer>
 
     <script>
     (function() {
@@ -639,7 +576,7 @@
             'day7': 'Последний день. Свободное плавание. Вечером — отъезд в Петербург...'
         };
 
-        const weatherSymbols = ['☀️', '⛅', '🌧️', '🌨️', '💨', '🌫️'];
+        const weatherSymbols = ['☀️', '⛅', '️', '🌨️', '💨', '🌫️'];
 
         const book = document.getElementById('book');
         const pageLeft = document.getElementById('pageLeft');
@@ -649,7 +586,6 @@
         let currentIndex = 0;
         let isAnimating = false;
 
-        // --- ЗАПОЛНЕНИЕ СЕЛЕКТОРА ---
         daysData.forEach((day, index) => {
             const option = document.createElement('option');
             option.value = index;
@@ -657,32 +593,34 @@
             daySelect.appendChild(option);
         });
 
-        // --- РАЗБИЕНИЕ ТЕКСТА НА ДВЕ СТРАНИЦЫ ---
-        function splitTextIntoPages(text) {
-            if (!text) return { left: '', right: '' };
+        // --- УМНОЕ РАЗБИЕНИЕ ТЕКСТА ---
+        function splitTextSmart(text) {
+            if (!text) return { left: '', right: '', size: 'normal' };
             
             const paragraphs = text.split('\n\n').filter(p => p.trim() !== '');
-            const mid = Math.ceil(paragraphs.length / 2);
+            const total = paragraphs.length;
             
+            // Определяем размер шрифта по количеству абзацев
+            let size = 'normal';
+            if (total > 6) size = 'small';
+            else if (total > 3) size = 'medium';
+            
+            // Делим пополам
+            const mid = Math.ceil(total / 2);
             return {
                 left: paragraphs.slice(0, mid).join('\n\n'),
-                right: paragraphs.slice(mid).join('\n\n')
+                right: paragraphs.slice(mid).join('\n\n'),
+                size: size
             };
         }
 
-        // --- ГЕНЕРАЦИЯ HTML СТРАНИЦЫ ---
-        function renderPageContent(container, text, isLeft, day) {
+        function renderPageContent(container, text, isLeft, day, textSize) {
             let html = '';
             
-            // Шапка только на левой странице
             if (isLeft) {
-                html += `
-                    <div class="page-header-inner">
-                        <div class="day-date">
-                            ${day.date} <span class="day-num">${day.dayNum}</span>
-                        </div>
-                        <div class="weather-icons">
-                `;
+                html += `<div class="page-header-inner">
+                    <div class="day-date">${day.date} <span class="day-num">${day.dayNum}</span></div>
+                    <div class="weather-icons">`;
                 
                 const saved = JSON.parse(localStorage.getItem('diary_weather') || '{}');
                 const dayWeather = saved[day.id] || [];
@@ -695,8 +633,7 @@
                 html += `</div></div>`;
             }
             
-            // Текст
-            html += `<div class="day-text">`;
+            html += `<div class="day-text size-${textSize}">`;
             if (text) {
                 const paragraphs = text.split('\n\n').filter(p => p.trim() !== '');
                 paragraphs.forEach(para => {
@@ -707,18 +644,13 @@
             }
             html += `</div>`;
             
-            // Фото — только одно, в самом конце, только на левой странице
-            if (isLeft) {
-                html += `
-                    <div class="day-photos">
-                        <div class="photo-placeholder">фото скоро</div>
-                    </div>
-                `;
+            // ФОТО — только на ПРАВОЙ странице, в самом конце
+            if (!isLeft) {
+                html += `<div class="day-photos"><div class="photo-placeholder">фото скоро</div></div>`;
             }
             
             container.innerHTML = html;
             
-            // Обработчики погоды
             if (isLeft) {
                 container.querySelectorAll('.weather-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
@@ -738,19 +670,17 @@
             }
         }
 
-        // --- ОТРИСОВКА РАЗВОРОТА ---
         function renderSpread(index) {
             const day = daysData[index];
             const text = placeholderTexts[day.id] || '';
-            const pages = splitTextIntoPages(text);
+            const pages = splitTextSmart(text);
             
-            renderPageContent(pageLeft, pages.left, true, day);
-            renderPageContent(pageRight, pages.right, false, day);
+            renderPageContent(pageLeft, pages.left, true, day, pages.size);
+            renderPageContent(pageRight, pages.right, false, day, pages.size);
             
             pageIndicator.textContent = `${day.dayNum} из ${daysData.length - 1}`;
         }
 
-        // --- ПЕРЕЛИСТЫВАНИЕ ---
         function flipToPage(newIndex) {
             if (isAnimating || newIndex === currentIndex) return;
             if (newIndex < 0 || newIndex >= daysData.length) return;
@@ -769,15 +699,11 @@
 
                 book.classList.remove('flip-out-left', 'flip-out-right');
                 book.classList.add(isForward ? 'flip-in-right' : 'flip-in-left');
-
                 void book.offsetWidth;
-
                 book.classList.remove('flip-in-left', 'flip-in-right');
                 book.classList.add('visible');
 
-                setTimeout(() => {
-                    isAnimating = false;
-                }, 1200);
+                setTimeout(() => { isAnimating = false; }, 1200);
             }, 600);
         }
 
@@ -786,16 +712,13 @@
             document.getElementById('nextDayBtn').disabled = currentIndex === daysData.length - 1;
         }
 
-        // --- НАВИГАЦИЯ ---
         document.getElementById('prevDayBtn').addEventListener('click', () => flipToPage(currentIndex - 1));
         document.getElementById('nextDayBtn').addEventListener('click', () => flipToPage(currentIndex + 1));
 
         daySelect.addEventListener('change', function() {
-            const newIndex = parseInt(this.value);
-            flipToPage(newIndex);
+            flipToPage(parseInt(this.value));
         });
 
-        // --- БУРГЕР ---
         const burgerBtn = document.getElementById('burgerBtn');
         const navLinks = document.getElementById('navLinks');
         burgerBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
@@ -806,10 +729,8 @@
             if (!e.target.closest('.navbar')) navLinks.classList.remove('open');
         });
 
-        // --- ИНИЦИАЛИЗАЦИЯ ---
         renderSpread(0);
         updateNavButtons();
-
     })();
     </script>
 </body>
