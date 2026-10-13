@@ -14,7 +14,7 @@
 
         html, body {
             width: 100%;
-            min-height: 100vh;
+            height: 100%;
             background-color: #f5efe6;
             background-image: 
                 radial-gradient(circle at 20% 50%, rgba(139, 115, 85, 0.03) 0%, transparent 50%),
@@ -26,12 +26,7 @@
             line-height: 1.7;
             scroll-behavior: smooth;
             padding-top: 60px;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
+            overflow-x: hidden;
         }
 
         /* ===== МЕНЮ ===== */
@@ -113,10 +108,10 @@
             transition: 0.3s;
         }
 
-        /* ===== ШАПКА ===== */
+        /* ===== ШАПКА (компактная) ===== */
         .page-header {
             background: #0a1a2e;
-            padding: 50px 20px 60px;
+            padding: 24px 20px 32px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -137,33 +132,33 @@
 
         .page-header h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-size: clamp(1.4rem, 3vw, 2rem);
             font-weight: 300;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: #ffffff;
-            margin-bottom: 12px;
+            margin-bottom: 6px;
         }
 
         .page-header .sub {
             font-family: 'Caveat', cursive;
-            font-size: clamp(1.2rem, 2vw, 1.6rem);
+            font-size: clamp(1rem, 1.6vw, 1.3rem);
             color: #7a9aa8;
             letter-spacing: 0.05em;
         }
 
-        /* ===== СЕЛЕКТОР ДНЯ ===== */
+        /* ===== СЕЛЕКТОР ДНЯ (компактный) ===== */
         .day-selector-top {
             background: rgba(245, 239, 230, 0.97);
             backdrop-filter: blur(8px);
-            padding: 12px 20px;
+            padding: 8px 16px;
             border-bottom: 1px solid rgba(139, 115, 85, 0.2);
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #3a2e1f;
         }
 
@@ -172,16 +167,16 @@
             background: #ffffff;
             border: 1px solid rgba(139, 115, 85, 0.3);
             border-radius: 30px;
-            padding: 6px 32px 6px 14px;
-            font-size: 0.85rem;
+            padding: 5px 28px 5px 12px;
+            font-size: 0.8rem;
             color: #2b2418;
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237a9aa8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 14px;
+            background-position: right 8px center;
+            background-size: 12px;
         }
 
         .day-selector-top select:focus {
@@ -189,21 +184,30 @@
             border-color: #7a9aa8;
         }
 
+        /* ===== ОСНОВНАЯ ОБЛАСТЬ (книга + навигация) ===== */
+        .main-area {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 60px - 100px); /* вычитаем меню + шапку+селектор */
+            min-height: 500px;
+        }
+
         /* ===== КНИГА (3D-сцена) ===== */
         .book-scene {
             perspective: 2500px;
-            padding: 40px 0 20px;
-            min-height: 700px;
+            flex: 1;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: stretch;
+            padding: 12px 16px 0;
+            min-height: 0;
         }
 
         .book {
             display: flex;
             width: 100%;
-            max-width: 1000px;
-            min-height: 600px;
+            max-width: 1400px;
+            height: 100%;
             transform-style: preserve-3d;
             transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 1s;
             position: relative;
@@ -211,22 +215,22 @@
 
         /* Анимации перелистывания */
         .book.flip-out-left {
-            transform: rotateY(-30deg) translateX(-50px);
+            transform: rotateY(-25deg) translateX(-40px);
             opacity: 0;
         }
 
         .book.flip-out-right {
-            transform: rotateY(30deg) translateX(50px);
+            transform: rotateY(25deg) translateX(40px);
             opacity: 0;
         }
 
         .book.flip-in-left {
-            transform: rotateY(30deg) translateX(50px);
+            transform: rotateY(25deg) translateX(40px);
             opacity: 0;
         }
 
         .book.flip-in-right {
-            transform: rotateY(-30deg) translateX(-50px);
+            transform: rotateY(-25deg) translateX(-40px);
             opacity: 0;
         }
 
@@ -239,29 +243,28 @@
         .page {
             flex: 1;
             background: #fffdf7;
-            padding: 32px 28px;
+            padding: 20px 24px;
             position: relative;
             overflow-y: auto;
-            max-height: 650px;
+            display: flex;
+            flex-direction: column;
         }
 
         .page-left {
-            border-radius: 8px 0 0 8px;
+            border-radius: 6px 0 0 6px;
             border: 1px solid rgba(139, 115, 85, 0.2);
             border-right: none;
-            /* Тень корешка справа */
             box-shadow: 
-                inset -20px 0 30px -10px rgba(0,0,0,0.08),
+                inset -15px 0 25px -10px rgba(0,0,0,0.08),
                 0 4px 20px rgba(43, 36, 24, 0.08);
         }
 
         .page-right {
-            border-radius: 0 8px 8px 0;
+            border-radius: 0 6px 6px 0;
             border: 1px solid rgba(139, 115, 85, 0.2);
             border-left: none;
-            /* Тень корешка слева */
             box-shadow: 
-                inset 20px 0 30px -10px rgba(0,0,0,0.08),
+                inset 15px 0 25px -10px rgba(0,0,0,0.08),
                 0 4px 20px rgba(43, 36, 24, 0.08);
         }
 
@@ -272,12 +275,12 @@
             left: 50%;
             top: 0;
             bottom: 0;
-            width: 40px;
+            width: 30px;
             transform: translateX(-50%);
             background: linear-gradient(to right, 
                 transparent 0%, 
                 rgba(0,0,0,0.05) 40%, 
-                rgba(0,0,0,0.1) 50%, 
+                rgba(0,0,0,0.12) 50%, 
                 rgba(0,0,0,0.05) 60%, 
                 transparent 100%);
             pointer-events: none;
@@ -290,15 +293,16 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 12px;
-            padding-bottom: 16px;
+            gap: 10px;
+            padding-bottom: 12px;
             border-bottom: 2px solid rgba(139, 115, 85, 0.15);
-            margin-bottom: 20px;
+            margin-bottom: 14px;
+            flex-shrink: 0;
         }
 
         .page-header-inner .day-date {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
             font-weight: 500;
             color: #0a1a2e;
             display: flex;
@@ -327,8 +331,8 @@
             background: transparent;
             border: 1px solid rgba(139, 115, 85, 0.2);
             border-radius: 5px;
-            padding: 3px 6px;
-            font-size: 1rem;
+            padding: 2px 6px;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: 0.2s;
             opacity: 0.4;
@@ -344,18 +348,47 @@
             border-color: #7a9aa8;
         }
 
-        /* ===== ФОТО ===== */
+        /* ===== ТЕКСТ ===== */
+        .day-text {
+            font-family: 'Lora', 'Georgia', serif;
+            font-size: clamp(0.85rem, 1.2vw, 1rem);
+            line-height: 1.65;
+            color: #2b2418;
+            flex: 1;
+        }
+
+        .day-text p {
+            margin-bottom: 0.8em;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .day-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Буквица только на левой странице */
+        .page-left .day-text p:first-of-type::first-letter {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2.2rem, 3.5vw, 3rem);
+            float: left;
+            line-height: 0.85;
+            padding: 2px 6px 0 0;
+            color: #7a9aa8;
+            font-weight: 500;
+        }
+
+        /* ===== ФОТО (в конце страницы) ===== */
         .day-photos {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
+            margin-top: auto;
+            padding-top: 14px;
+            flex-shrink: 0;
         }
 
         .day-photos .photo-placeholder {
             background: linear-gradient(135deg, #f5efe6 0%, #ebe3d4 100%);
             border-radius: 8px;
-            aspect-ratio: 16 / 10;
+            aspect-ratio: 21 / 9;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -371,38 +404,9 @@
 
         .day-photos .photo-placeholder::before {
             content: '📷';
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             opacity: 0.5;
-            margin-bottom: 6px;
-        }
-
-        /* ===== ТЕКСТ ===== */
-        .day-text {
-            font-family: 'Lora', 'Georgia', serif;
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #2b2418;
-        }
-
-        .day-text p {
-            margin-bottom: 1em;
-            text-align: justify;
-            hyphens: auto;
-        }
-
-        .day-text p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Буквица только на левой странице */
-        .page-left .day-text p:first-of-type::first-letter {
-            font-family: 'Caveat', cursive;
-            font-size: 3.2rem;
-            float: left;
-            line-height: 0.85;
-            padding: 4px 8px 0 0;
-            color: #7a9aa8;
-            font-weight: 500;
+            margin-bottom: 4px;
         }
 
         /* ===== НАВИГАЦИЯ ВНИЗУ ===== */
@@ -410,8 +414,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            padding: 30px 20px 50px;
+            gap: 16px;
+            padding: 10px 20px 16px;
+            flex-shrink: 0;
         }
 
         .book-nav button {
@@ -419,21 +424,21 @@
             background: #0a1a2e;
             border: none;
             border-radius: 30px;
-            padding: 12px 28px;
-            font-size: 0.85rem;
+            padding: 8px 22px;
+            font-size: 0.8rem;
             color: #ffffff;
             cursor: pointer;
             transition: 0.3s;
             font-weight: 500;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            box-shadow: 0 4px 12px rgba(10, 26, 46, 0.2);
+            box-shadow: 0 3px 10px rgba(10, 26, 46, 0.2);
         }
 
         .book-nav button:hover:not(:disabled) {
             background: #7a9aa8;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(122, 154, 168, 0.3);
+            box-shadow: 0 5px 14px rgba(122, 154, 168, 0.3);
         }
 
         .book-nav button:disabled {
@@ -443,7 +448,7 @@
 
         .book-nav .page-indicator {
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #8b7355;
             font-weight: 400;
             letter-spacing: 0.05em;
@@ -452,10 +457,10 @@
         /* ===== ПОДВАЛ ===== */
         .footer {
             background: #0a1a2e;
-            padding: 30px 20px;
+            padding: 16px 20px;
             text-align: center;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #7a9aa8;
             letter-spacing: 0.15em;
             text-transform: uppercase;
@@ -464,28 +469,33 @@
 
         /* ===== АДАПТАЦИЯ ===== */
         @media (max-width: 900px) {
-            /* На планшетах и телефонах — одна страница */
+            .main-area {
+                height: auto;
+            }
+            
+            .book-scene {
+                padding: 12px 12px 0;
+            }
+
             .book {
                 flex-direction: column;
-                max-width: 600px;
+                height: auto;
+                min-height: 500px;
             }
 
             .page-left, .page-right {
-                border-radius: 8px;
+                border-radius: 6px;
                 border: 1px solid rgba(139, 115, 85, 0.2);
                 box-shadow: 0 4px 20px rgba(43, 36, 24, 0.08);
+                min-height: 300px;
             }
 
             .book::before {
                 display: none;
             }
 
-            .page {
-                max-height: none;
-            }
-
             .page-left {
-                margin-bottom: 16px;
+                margin-bottom: 12px;
             }
         }
 
@@ -516,34 +526,21 @@
             }
 
             .page {
-                padding: 24px 20px;
+                padding: 16px;
             }
 
-            .page-header-inner .day-date {
-                font-size: 1rem;
-            }
-
-            .day-photos {
-                grid-template-columns: 1fr;
-            }
-
-            .day-text {
-                font-size: 0.95rem;
-            }
-
-            .page-left .day-text p:first-of-type::first-letter {
-                font-size: 2.6rem;
+            .page-header {
+                padding: 16px 16px 24px;
             }
 
             .book-nav {
-                flex-direction: column;
-                gap: 12px;
-                padding: 20px 20px 40px;
+                flex-wrap: wrap;
+                gap: 8px;
             }
 
             .book-nav button {
-                width: 100%;
-                max-width: 280px;
+                padding: 8px 16px;
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -577,32 +574,27 @@
         <select id="daySelect"></select>
     </div>
 
-    <!-- ===== КНИГА (РАЗВОРОТ) ===== -->
-    <section class="container">
+    <!-- ===== ОСНОВНАЯ ОБЛАСТЬ ===== -->
+    <div class="main-area">
+        <!-- КНИГА -->
         <div class="book-scene">
             <div class="book visible" id="book">
-                <div class="page page-left" id="pageLeft">
-                    <!-- Левая страница -->
-                </div>
-                <div class="page page-right" id="pageRight">
-                    <!-- Правая страница -->
-                </div>
+                <div class="page page-left" id="pageLeft"></div>
+                <div class="page page-right" id="pageRight"></div>
             </div>
         </div>
 
-        <!-- ===== НАВИГАЦИЯ ===== -->
+        <!-- НАВИГАЦИЯ -->
         <div class="book-nav">
             <button id="prevDayBtn" disabled>← Пред. день</button>
             <span class="page-indicator" id="pageIndicator">День 0 из 7</span>
             <button id="nextDayBtn">След. день →</button>
         </div>
-    </section>
+    </div>
 
     <!-- ===== ПОДВАЛ ===== -->
     <footer class="footer">
-        <div class="container">
-            ● сделано с любовью ● июль 2026
-        </div>
+        ● сделано с любовью ● июль 2026
     </footer>
 
     <script>
@@ -665,20 +657,20 @@
             daySelect.appendChild(option);
         });
 
-        // --- РАЗБИЕНИЕ ТЕКСТА НА ДВЕ КОЛОНКИ ---
+        // --- РАЗБИЕНИЕ ТЕКСТА НА ДВЕ СТРАНИЦЫ ---
         function splitTextIntoPages(text) {
             if (!text) return { left: '', right: '' };
             
             const paragraphs = text.split('\n\n').filter(p => p.trim() !== '');
             const mid = Math.ceil(paragraphs.length / 2);
             
-            const leftText = paragraphs.slice(0, mid).join('\n\n');
-            const rightText = paragraphs.slice(mid).join('\n\n');
-            
-            return { left: leftText, right: rightText };
+            return {
+                left: paragraphs.slice(0, mid).join('\n\n'),
+                right: paragraphs.slice(mid).join('\n\n')
+            };
         }
 
-        // --- ГЕНЕРАЦИЯ HTML ДЛЯ СТРАНИЦЫ ---
+        // --- ГЕНЕРАЦИЯ HTML СТРАНИЦЫ ---
         function renderPageContent(container, text, isLeft, day) {
             let html = '';
             
@@ -701,13 +693,6 @@
                 });
                 
                 html += `</div></div>`;
-                
-                // Фото только на левой странице
-                html += `<div class="day-photos">`;
-                for (let i = 0; i < 2; i++) {
-                    html += `<div class="photo-placeholder">фото скоро</div>`;
-                }
-                html += `</div>`;
             }
             
             // Текст
@@ -721,6 +706,15 @@
                 html += `<p>Продолжение следует...</p>`;
             }
             html += `</div>`;
+            
+            // Фото — только одно, в самом конце, только на левой странице
+            if (isLeft) {
+                html += `
+                    <div class="day-photos">
+                        <div class="photo-placeholder">фото скоро</div>
+                    </div>
+                `;
+            }
             
             container.innerHTML = html;
             
@@ -757,26 +751,22 @@
         }
 
         // --- ПЕРЕЛИСТЫВАНИЕ ---
-        function flipToPage(newIndex, direction) {
+        function flipToPage(newIndex) {
             if (isAnimating || newIndex === currentIndex) return;
             if (newIndex < 0 || newIndex >= daysData.length) return;
 
             isAnimating = true;
-
             const isForward = newIndex > currentIndex;
 
-            // Анимация ухода
             book.classList.remove('visible');
             book.classList.add(isForward ? 'flip-out-left' : 'flip-out-right');
 
             setTimeout(() => {
-                // Меняем содержимое
                 currentIndex = newIndex;
                 renderSpread(currentIndex);
                 daySelect.value = currentIndex;
                 updateNavButtons();
 
-                // Анимация появления
                 book.classList.remove('flip-out-left', 'flip-out-right');
                 book.classList.add(isForward ? 'flip-in-right' : 'flip-in-left');
 
@@ -797,17 +787,12 @@
         }
 
         // --- НАВИГАЦИЯ ---
-        document.getElementById('prevDayBtn').addEventListener('click', () => {
-            flipToPage(currentIndex - 1, -1);
-        });
-
-        document.getElementById('nextDayBtn').addEventListener('click', () => {
-            flipToPage(currentIndex + 1, 1);
-        });
+        document.getElementById('prevDayBtn').addEventListener('click', () => flipToPage(currentIndex - 1));
+        document.getElementById('nextDayBtn').addEventListener('click', () => flipToPage(currentIndex + 1));
 
         daySelect.addEventListener('change', function() {
             const newIndex = parseInt(this.value);
-            flipToPage(newIndex, newIndex > currentIndex ? 1 : -1);
+            flipToPage(newIndex);
         });
 
         // --- БУРГЕР ---
