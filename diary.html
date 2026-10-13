@@ -22,14 +22,14 @@
                 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             font-family: 'Lora', 'Georgia', serif;
             color: #2b2418;
-            font-size: 18px;
+            font-size: 17px;
             line-height: 1.7;
             scroll-behavior: smooth;
             padding-top: 60px;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -152,7 +152,7 @@
             letter-spacing: 0.05em;
         }
 
-        /* ===== СЕЛЕКТОР ДНЯ (вверху, компактный) ===== */
+        /* ===== СЕЛЕКТОР ДНЯ ===== */
         .day-selector-top {
             background: rgba(245, 239, 230, 0.97);
             backdrop-filter: blur(8px);
@@ -191,86 +191,128 @@
 
         /* ===== КНИГА (3D-сцена) ===== */
         .book-scene {
-            perspective: 2000px;
+            perspective: 2500px;
             padding: 40px 0 20px;
-            min-height: 600px;
+            min-height: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
 
-        .book-page {
-            background: #fffdf7;
-            border-radius: 8px;
-            border: 1px solid rgba(139, 115, 85, 0.2);
-            box-shadow: 
-                0 4px 20px rgba(43, 36, 24, 0.08),
-                0 1px 3px rgba(43, 36, 24, 0.04);
-            overflow: hidden;
-            transform-origin: left center;
-            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.6s;
+        .book {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 600px;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 1s;
             position: relative;
         }
 
-        /* Эффект тени от страницы */
-        .book-page::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 40px;
-            height: 100%;
-            background: linear-gradient(to left, rgba(0,0,0,0.03), transparent);
-            pointer-events: none;
-        }
-
-        /* Анимация перелистывания */
-        .book-page.flip-out {
-            transform: rotateY(-180deg);
+        /* Анимации перелистывания */
+        .book.flip-out-left {
+            transform: rotateY(-30deg) translateX(-50px);
             opacity: 0;
         }
 
-        .book-page.flip-in {
-            transform: rotateY(180deg);
+        .book.flip-out-right {
+            transform: rotateY(30deg) translateX(50px);
             opacity: 0;
         }
 
-        .book-page.visible {
-            transform: rotateY(0);
+        .book.flip-in-left {
+            transform: rotateY(30deg) translateX(50px);
+            opacity: 0;
+        }
+
+        .book.flip-in-right {
+            transform: rotateY(-30deg) translateX(-50px);
+            opacity: 0;
+        }
+
+        .book.visible {
+            transform: rotateY(0) translateX(0);
             opacity: 1;
         }
 
-        /* ===== СОДЕРЖИМОЕ СТРАНИЦЫ ===== */
-        .page-content {
-            padding: 32px 40px 40px;
+        /* ===== СТРАНИЦЫ РАЗВОРОТА ===== */
+        .page {
+            flex: 1;
+            background: #fffdf7;
+            padding: 32px 28px;
+            position: relative;
+            overflow-y: auto;
+            max-height: 650px;
         }
 
-        /* Шапка страницы */
+        .page-left {
+            border-radius: 8px 0 0 8px;
+            border: 1px solid rgba(139, 115, 85, 0.2);
+            border-right: none;
+            /* Тень корешка справа */
+            box-shadow: 
+                inset -20px 0 30px -10px rgba(0,0,0,0.08),
+                0 4px 20px rgba(43, 36, 24, 0.08);
+        }
+
+        .page-right {
+            border-radius: 0 8px 8px 0;
+            border: 1px solid rgba(139, 115, 85, 0.2);
+            border-left: none;
+            /* Тень корешка слева */
+            box-shadow: 
+                inset 20px 0 30px -10px rgba(0,0,0,0.08),
+                0 4px 20px rgba(43, 36, 24, 0.08);
+        }
+
+        /* Эффект корешка посередине */
+        .book::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            transform: translateX(-50%);
+            background: linear-gradient(to right, 
+                transparent 0%, 
+                rgba(0,0,0,0.05) 40%, 
+                rgba(0,0,0,0.1) 50%, 
+                rgba(0,0,0,0.05) 60%, 
+                transparent 100%);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* ===== СОДЕРЖИМОЕ СТРАНИЦЫ ===== */
         .page-header-inner {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
-            padding-bottom: 20px;
+            padding-bottom: 16px;
             border-bottom: 2px solid rgba(139, 115, 85, 0.15);
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .page-header-inner .day-date {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 500;
             color: #0a1a2e;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .page-header-inner .day-date .day-num {
             font-weight: 600;
             color: #ffffff;
             background: #7a9aa8;
-            font-size: 0.7rem;
-            padding: 4px 10px;
-            border-radius: 6px;
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 5px;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             box-shadow: 0 2px 6px rgba(122, 154, 168, 0.4);
@@ -278,15 +320,15 @@
 
         .page-header-inner .weather-icons {
             display: flex;
-            gap: 6px;
+            gap: 4px;
         }
 
         .page-header-inner .weather-icons .weather-btn {
             background: transparent;
             border: 1px solid rgba(139, 115, 85, 0.2);
-            border-radius: 6px;
-            padding: 4px 8px;
-            font-size: 1.1rem;
+            border-radius: 5px;
+            padding: 3px 6px;
+            font-size: 1rem;
             cursor: pointer;
             transition: 0.2s;
             opacity: 0.4;
@@ -306,20 +348,20 @@
         .day-photos {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 28px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .day-photos .photo-placeholder {
             background: linear-gradient(135deg, #f5efe6 0%, #ebe3d4 100%);
-            border-radius: 10px;
+            border-radius: 8px;
             aspect-ratio: 16 / 10;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #8b7355;
             font-weight: 400;
             border: 2px dashed rgba(139, 115, 85, 0.25);
@@ -329,21 +371,21 @@
 
         .day-photos .photo-placeholder::before {
             content: '📷';
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             opacity: 0.5;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         /* ===== ТЕКСТ ===== */
         .day-text {
             font-family: 'Lora', 'Georgia', serif;
-            font-size: 1.1rem;
-            line-height: 1.9;
+            font-size: 1rem;
+            line-height: 1.8;
             color: #2b2418;
         }
 
         .day-text p {
-            margin-bottom: 1.2em;
+            margin-bottom: 1em;
             text-align: justify;
             hyphens: auto;
         }
@@ -352,18 +394,18 @@
             margin-bottom: 0;
         }
 
-        /* Буквица */
-        .day-text p:first-of-type::first-letter {
+        /* Буквица только на левой странице */
+        .page-left .day-text p:first-of-type::first-letter {
             font-family: 'Caveat', cursive;
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             float: left;
             line-height: 0.85;
-            padding: 6px 10px 0 0;
+            padding: 4px 8px 0 0;
             color: #7a9aa8;
             font-weight: 500;
         }
 
-        /* ===== НАВИГАЦИЯ ВНИЗУ (кнопки листания) ===== */
+        /* ===== НАВИГАЦИЯ ВНИЗУ ===== */
         .book-nav {
             display: flex;
             justify-content: center;
@@ -421,6 +463,32 @@
         }
 
         /* ===== АДАПТАЦИЯ ===== */
+        @media (max-width: 900px) {
+            /* На планшетах и телефонах — одна страница */
+            .book {
+                flex-direction: column;
+                max-width: 600px;
+            }
+
+            .page-left, .page-right {
+                border-radius: 8px;
+                border: 1px solid rgba(139, 115, 85, 0.2);
+                box-shadow: 0 4px 20px rgba(43, 36, 24, 0.08);
+            }
+
+            .book::before {
+                display: none;
+            }
+
+            .page {
+                max-height: none;
+            }
+
+            .page-left {
+                margin-bottom: 16px;
+            }
+        }
+
         @media (max-width: 680px) {
             body { padding-top: 56px; }
             .navbar { height: 56px; padding: 0 16px; }
@@ -447,12 +515,12 @@
                 border-radius: 8px;
             }
 
-            .page-content {
-                padding: 24px 20px 30px;
+            .page {
+                padding: 24px 20px;
             }
 
             .page-header-inner .day-date {
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
 
             .day-photos {
@@ -460,11 +528,11 @@
             }
 
             .day-text {
-                font-size: 1rem;
+                font-size: 0.95rem;
             }
 
-            .day-text p:first-of-type::first-letter {
-                font-size: 2.8rem;
+            .page-left .day-text p:first-of-type::first-letter {
+                font-size: 2.6rem;
             }
 
             .book-nav {
@@ -509,17 +577,20 @@
         <select id="daySelect"></select>
     </div>
 
-    <!-- ===== КНИГА ===== -->
+    <!-- ===== КНИГА (РАЗВОРОТ) ===== -->
     <section class="container">
         <div class="book-scene">
-            <div class="book-page visible" id="bookPage">
-                <div class="page-content" id="pageContent">
-                    <!-- Содержимое страницы генерируется через JavaScript -->
+            <div class="book visible" id="book">
+                <div class="page page-left" id="pageLeft">
+                    <!-- Левая страница -->
+                </div>
+                <div class="page page-right" id="pageRight">
+                    <!-- Правая страница -->
                 </div>
             </div>
         </div>
 
-        <!-- ===== НАВИГАЦИЯ ВНИЗУ ===== -->
+        <!-- ===== НАВИГАЦИЯ ===== -->
         <div class="book-nav">
             <button id="prevDayBtn" disabled>← Пред. день</button>
             <span class="page-indicator" id="pageIndicator">День 0 из 7</span>
@@ -576,10 +647,11 @@
             'day7': 'Последний день. Свободное плавание. Вечером — отъезд в Петербург...'
         };
 
-        const weatherSymbols = ['️', '⛅', '🌧️', '🌨️', '💨', '🌫️'];
+        const weatherSymbols = ['☀️', '⛅', '🌧️', '🌨️', '💨', '🌫️'];
 
-        const bookPage = document.getElementById('bookPage');
-        const pageContent = document.getElementById('pageContent');
+        const book = document.getElementById('book');
+        const pageLeft = document.getElementById('pageLeft');
+        const pageRight = document.getElementById('pageRight');
         const daySelect = document.getElementById('daySelect');
         const pageIndicator = document.getElementById('pageIndicator');
         let currentIndex = 0;
@@ -593,35 +665,51 @@
             daySelect.appendChild(option);
         });
 
-        // --- ГЕНЕРАЦИЯ СОДЕРЖИМОГО СТРАНИЦЫ ---
-        function renderPage(index) {
-            const day = daysData[index];
-            const text = placeholderTexts[day.id] || '';
+        // --- РАЗБИЕНИЕ ТЕКСТА НА ДВЕ КОЛОНКИ ---
+        function splitTextIntoPages(text) {
+            if (!text) return { left: '', right: '' };
+            
+            const paragraphs = text.split('\n\n').filter(p => p.trim() !== '');
+            const mid = Math.ceil(paragraphs.length / 2);
+            
+            const leftText = paragraphs.slice(0, mid).join('\n\n');
+            const rightText = paragraphs.slice(mid).join('\n\n');
+            
+            return { left: leftText, right: rightText };
+        }
 
-            let html = `
-                <div class="page-header-inner">
-                    <div class="day-date">
-                        ${day.date} <span class="day-num">${day.dayNum}</span>
-                    </div>
-                    <div class="weather-icons">
-            `;
-
-            weatherSymbols.forEach(sym => {
+        // --- ГЕНЕРАЦИЯ HTML ДЛЯ СТРАНИЦЫ ---
+        function renderPageContent(container, text, isLeft, day) {
+            let html = '';
+            
+            // Шапка только на левой странице
+            if (isLeft) {
+                html += `
+                    <div class="page-header-inner">
+                        <div class="day-date">
+                            ${day.date} <span class="day-num">${day.dayNum}</span>
+                        </div>
+                        <div class="weather-icons">
+                `;
+                
                 const saved = JSON.parse(localStorage.getItem('diary_weather') || '{}');
                 const dayWeather = saved[day.id] || [];
-                const isActive = dayWeather.includes(sym) ? 'active' : '';
-                html += `<button class="weather-btn ${isActive}" data-day="${day.id}" data-weather="${sym}">${sym}</button>`;
-            });
-
-            html += `</div></div>`;
-
-            // Фото
-            html += `<div class="day-photos">`;
-            for (let i = 0; i < 2; i++) {
-                html += `<div class="photo-placeholder">фото скоро</div>`;
+                
+                weatherSymbols.forEach(sym => {
+                    const isActive = dayWeather.includes(sym) ? 'active' : '';
+                    html += `<button class="weather-btn ${isActive}" data-day="${day.id}" data-weather="${sym}">${sym}</button>`;
+                });
+                
+                html += `</div></div>`;
+                
+                // Фото только на левой странице
+                html += `<div class="day-photos">`;
+                for (let i = 0; i < 2; i++) {
+                    html += `<div class="photo-placeholder">фото скоро</div>`;
+                }
+                html += `</div>`;
             }
-            html += `</div>`;
-
+            
             // Текст
             html += `<div class="day-text">`;
             if (text) {
@@ -630,29 +718,41 @@
                     html += `<p>${para.trim()}</p>`;
                 });
             } else {
-                html += `<p>Запись за этот день пока пуста...</p>`;
+                html += `<p>Продолжение следует...</p>`;
             }
             html += `</div>`;
-
-            pageContent.innerHTML = html;
-
+            
+            container.innerHTML = html;
+            
             // Обработчики погоды
-            pageContent.querySelectorAll('.weather-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    const dayId = this.dataset.day;
-                    const weather = this.dataset.weather;
-                    const saved = JSON.parse(localStorage.getItem('diary_weather') || '{}');
-                    if (!saved[dayId]) saved[dayId] = [];
-                    if (this.classList.contains('active')) {
-                        if (!saved[dayId].includes(weather)) saved[dayId].push(weather);
-                    } else {
-                        saved[dayId] = saved[dayId].filter(w => w !== weather);
-                    }
-                    localStorage.setItem('diary_weather', JSON.stringify(saved));
+            if (isLeft) {
+                container.querySelectorAll('.weather-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        this.classList.toggle('active');
+                        const dayId = this.dataset.day;
+                        const weather = this.dataset.weather;
+                        const saved = JSON.parse(localStorage.getItem('diary_weather') || '{}');
+                        if (!saved[dayId]) saved[dayId] = [];
+                        if (this.classList.contains('active')) {
+                            if (!saved[dayId].includes(weather)) saved[dayId].push(weather);
+                        } else {
+                            saved[dayId] = saved[dayId].filter(w => w !== weather);
+                        }
+                        localStorage.setItem('diary_weather', JSON.stringify(saved));
+                    });
                 });
-            });
+            }
+        }
 
+        // --- ОТРИСОВКА РАЗВОРОТА ---
+        function renderSpread(index) {
+            const day = daysData[index];
+            const text = placeholderTexts[day.id] || '';
+            const pages = splitTextIntoPages(text);
+            
+            renderPageContent(pageLeft, pages.left, true, day);
+            renderPageContent(pageRight, pages.right, false, day);
+            
             pageIndicator.textContent = `${day.dayNum} из ${daysData.length - 1}`;
         }
 
@@ -663,34 +763,32 @@
 
             isAnimating = true;
 
-            // Определяем направление анимации
             const isForward = newIndex > currentIndex;
 
-            // Анимация ухода текущей страницы
-            bookPage.classList.remove('visible');
-            bookPage.classList.add(isForward ? 'flip-out' : 'flip-in');
+            // Анимация ухода
+            book.classList.remove('visible');
+            book.classList.add(isForward ? 'flip-out-left' : 'flip-out-right');
 
             setTimeout(() => {
                 // Меняем содержимое
                 currentIndex = newIndex;
-                renderPage(currentIndex);
+                renderSpread(currentIndex);
                 daySelect.value = currentIndex;
                 updateNavButtons();
 
-                // Анимация появления новой страницы
-                bookPage.classList.remove('flip-out', 'flip-in');
-                bookPage.classList.add(isForward ? 'flip-in' : 'flip-out');
+                // Анимация появления
+                book.classList.remove('flip-out-left', 'flip-out-right');
+                book.classList.add(isForward ? 'flip-in-right' : 'flip-in-left');
 
-                // Форсируем reflow
-                void bookPage.offsetWidth;
+                void book.offsetWidth;
 
-                bookPage.classList.remove('flip-in', 'flip-out');
-                bookPage.classList.add('visible');
+                book.classList.remove('flip-in-left', 'flip-in-right');
+                book.classList.add('visible');
 
                 setTimeout(() => {
                     isAnimating = false;
-                }, 800);
-            }, 400);
+                }, 1200);
+            }, 600);
         }
 
         function updateNavButtons() {
@@ -724,7 +822,7 @@
         });
 
         // --- ИНИЦИАЛИЗАЦИЯ ---
-        renderPage(0);
+        renderSpread(0);
         updateNavButtons();
 
     })();
