@@ -14,7 +14,7 @@
 
         html, body {
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             background-color: #f5efe6;
             background-image: 
                 radial-gradient(circle at 20% 50%, rgba(139, 115, 85, 0.03) 0%, transparent 50%),
@@ -22,10 +22,10 @@
                 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             font-family: 'Lora', 'Georgia', serif;
             color: #2b2418;
-            line-height: 1.6;
+            font-size: 17px;
+            line-height: 1.7;
             scroll-behavior: smooth;
             padding-top: 60px;
-            overflow: hidden; /* Запрещаем скролл всей страницы */
         }
 
         /* ===== МЕНЮ ===== */
@@ -110,7 +110,7 @@
         /* ===== ШАПКА ===== */
         .page-header {
             background: #0a1a2e;
-            padding: 18px 20px 26px;
+            padding: 40px 20px 50px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -131,17 +131,17 @@
 
         .page-header h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
             font-weight: 300;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: #ffffff;
-            margin-bottom: 4px;
+            margin-bottom: 12px;
         }
 
         .page-header .sub {
             font-family: 'Caveat', cursive;
-            font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+            font-size: clamp(1.2rem, 2vw, 1.6rem);
             color: #7a9aa8;
             letter-spacing: 0.05em;
         }
@@ -150,14 +150,14 @@
         .day-selector-top {
             background: rgba(245, 239, 230, 0.97);
             backdrop-filter: blur(8px);
-            padding: 6px 16px;
+            padding: 12px 20px;
             border-bottom: 1px solid rgba(139, 115, 85, 0.2);
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #3a2e1f;
         }
 
@@ -166,16 +166,16 @@
             background: #ffffff;
             border: 1px solid rgba(139, 115, 85, 0.3);
             border-radius: 30px;
-            padding: 4px 28px 4px 12px;
-            font-size: 0.8rem;
+            padding: 6px 32px 6px 14px;
+            font-size: 0.85rem;
             color: #2b2418;
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237a9aa8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 8px center;
-            background-size: 12px;
+            background-position: right 10px center;
+            background-size: 14px;
         }
 
         .day-selector-top select:focus {
@@ -183,33 +183,29 @@
             border-color: #7a9aa8;
         }
 
-        /* ===== ОСНОВНАЯ ОБЛАСТЬ ===== */
-        .main-area {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 60px - 90px - 40px); /* меню + шапка+селектор + подвал+навигация */
-            min-height: 400px;
+        /* ===== КОНТЕЙНЕР ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
         }
 
         /* ===== КНИГА ===== */
         .book-scene {
             perspective: 2500px;
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: stretch;
-            padding: 8px 12px 0;
-            min-height: 0;
+            margin-bottom: 30px;
         }
 
         .book {
             display: flex;
             width: 100%;
-            max-width: 1400px;
-            height: 100%;
+            min-height: 600px;
             transform-style: preserve-3d;
             transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 1s;
             position: relative;
+            background: #fffdf7;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(43, 36, 24, 0.12);
         }
 
         .book.flip-out-left { transform: rotateY(-25deg) translateX(-40px); opacity: 0; }
@@ -221,37 +217,37 @@
         /* ===== СТРАНИЦЫ ===== */
         .page {
             flex: 1;
-            background: #fffdf7;
-            padding: 14px 20px;
+            padding: 32px 36px;
             position: relative;
-            overflow: hidden; /* ЗАПРЕЩАЕМ СКРОЛЛ ВНУТРИ СТРАНИЦЫ */
             display: flex;
             flex-direction: column;
         }
 
         .page-left {
-            border-radius: 6px 0 0 6px;
-            border: 1px solid rgba(139, 115, 85, 0.2);
-            border-right: none;
-            box-shadow: inset -15px 0 25px -10px rgba(0,0,0,0.08), 0 4px 20px rgba(43, 36, 24, 0.08);
+            border-radius: 8px 0 0 8px;
+            border-right: 1px solid rgba(139, 115, 85, 0.1);
         }
 
         .page-right {
-            border-radius: 0 6px 6px 0;
-            border: 1px solid rgba(139, 115, 85, 0.2);
-            border-left: none;
-            box-shadow: inset 15px 0 25px -10px rgba(0,0,0,0.08), 0 4px 20px rgba(43, 36, 24, 0.08);
+            border-radius: 0 8px 8px 0;
+            border-left: 1px solid rgba(139, 115, 85, 0.1);
         }
 
+        /* Корешок */
         .book::before {
             content: '';
             position: absolute;
             left: 50%;
             top: 0;
             bottom: 0;
-            width: 30px;
+            width: 40px;
             transform: translateX(-50%);
-            background: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.12) 50%, rgba(0,0,0,0.05) 60%, transparent 100%);
+            background: linear-gradient(to right, 
+                transparent 0%, 
+                rgba(0,0,0,0.04) 40%, 
+                rgba(0,0,0,0.08) 50%, 
+                rgba(0,0,0,0.04) 60%, 
+                transparent 100%);
             pointer-events: none;
             z-index: 10;
         }
@@ -262,30 +258,29 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 8px;
-            padding-bottom: 8px;
+            gap: 12px;
+            padding-bottom: 16px;
             border-bottom: 2px solid rgba(139, 115, 85, 0.15);
-            margin-bottom: 10px;
-            flex-shrink: 0;
+            margin-bottom: 20px;
         }
 
         .page-header-inner .day-date {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            font-size: 1.2rem;
             font-weight: 500;
             color: #0a1a2e;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .page-header-inner .day-date .day-num {
             font-weight: 600;
             color: #ffffff;
             background: #7a9aa8;
-            font-size: 0.6rem;
-            padding: 2px 7px;
-            border-radius: 4px;
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 5px;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             box-shadow: 0 2px 6px rgba(122, 154, 168, 0.4);
@@ -293,19 +288,18 @@
 
         .page-header-inner .weather-icons {
             display: flex;
-            gap: 3px;
+            gap: 4px;
         }
 
         .page-header-inner .weather-icons .weather-btn {
             background: transparent;
             border: 1px solid rgba(139, 115, 85, 0.2);
-            border-radius: 4px;
-            padding: 1px 5px;
-            font-size: 0.9rem;
+            border-radius: 5px;
+            padding: 3px 6px;
+            font-size: 1rem;
             cursor: pointer;
             transition: 0.2s;
             opacity: 0.4;
-            line-height: 1;
         }
 
         .page-header-inner .weather-icons .weather-btn:hover { opacity: 0.8; }
@@ -318,33 +312,14 @@
         /* ===== ТЕКСТ ===== */
         .day-text {
             font-family: 'Lora', 'Georgia', serif;
+            font-size: 1rem;
+            line-height: 1.75;
             color: #2b2418;
             flex: 1;
-            overflow: hidden;
         }
-
-        /* Базовые размеры (для коротких дней) */
-        .day-text.size-normal {
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        .day-text.size-normal p { margin-bottom: 0.7em; }
-
-        /* Для средних дней */
-        .day-text.size-medium {
-            font-size: 0.85rem;
-            line-height: 1.5;
-        }
-        .day-text.size-medium p { margin-bottom: 0.55em; }
-
-        /* Для длинных дней */
-        .day-text.size-small {
-            font-size: 0.78rem;
-            line-height: 1.45;
-        }
-        .day-text.size-small p { margin-bottom: 0.45em; }
 
         .day-text p {
+            margin-bottom: 1em;
             text-align: justify;
             hyphens: auto;
             -webkit-hyphens: auto;
@@ -352,34 +327,38 @@
 
         .day-text p:last-child { margin-bottom: 0; }
 
-        /* Буквица только на левой странице */
+        /* Буквица */
         .page-left .day-text p:first-of-type::first-letter {
             font-family: 'Caveat', cursive;
-            font-size: 2.4rem;
+            font-size: 3rem;
             float: left;
             line-height: 0.85;
-            padding: 2px 5px 0 0;
+            padding: 4px 8px 0 0;
             color: #7a9aa8;
             font-weight: 500;
         }
 
-        /* ===== ФОТО (в конце правой страницы) ===== */
+        /* ===== ФОТО ===== */
         .day-photos {
-            margin-top: auto;
-            padding-top: 10px;
-            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 20px 0;
         }
 
         .day-photos .photo-placeholder {
             background: linear-gradient(135deg, #f5efe6 0%, #ebe3d4 100%);
-            border-radius: 6px;
-            aspect-ratio: 21 / 8;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 16 / 10;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             color: #8b7355;
             font-weight: 400;
             border: 2px dashed rgba(139, 115, 85, 0.25);
@@ -389,9 +368,9 @@
 
         .day-photos .photo-placeholder::before {
             content: '📷';
-            font-size: 1.2rem;
+            font-size: 1.6rem;
             opacity: 0.5;
-            margin-bottom: 3px;
+            margin-bottom: 6px;
         }
 
         /* ===== НАВИГАЦИЯ ===== */
@@ -399,9 +378,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 14px;
-            padding: 8px 20px 12px;
-            flex-shrink: 0;
+            gap: 20px;
+            padding: 20px 0 40px;
         }
 
         .book-nav button {
@@ -409,15 +387,15 @@
             background: #0a1a2e;
             border: none;
             border-radius: 30px;
-            padding: 7px 20px;
-            font-size: 0.75rem;
+            padding: 12px 28px;
+            font-size: 0.85rem;
             color: #ffffff;
             cursor: pointer;
             transition: 0.3s;
             font-weight: 500;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            box-shadow: 0 3px 10px rgba(10, 26, 46, 0.2);
+            box-shadow: 0 4px 12px rgba(10, 26, 46, 0.2);
         }
 
         .book-nav button:hover:not(:disabled) {
@@ -432,7 +410,7 @@
 
         .book-nav .page-indicator {
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             color: #8b7355;
             font-weight: 400;
         }
@@ -440,10 +418,10 @@
         /* ===== ПОДВАЛ ===== */
         .footer {
             background: #0a1a2e;
-            padding: 10px 20px;
+            padding: 24px 20px;
             text-align: center;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             color: #7a9aa8;
             letter-spacing: 0.15em;
             text-transform: uppercase;
@@ -452,21 +430,17 @@
 
         /* ===== АДАПТАЦИЯ ===== */
         @media (max-width: 900px) {
-            .main-area { height: auto; }
-            .book-scene { padding: 8px 8px 0; }
-            .book { flex-direction: column; height: auto; min-height: 500px; }
+            .book { flex-direction: column; min-height: auto; }
             .page-left, .page-right {
-                border-radius: 6px;
-                border: 1px solid rgba(139, 115, 85, 0.2);
-                box-shadow: 0 4px 20px rgba(43, 36, 24, 0.08);
-                min-height: 300px;
+                border-radius: 8px;
+                border: 1px solid rgba(139, 115, 85, 0.1);
             }
             .book::before { display: none; }
-            .page-left { margin-bottom: 8px; }
+            .page-left { margin-bottom: 16px; }
         }
 
         @media (max-width: 680px) {
-            body { padding-top: 56px; overflow: auto; }
+            body { padding-top: 56px; }
             .navbar { height: 56px; padding: 0 16px; }
             .burger { display: flex; }
             .nav-links {
@@ -484,10 +458,10 @@
             }
             .nav-links.open { display: flex; }
             .nav-links a { padding: 12px 16px; width: 100%; text-align: center; border-radius: 8px; }
-            .page { padding: 12px; }
-            .page-header { padding: 14px 16px 22px; }
-            .book-nav { flex-wrap: wrap; gap: 6px; }
-            .book-nav button { padding: 6px 14px; font-size: 0.7rem; }
+            .page { padding: 24px 20px; }
+            .page-header { padding: 30px 20px 40px; }
+            .book-nav { flex-wrap: wrap; gap: 12px; }
+            .book-nav button { padding: 10px 20px; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -517,7 +491,7 @@
         <select id="daySelect"></select>
     </div>
 
-    <div class="main-area">
+    <div class="container">
         <div class="book-scene">
             <div class="book visible" id="book">
                 <div class="page page-left" id="pageLeft"></div>
@@ -576,7 +550,7 @@
             'day7': 'Последний день. Свободное плавание. Вечером — отъезд в Петербург...'
         };
 
-        const weatherSymbols = ['☀️', '⛅', '️', '🌨️', '💨', '🌫️'];
+        const weatherSymbols = ['☀️', '⛅', '🌧️', '🌨️', '💨', '️'];
 
         const book = document.getElementById('book');
         const pageLeft = document.getElementById('pageLeft');
@@ -593,28 +567,32 @@
             daySelect.appendChild(option);
         });
 
-        // --- УМНОЕ РАЗБИЕНИЕ ТЕКСТА ---
+        // УМНОЕ РАЗБИЕНИЕ: короткие дни — весь текст слева, фото справа
         function splitTextSmart(text) {
-            if (!text) return { left: '', right: '', size: 'normal' };
+            if (!text) return { left: '', right: '', isShort: true };
             
             const paragraphs = text.split('\n\n').filter(p => p.trim() !== '');
             const total = paragraphs.length;
             
-            // Определяем размер шрифта по количеству абзацев
-            let size = 'normal';
-            if (total > 6) size = 'small';
-            else if (total > 3) size = 'medium';
+            // Если абзацев <= 3 — короткий день
+            if (total <= 3) {
+                return {
+                    left: text,
+                    right: '',
+                    isShort: true
+                };
+            }
             
-            // Делим пополам
+            // Иначе делим пополам
             const mid = Math.ceil(total / 2);
             return {
                 left: paragraphs.slice(0, mid).join('\n\n'),
                 right: paragraphs.slice(mid).join('\n\n'),
-                size: size
+                isShort: false
             };
         }
 
-        function renderPageContent(container, text, isLeft, day, textSize) {
+        function renderPageContent(container, text, isLeft, day, isShortDay) {
             let html = '';
             
             if (isLeft) {
@@ -633,20 +611,22 @@
                 html += `</div></div>`;
             }
             
-            html += `<div class="day-text size-${textSize}">`;
+            // Текст
             if (text) {
+                html += `<div class="day-text">`;
                 const paragraphs = text.split('\n\n').filter(p => p.trim() !== '');
                 paragraphs.forEach(para => {
                     html += `<p>${para.trim()}</p>`;
                 });
-            } else {
-                html += `<p>Продолжение следует...</p>`;
+                html += `</div>`;
             }
-            html += `</div>`;
             
-            // ФОТО — только на ПРАВОЙ странице, в самом конце
+            // Фото — на правой странице
             if (!isLeft) {
-                html += `<div class="day-photos"><div class="photo-placeholder">фото скоро</div></div>`;
+                if (isShortDay) {
+                    // Короткий день — фото по центру правой страницы
+                    html += `<div class="day-photos"><div class="photo-placeholder">фото скоро</div></div>`;
+                }
             }
             
             container.innerHTML = html;
@@ -675,8 +655,8 @@
             const text = placeholderTexts[day.id] || '';
             const pages = splitTextSmart(text);
             
-            renderPageContent(pageLeft, pages.left, true, day, pages.size);
-            renderPageContent(pageRight, pages.right, false, day, pages.size);
+            renderPageContent(pageLeft, pages.left, true, day, pages.isShort);
+            renderPageContent(pageRight, pages.right, false, day, pages.isShort);
             
             pageIndicator.textContent = `${day.dayNum} из ${daysData.length - 1}`;
         }
